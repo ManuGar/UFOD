@@ -314,10 +314,8 @@ def process_anno(anno_path):
     return boxes
 
 
+def main():
+    PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
 
-
-
-
-
-
-
+if __name__ == "__main__":
+    main()
