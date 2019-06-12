@@ -1,6 +1,5 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
-
-class DetectronAbstract(IObjectDetection):
+class DarknetAbstract(IObjectDetection):
     def __init__(self):
         pass
     def transform(self):

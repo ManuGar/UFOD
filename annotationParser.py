@@ -11,18 +11,18 @@ def PascalVOC2TensorflowRecords(voc_path, images_path):
     """Locate files for train and test sets and then generate TFRecords."""
 
     voc_path = os.path.expanduser(voc_path)
-    result_path = os.path.join("../output2", 'TFRecords')
+    result_path = os.path.join(".." + os.sep + "output", 'TFRecords')
     print('Saving results to {}'.format(result_path))
 
-    train_path = os.path.join(result_path, 'train')
-    test_path = os.path.join(result_path, 'test')
+    # train_path = os.path.join(result_path, 'tensorflowRecords')
+    # test_path = os.path.join(result_path, 'test')
 
     anno_paths = [os.path.join(voc_path, p) for p in os.listdir(voc_path)]
     image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
 
     # image_train, image_test, anno_train, anno_test = train_test_split(image_paths, anno_paths, test_size=0.25, random_state=42)
 
-    process_dataset('train',image_paths, anno_paths, train_path,num_shards=1)
+    process_dataset('train',image_paths, anno_paths, result_path,num_shards=1)
     # process_dataset('test',image_test, anno_test, test_path,num_shards=1)
 
     # num_shards es el número de imágenes que entran dentro de cada archivo de anotaciones de TFRecodrs. Si pones la
@@ -35,7 +35,9 @@ def PascalVOC2TensorflowRecords(voc_path, images_path):
 def PascalVOC2YOLO(voc_path, images_path):
     anno_paths = [os.path.join(voc_path, p) for p in os.listdir(voc_path)]
     image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
-    result_path = "../output2/train"
+    result_path = ".." + os.sep + "output" + os.sep + "YOLO"
+    if (not os.path.exists(result_path)):
+        os.makedirs(result_path)
 
     for anno in anno_paths:
         tree = ElementTree.parse(anno)
@@ -43,81 +45,24 @@ def PascalVOC2YOLO(voc_path, images_path):
         size = root.find('size')
         w = int(size.find('width').text)
         h = int(size.find('height').text)
+        dw = 1. / w
+        dh = 1. / h
         boxes = process_anno(anno)
-        f = open(result_path + anno[anno.rfind(os.sep):] + ".txt")
+        f = open(result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt", "w")
         for bo in boxes:
-            f.write(bo[0] + " " + str((bo[2] + bo[4])/2.0) + " " + str((bo[1] + bo[3])/2.0)  + str(w) + " " + str(h) )
+            w = bo['x_max'] - bo['x_min']
+            h = bo['y_max'] - bo['y_min']
+            x = (bo['x_min'] + bo['x_max'])/2.0
+            y = (bo['y_min'] + bo['y_max'])/2.0
+
+            x = x * dw
+            y = y * dh
+            w = w * dw
+            h = h * dh
+            f.write(str(bo['class']) + " " + str(x) + " " + str(y) + " " + str(w) + " " + str(h) + "\n")
         f.close()
-
-
-    # Este metodo hay que pasarlo para cada una de las imagenes. Se parseta una por una. Aprovechar y hacerlo para cada
+    # Este metodo hay que pasarlo para cada una de las imagenes. Se parsea una por una. Aprovechar y hacerlo para cada
     # imagen que se te tiene que leer. Hacerlo cuando se recorren los archivos vaya
-
-def PascalVOC2OpenCV():
-    pass
-def PascalVOC2Protobuf():
-    pass
-def YOLO2Protobuf():
-    pass
-def Protobuf2PascalVOC():
-    pass
-def OpenCV2PascalVOC():
-    pass
-def TensorflowRecords2PascalVOC():
-    pass
-
-
-
-# Luego si es necesario aniadir los pasos que quedan que simplemente seria usar los cambios que tenemos, pasando siempre por PascalVOC
-
-
-
-
-
-
-
-
-# <annotation>
-# 	<folder>GeneratedData_Train</folder>
-# 	<filename>000001.png</filename>
-# 	<path>/my/path/GeneratedData_Train/000001.png</path>
-# 	<source>
-# 		<database>Unknown</database>
-# 	</source>
-# 	<size>
-# 		<width>224</width>
-# 		<height>224</height>
-# 		<depth>3</depth>
-# 	</size>
-# 	<segmented>0</segmented>
-# 	<object>
-# 		<name>21</name>
-# 		<pose>Frontal</pose>
-# 		<truncated>0</truncated>
-# 		<difficult>0</difficult>
-# 		<occluded>0</occluded>
-# 		<bndbox>
-# 			<xmin>82</xmin>
-# 			<xmax>172</xmax>
-# 			<ymin>88</ymin>
-# 			<ymax>146</ymax>
-# 		</bndbox>
-# 	</object>
-# </annotation>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 """Convert Pascal VOC 2007+2012 detection dataset to TFRecords.
@@ -130,13 +75,15 @@ https://github.com/pjreddie/darknet/blob/master/scripts/voc_label.py
 https://github.com/tensorflow/models/blob/master/inception/inception/data/build_image_data.py
 """
 
-# Estas clases se deberan coger de un archivo que se llamara siempre igual para que luego aqui se cojan y se compruebe para la dificultad
-# el archivo tendra siempre el formato .names para poder leer las clases correctamente
-classes = [
-    "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat",
-    "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
-    "pottedplant", "sheep", "sofa", "train", "tvmonitor"
-]
+
+classes = []
+
+# This are the default classes but the classes have to be read from the classes.name file
+# [
+#     "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat",
+#     "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
+#     "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+# ]
 
 # Small graph for image decoding
 decoder_sess = tf.Session()
@@ -164,10 +111,10 @@ def process_dataset(name, image_paths, anno_paths, result_path, num_shards):
 
     for shard in range(num_shards):
         # Generate shard file name
-        output_filename = '{}-{:05d}-of-{:05d}'.format(name, shard, num_shards)
+        output_filename = '{}-{:05d}-of-{:05d}'.format(name, shard + 1, num_shards)
         output_file = os.path.join(result_path, output_filename)
-        if (not os.path.exists(output_file[:output_file.rfind("/")])):
-            os.makedirs(output_file[:output_file.rfind("/")])
+        if (not os.path.exists(output_file[:output_file.rfind(os.sep)])):
+            os.makedirs(output_file[:output_file.rfind(os.sep)])
 
         writer = tf.python_io.TFRecordWriter(output_file)
         shard_counter = 0
@@ -251,27 +198,6 @@ def convert_to_tf(image_data, boxes, filename, height, width):
     }))
     return example
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Auxiliary functions to process the images and annotations of pascalvoc. I think it can be used to process the dataset
 # and parse to the rest of annotations
 
@@ -315,7 +241,9 @@ def process_anno(anno_path):
 
 
 def main():
-    PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
+    pass
+    # PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
+    # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
 
 if __name__ == "__main__":
     main()

@@ -1,8 +1,12 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 
-class DetectronAbstract(IObjectDetection):
+class TensorflowAbstract(IObjectDetection):
     def __init__(self):
-        pass
+        IObjectDetection.__init__()
+
+
+
+    # Este metodo transformara si hace falta del formato de anotacion que tenga a pascalvoc para poder trabajar con el
     def transform(self):
         pass
     def organize(self):
