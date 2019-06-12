@@ -35,8 +35,4 @@ class YoloV2Detector(darknetDetector):
         datasetName = datasetPath[datasetPath.rfind(os.sep):]
         fn.generaFicheroData("config/file.data",n_classes,datasetName)
 
-
-
-
         # fn.generaFicherosYoloTrain()
-

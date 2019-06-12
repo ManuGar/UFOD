@@ -241,8 +241,7 @@ def process_anno(anno_path):
 
 
 def main():
-    pass
-    # PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
+    PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
 
 if __name__ == "__main__":
