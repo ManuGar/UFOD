@@ -3,7 +3,7 @@
 class IObjectDetection(object):
     def __init__(self):
         pass
-    def transform(self):
+    def transform(self, datasetPath):
         pass
     def organize(self):
         pass
@@ -11,5 +11,5 @@ class IObjectDetection(object):
         pass
     def evaluate(self):
         pass
-    def createModel(self):
+    def createModel(self, datasetPath):
         pass
