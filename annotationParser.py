@@ -3,9 +3,17 @@ import os
 import xml.etree.ElementTree as ElementTree
 import numpy as np
 import tensorflow as tf
-
-from sklearn.model_selection import train_test_split
+import shutil
 from datetime import datetime
+
+CLASSES = []
+
+# This are the default classes but the classes have to be read from the classes.name file
+# [
+#     "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat",
+#     "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
+#     "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+# ]
 
 def PascalVOC2TensorflowRecords(voc_path, images_path):
     """Locate files for train and test sets and then generate TFRecords."""
@@ -14,15 +22,12 @@ def PascalVOC2TensorflowRecords(voc_path, images_path):
     result_path = os.path.join(".." + os.sep + "output", 'TFRecords')
     print('Saving results to {}'.format(result_path))
 
-    # train_path = os.path.join(result_path, 'tensorflowRecords')
-    # test_path = os.path.join(result_path, 'test')
-
     anno_paths = [os.path.join(voc_path, p) for p in os.listdir(voc_path)]
     image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
 
     # image_train, image_test, anno_train, anno_test = train_test_split(image_paths, anno_paths, test_size=0.25, random_state=42)
 
-    process_dataset('train',image_paths, anno_paths, result_path,num_shards=1)
+    process_dataset('tfRecords',image_paths, anno_paths, result_path,num_shards=1)
     # process_dataset('test',image_test, anno_test, test_path,num_shards=1)
 
     # num_shards es el número de imágenes que entran dentro de cada archivo de anotaciones de TFRecodrs. Si pones la
@@ -30,16 +35,17 @@ def PascalVOC2TensorflowRecords(voc_path, images_path):
     # process_dataset('test', test_image_paths, test_anno_paths, test_path, num_shards=20)
 
 
-# Falta de modificar al ruta de salida para que sea justo la del nombre del dataset o la que me diga jonathan de poner
-# ademas de saber si tambien tenemos que copiar el dataset de imagenes a esa nueva ruta con las anotaciones
-def PascalVOC2YOLO(voc_path, images_path):
-    anno_paths = [os.path.join(voc_path, p) for p in os.listdir(voc_path)]
-    image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
-    result_path = ".." + os.sep + "output" + os.sep + "YOLO"
+def PascalVOC2YOLO(dataset_path, output_path):
+    anno_paths = [os.path.join(dataset_path, p) for p in os.listdir(dataset_path) if p.endswith(".xml")]
+    # image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
+    dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
+    result_path = os.path.join(output_path, dataset_name+"dataset")      #".." + os.sep + "output" + os.sep + "YOLO"
     if (not os.path.exists(result_path)):
         os.makedirs(result_path)
 
     for anno in anno_paths:
+        filename = anno[:anno.rfind(".")] + ".jpg"
+        shutil.copy(filename,result_path)
         tree = ElementTree.parse(anno)
         root = tree.getroot()
         size = root.find('size')
@@ -48,7 +54,8 @@ def PascalVOC2YOLO(voc_path, images_path):
         dw = 1. / w
         dh = 1. / h
         boxes = process_anno(anno)
-        f = open(result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt", "w")
+        f_name = result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt"
+        f = open(f_name, "w")
         for bo in boxes:
             w = bo['x_max'] - bo['x_min']
             h = bo['y_max'] - bo['y_min']
@@ -76,14 +83,6 @@ https://github.com/tensorflow/models/blob/master/inception/inception/data/build_
 """
 
 
-classes = []
-
-# This are the default classes but the classes have to be read from the classes.name file
-# [
-#     "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat",
-#     "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
-#     "pottedplant", "sheep", "sofa", "train", "tvmonitor"
-# ]
 
 # Small graph for image decoding
 decoder_sess = tf.Session()
@@ -237,11 +236,12 @@ def process_anno(anno_path):
             'x_max': float(xml_box.find('xmax').text) / width
         }
         boxes.append(bbox)
+
     return boxes
 
 
 def main():
-    PascalVOC2YOLO("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
+    PascalVOC2YOLO("../datasets/VOC2012/Annotations")
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
 
 if __name__ == "__main__":

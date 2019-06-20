@@ -15,12 +15,16 @@ import os
 # funcion que nos va a generar el archivo fichero.data, donde tenemos las rutas de las imagenes
 def generaFicheroData(darknetPath, NClases, Nproyecto):
     # creamos el fichero
-    f = open(os.path.join(darknetPath, "cfg", Nproyecto + ".data"), 'w')
+    # f = open(os.path.join(darknetPath, Nproyecto + ".data"), 'w')
+    if (not (os.path.exists(darknetPath))):
+        os.makedirs(darknetPath)
+    f = open(darknetPath + os.sep + Nproyecto + ".data", 'w')
+
     # empezamos poniendo el numero de clases
     f.write('classes= ' + str(NClases) + '\n')
-    f.write('train  = ' + Nproyecto + os.sep + "train.txt" + '\n')
-    f.write('valid  = ' + Nproyecto + os.sep + "test.txt" + '\n')
-    f.write('names = ' + "data" + os.sep + Nproyecto + ".names" + '\n')
+    f.write('train  = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + "train.txt") + '\n')
+    f.write('valid  = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + "test.txt" )+ '\n')
+    f.write('names = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + ".names" )+ '\n')
     f.write('backup = backup' + '\n')
     f.close()
 
@@ -40,20 +44,24 @@ def generaFicheroNames(darknetPath, Nproyecto, clases):
 
 # generaFicheroNames("data/fichero.names", "aeroplane, bicycle,bird,boat,bottle,bus,car, cat, chair,cow,diningtable,dog, horse, motorbike, person, pottedplant, sheep, sofa,train,tvmonitor")
 def contarClases(clases):
-    numClases = 0
-    trocitos_de_clases = clases.split(',')
+    # numClases = 0
+    # trocitos_de_clases = clases.split(',')
     # recorremos la lista e imprimimos una clase por linea
     # for element in trocitos_de_clases:
     #     numClases = numClases + 1
     # return numClases
 
-    return len(trocitos_de_clases)
+    return len(clases)
 
 
 # funcion que nos genera los ficheros de YOLO
 def generaFicherosYoloTrain(darknetPath, Nproyecto, NClases):
     # creamos el fichero yolo.cfg con la configuracion correspondiente a YOLO
-    f = open(os.path.join(darknetPath, "cfg", Nproyecto + "train.cfg"), 'w')
+    if (not (os.path.exists(darknetPath))):
+        os.makedirs(darknetPath)
+    f = open(darknetPath + os.sep + Nproyecto + "train.cfg", 'w')
+
+    # f = open(os.path.join(darknetPath, "cfg", Nproyecto + "train.cfg"), 'w')
     # Texto del fichero
     mensaje = """[net]
 # Testing
@@ -1745,13 +1753,17 @@ def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
     # y esta ultima carpeta va a contener tanto las imagenes como los ficheros de anotaciones del test
     os.makedirs(os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages'))
     # para las imagenes de entrenamiento
+    traintxt = open(os.path.join(darknetPath, Nproyecto, "train.txt"),"w")
+    testtxt = open(os.path.join(darknetPath, Nproyecto, "test.txt"),"w")
     for file in train_list:
         # obtenemos el fichero .txt asociado
         ficherolabel = file[0:file.rfind('.')] + '.txt'
         # obetenemos el nombre de los ficheros
         name = os.path.basename(file).split('.')[0]
+        image_splited = os.path.join(darknetPath, Nproyecto, 'train', 'JPEGImages', name + '.jpg')
+        traintxt.write(os.path.abspath(image_splited) + "\n")
         # movemos las imagenes a la carpeta JpegImages
-        shutil.copy(file, os.path.join(darknetPath, Nproyecto, 'train', 'JPEGImages', name + '.jpg'))
+        shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
         shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'train', 'labels', name + '.txt'))
     # para las imagenes de entrenamiento
@@ -1760,8 +1772,10 @@ def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
         ficherolabel = file[0:file.rfind('.')] + '.txt'
         # obetenemos el nombre de los ficheros
         name = os.path.basename(file).split('.')[0]
+        image_splited = os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.jpg')
+        testtxt.write(os.path.abspath(image_splited) + "\n")
         # movemos las imagenes a la carpeta JpegImages
-        shutil.copy(file, os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.jpg'))
+        shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
         shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.txt'))
 
