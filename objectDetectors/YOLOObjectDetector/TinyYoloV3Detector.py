@@ -4,15 +4,13 @@ import os
 import wget
 import objectDetectors.YOLOObjectDetector.funciones as fn
 
-import subprocess
-
 
 from imutils import paths
 import shutil
 
 
 
-class YoloV3Detector(darknetDetector.DarknetAbstract):
+class TinyYoloV3Detector(darknetDetector.DarknetAbstract):
     def __init__(self):
         darknetDetector.DarknetAbstract.__init__(self)
         urlWeights = "https://pjreddie.com/media/files/darknet53.conv.74"
@@ -38,7 +36,6 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         shutil.copy(os.path.join(dataset_path[:dataset_path.rfind(os.sep)], "classes.names"), os.path.join(output_path, dataset_name))
 
     def createModel(self, dataset_path):
-        # en el fichero de data hay que asegurarse de la ruta que se le pone, por que le aniade data/ que no se ha creado esa carpeta
         file = open(os.path.join(dataset_path, "classes.names"))
         classes = []
         for line in file:
@@ -46,9 +43,8 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         n_classes = fn.contarClases(classes)
         annotationParser.CLASSES = classes
         dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
-        # os.path.join(darknetPath, "cfg", Nproyecto + ".data")
         fn.generaFicheroData(dataset_path,n_classes,dataset_name)
-        fn.generaFicherosYoloTrain(dataset_path, dataset_name, n_classes)
+        fn.generaFicherosTinyYoloTrain(dataset_path, dataset_name, n_classes)
 
     def train(self, dataset_path):
         # !git clone https: // github.com / AlexeyAB / darknet.git
@@ -57,40 +53,20 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         data = [p for p in os.listdir(dataset_path) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(dataset_path) if p.endswith(".cfg")][0]
         if (not os.path.exists("./darknet")):
-            os.system("git clone https://github.com/pjreddie/darknet")
+            os.system("git clone https://github.com/AlexeyAB/darknet.git")
 
-        # os.system("make ./darknet/Makefile")
+            # probar mejor lo de la ruta para hacer la compilacion del proyecto
+            os.system("make ./darknet/Makefile")
+
         # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
         os.system("./darknet/darknet detector train " + os.path.abspath(dataset_path+ os.sep + data) + " " +
                   os.path.abspath(dataset_path+ os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-        print("./darknet/darknet detector train " + os.path.abspath(dataset_path+ os.sep + data) + " " +
-              os.path.abspath(dataset_path+ os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-        # entrenar solo el modelo
-
-
-        # para entrenarlo pasar solo el path que contiene todo, ahi tenemos el datset dividido y cogemos la parte de
-        # como se van a usar todos los pasos seguidos no va a hacer falta que se le pasen los parametros de uno en uno
-        # se le pasa el path del dataset y como sabemos perfectamente la estructura que va a tener se buscan a partir del
-        # del dataset que le hemos pasado
-        # tambien habria que compilar darknet para que se pudiera usar o eso lo suponemos que esta hecho de antes
 
     def evaluate(self, dataset_path):
-        # evaluar el modelo en el conjunto de test
-
         data = [p for p in os.listdir(dataset_path) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(dataset_path) if p.endswith(".cfg")][0]
-        command = "./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
-                dataset_path + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74"
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-
-        output, error = process.communicate()
-
-        # os.system("./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
-        #         dataset_path + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-        print(
-            "./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
+        os.system("./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
                 dataset_path + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-
 
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")

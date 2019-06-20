@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 import argparse
 import os
 import xml.etree.ElementTree as ElementTree
@@ -30,7 +33,7 @@ def PascalVOC2TensorflowRecords(voc_path, images_path):
     process_dataset('tfRecords',image_paths, anno_paths, result_path,num_shards=1)
     # process_dataset('test',image_test, anno_test, test_path,num_shards=1)
 
-    # num_shards es el número de imágenes que entran dentro de cada archivo de anotaciones de TFRecodrs. Si pones la
+    # num_shards es el numero de imagenes que entran dentro de cada archivo de anotaciones de TFRecodrs. Si pones la
     # longitud del dataset, entonces crearas un archivo para cada anotacion
     # process_dataset('test', test_image_paths, test_anno_paths, test_path, num_shards=20)
 
