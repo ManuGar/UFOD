@@ -1,14 +1,9 @@
-from objectDetectors.tensorflowObjectDetector import tensorflowDetector
 import annotationParser
 import os
 
-class SSDobjectDetector(tensorflowDetector):
-    def __init__(self):
-        tensorflowDetector.__init__()
+class SSDobjectDetector():
 
 
-
-    # Este metodo transformara si hace falta del formato de anotacion que tenga a pascalvoc para poder trabajar con el
     def transform(datasetPath):
         annotationParser.PascalVOC2YOLO(datasetPath + os.sep + "annotations",
                                                      datasetPath + os.sep + "images")

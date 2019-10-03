@@ -2,7 +2,7 @@
 class IObjectDetection(object):
     def __init__(self):
         pass
-    def transform(self, dataset_path, classes_path, output_path):
+    def transform(self, dataset_path, output_path):
         pass
     def organize(self, datasetPath, output_path, train_percentage):
         pass

@@ -2133,7 +2133,7 @@ def compruebeTXT(pathImages):
 
 def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
     listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
-    train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje)
+    train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
     os.makedirs(os.path.join(darknetPath, Nproyecto, 'train', 'JPEGImages'))
     # esta carpeta contendra las anotaciones de las imagenes de entrenamiento
@@ -2153,7 +2153,7 @@ def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
         # movemos las imagenes a la carpeta JpegImages
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
-        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'train', 'labels', name + '.txt'))
+        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'train', 'labels', name + '.xml'))
     # para las imagenes de entrenamiento
     for file in test_list:
         # obtenemos el fichero .txt asociado
@@ -2165,7 +2165,7 @@ def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
         # movemos las imagenes a la carpeta JpegImages
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
-        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.txt'))
+        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.xml'))
 
 
 def generaFicheroTrain(darknetPath, Nproyecto):
