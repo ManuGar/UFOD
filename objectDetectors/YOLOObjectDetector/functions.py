@@ -13,18 +13,18 @@ import os
 
 # from string import join
 # funcion que nos va a generar el archivo fichero.data, donde tenemos las rutas de las imagenes
-def generaFicheroData(darknetPath, NClases, Nproyecto):
+def generaFicheroData(output_path, NClases, Nproyecto):
     # creamos el fichero
     # f = open(os.path.join(darknetPath, Nproyecto + ".data"), 'w')
-    if (not (os.path.exists(darknetPath))):
-        os.makedirs(darknetPath)
-    f = open(darknetPath + os.sep + Nproyecto + ".data", 'w')
+    if (not (os.path.exists(output_path))):
+        os.makedirs(output_path)
+    f = open(output_path + os.sep + Nproyecto + ".data", 'w')
 
     # empezamos poniendo el numero de clases
     f.write('classes= ' + str(NClases) + '\n')
-    f.write('train  = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + "train.txt") + '\n')
-    f.write('valid  = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + "test.txt" )+ '\n')
-    f.write('names = ' + os.path.abspath(darknetPath + Nproyecto + os.sep + "classes.names" )+ '\n')
+    f.write('train  = ' + os.path.abspath(output_path + Nproyecto + os.sep + "train.txt") + '\n')
+    f.write('valid  = ' + os.path.abspath(output_path + Nproyecto + os.sep + "test.txt" )+ '\n')
+    f.write('names = ' + os.path.abspath(output_path + Nproyecto + os.sep + "classes.names" )+ '\n')
     f.write('backup = backup' + '\n')
     f.close()
 
@@ -2131,41 +2131,50 @@ def compruebeTXT(pathImages):
             print('No existe el fichero de anotaciones')
 
 
-def datasetSplit(Nproyecto, darknetPath, pathImages, porcentaje):
-    listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
+
+
+def datasetSplit(dataset_name, output_path, pathImages, porcentaje):
+    listaFicheros = list(paths.list_files(output_path, validExts=(".jpg")))
     train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
-    os.makedirs(os.path.join(darknetPath, Nproyecto, 'train', 'JPEGImages'))
+    os.makedirs(os.path.join(output_path, dataset_name, 'train', 'JPEGImages'))
     # esta carpeta contendra las anotaciones de las imagenes de entrenamiento
-    os.makedirs(os.path.join(darknetPath, Nproyecto, 'train', 'labels'))
+    os.makedirs(os.path.join(output_path, dataset_name, 'train', 'labels'))
     # y esta ultima carpeta va a contener tanto las imagenes como los ficheros de anotaciones del test
-    os.makedirs(os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages'))
+    os.makedirs(os.path.join(output_path, dataset_name, 'test', 'JPEGImages'))
+    # Tener cuidado con esto, igual no hay que poner los bounding box en la parte de test
+    os.makedirs(os.path.join(output_path, dataset_name, 'test', 'labels'))
+
     # para las imagenes de entrenamiento
-    traintxt = open(os.path.join(darknetPath, Nproyecto, "train.txt"),"w")
-    testtxt = open(os.path.join(darknetPath, Nproyecto, "test.txt"),"w")
+    traintxt = open(os.path.join(output_path, dataset_name, "train.txt"),"w")
+    testtxt = open(os.path.join(output_path, dataset_name, "test.txt"),"w")
+    anno_path = os.path.join(output_path, dataset_name,"Annotations")
     for file in train_list:
         # obtenemos el fichero .txt asociado
-        ficherolabel = file[0:file.rfind('.')] + '.txt'
+        name = str(os.path.basename(file).split('.')[0])
+        # ficherolabel = file[0:file.rfind('.')] + '.txt'
+        ficherolabel = os.path.join(anno_path,name+".txt")
         # obetenemos el nombre de los ficheros
-        name = os.path.basename(file).split('.')[0]
-        image_splited = os.path.join(darknetPath, Nproyecto, 'train', 'JPEGImages', name + '.jpg')
+        image_splited = os.path.join(output_path, dataset_name, 'train', 'JPEGImages', name + '.jpg')
         traintxt.write(os.path.abspath(image_splited) + "\n")
         # movemos las imagenes a la carpeta JpegImages
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
-        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'train', 'labels', name + '.xml'))
+        # anno_splited =
+        shutil.copy(ficherolabel, os.path.join(output_path, dataset_name, 'train', 'labels', name + '.txt'))
     # para las imagenes de entrenamiento
     for file in test_list:
         # obtenemos el fichero .txt asociado
-        ficherolabel = file[0:file.rfind('.')] + '.txt'
+        # ficherolabel = file[0:file.rfind('.')] + '.txt'
+        name = str(os.path.basename(file).split('.')[0])
+        ficherolabel = os.path.join(anno_path,name+".txt")
         # obetenemos el nombre de los ficheros
-        name = os.path.basename(file).split('.')[0]
-        image_splited = os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.jpg')
+        image_splited = os.path.join(output_path, dataset_name, 'test', 'JPEGImages', name + '.jpg')
         testtxt.write(os.path.abspath(image_splited) + "\n")
         # movemos las imagenes a la carpeta JpegImages
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
-        shutil.copy(ficherolabel, os.path.join(darknetPath, Nproyecto, 'test', 'JPEGImages', name + '.xml'))
+        shutil.copy(ficherolabel, os.path.join(output_path, dataset_name, 'test', 'labels', name + '.txt'))
 
 
 def generaFicheroTrain(darknetPath, Nproyecto):

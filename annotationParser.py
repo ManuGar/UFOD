@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import argparse
-import os
-import random
-import re
-# from object_detection.utils import label_map_util
-
 from datetime import datetime
 from object_detection.dataset_tools import tf_record_creation_util
 from object_detection.utils import dataset_util
 from lxml import etree
+from imutils import paths
 
 import xml.etree.ElementTree as ElementTree
 import shutil
@@ -75,17 +70,25 @@ def PascalVOC2TensorflowRecords(dataset_path, output_path):
     # process_dataset('test', test_image_paths, test_anno_paths, test_path, num_shards=20)
 
 
-def PascalVOC2YOLO(dataset_path, output_path):
-    anno_paths = [os.path.join(dataset_path, p) for p in os.listdir(dataset_path) if p.endswith(".xml")]
+def PascalVOC2YOLO(dataset_path, output_path, dataset_name):
+    anno_paths = list(paths.list_files(dataset_path, validExts=(".xml")))
+    # anno_paths = [os.path.join(dataset_path, p) for p in os.listdir(dataset_path) if p.endswith(".xml")]
     # image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
-    dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-    result_path = os.path.join(output_path, dataset_name+"dataset")      #".." + os.sep + "output" + os.sep + "YOLO"
+    # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
+    result_path = os.path.join(output_path, dataset_name)      #".." + os.sep + "output" + os.sep + "YOLO"
     if (not os.path.exists(result_path)):
-        os.makedirs(result_path)
+        os.makedirs(os.path.join(result_path, "JPEGImages"))
+        os.makedirs(os.path.join(result_path, "Annotations"))
 
+
+    image_path = os.path.join(dataset_path, "JPEGImages")
+    shutil.copy(os.path.join(dataset_path,"classes.names"),result_path)
     for anno in anno_paths:
-        filename = anno[:anno.rfind(".")] + ".jpg"
-        shutil.copy(filename,result_path)
+        name = str(os.path.basename(anno).split('.')[0])
+        # name = anno[anno.rfind("/")+1:anno.rfind(".")]
+        filename = os.path.join(image_path, name+".jpg")
+        # filename = anno[:anno.rfind(".")] + ".jpg"
+        shutil.copy(filename,os.path.join(result_path,"JPEGImages"))
         tree = ElementTree.parse(anno)
         root = tree.getroot()
         size = root.find('size')
@@ -94,7 +97,8 @@ def PascalVOC2YOLO(dataset_path, output_path):
         dw = 1. / w
         dh = 1. / h
         boxes = process_anno(anno)
-        f_name = result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt"
+        f_name = os.path.join(result_path,"Annotations",str(os.path.basename(anno).split(".")[0])+".txt")
+        # f_name = result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt"
         f = open(f_name, "w")
         for bo in boxes:
             w = bo['x_max'] - bo['x_min']

@@ -1,42 +1,39 @@
 from objectDetectors.MXNetObjectDetector.MxNetDetector import MxNetDetector, VOCLike
 from objectDetectors.MXNetObjectDetector import  functions as fn
 
-
-
-
 # Creo que el model zoo de esta libreria y la de mxnet son las mismas o muy parecidas asi que intentar usar solo la de mxnet por depencias
-from gluoncv import model_zoo, data, utils
+# from gluoncv import model_zoo, data, utils
 from mxnet import gluon, autograd
 # from mxnet.gluon.model_zoo import vision as models
 # from mxnet.gluon import data, utils
-from mxnet.gluon.data.vision import datasets, transforms
 import gluoncv as gcv
 import mxnet as mx
-import matplotlib.pyplot as plt
-import shutil
 import os
 import time
 
 
 
 class SSDMxnet(MxNetDetector):
-    def __init__(self):
-        MxNetDetector.__init__(self)
+    def __init__(self, dataset_path, dataset_name, output_path, model):
+        self.model = model
+        MxNetDetector.__init__(self, dataset_path, dataset_name, output_path)
 
-    def transform(self, dataset_path, output_path):
+    def transform(self):
         pass
 
-    def organize(self, dataset_path, output_path, train_percentage):
-        MxNetDetector.organize(self,dataset_path, output_path, train_percentage)
+    def organize(self, train_percentage):
+        MxNetDetector.organize(self, train_percentage)
 
-    def createModel(self, dataset_path):
+    def createModel(self):
         pass
 
-    def train(self, dataset_path, dataset_name):
+    def train(self, framework_path = None):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 50
-        classes = fn.readClasses(os.path.join(dataset_path,"VOC" +dataset_name))
-        MXNET_ENABLE_GPU_P2P = 0
+        classes = fn.readClasses(os.path.join(self.OUTPUT_PATH,"VOC" + self.DATASET_NAME))
+        # En este caso debera ser el output path que es donde se guardo el dataset preparado
+        # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
+        # MXNET_ENABLE_GPU_P2P = 0
 
         n_gpu = mx.context.num_gpus()
 
@@ -47,11 +44,14 @@ class SSDMxnet(MxNetDetector):
         except:
             ctx = [mx.cpu()]
 
-
-        dataset = VOCLike(root=dataset_path, splits=((dataset_name, 'train'),))
+        # Como en el anterior caso debe ser output_path por que es donde se ha guardado el dataset partido en entrenamiento y test
+        dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),))
         dataset.CLASSES = classes
 
-        net = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=classes,
+        # Revisar esto para que funcione con varios modelos que se entrenan igual
+        # net = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=classes,
+        #                               pretrained_base=False, transfer='voc')
+        net = gcv.model_zoo.get_model(self.model, classes=classes,
                                       pretrained_base=False, transfer='voc')
 
         train_data = fn.get_dataloader(net, dataset, 512, 16, 0)
@@ -68,7 +68,7 @@ class SSDMxnet(MxNetDetector):
             ce_metric.reset()
             smoothl1_metric.reset()
             # May be useful to calculate exec time
-            tic = time.time()
+            # tic = time.time()
             btic = time.time()
             net.hybridize(static_alloc=True, static_shape=True)
             for i, batch in enumerate(train_data):
@@ -98,14 +98,11 @@ class SSDMxnet(MxNetDetector):
                         epoch, i, batch_size / (time.time() - btic), name1, loss1, name2, loss2))
                 btic = time.time()
             if (epoch % 25 == 0):
-                net.save_parameters('ssd_512_resnet50_' + dataset_name + '_' + str(epoch) + '.params')
-
+                net.save_parameters('ssd_512_resnet50_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
-
-    def evaluate(self, dataset_path):
+    def evaluate(self, framework_path = None):
         pass
-
 
 def main():
     pass

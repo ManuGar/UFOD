@@ -7,27 +7,28 @@ from objectDetectors.YOLOObjectDetector import functions as fn
 
 
 class DarknetAbstract(IObjectDetection):
-    def __init__(self):
-        IObjectDetection.__init__(self)
-    def transform(self, dataset_path, output_path):
-        f = open(os.path.join(dataset_path, "classes.names"), "r")
-        if (not os.path.exists(output_path)):
-            os.makedirs(output_path)
-        classes_name = open(os.path.join(output_path, "classes.names"), "w")
+    def __init__(self,dataset_path, dataset_name):
+        IObjectDetection.__init__(self,dataset_path, dataset_name)
+    def transform(self):
+        f = open(os.path.join(self.DATASET, "classes.names"), "r")
+        if (not os.path.exists(self.OUTPUT_PATH)):
+            os.makedirs(self.OUTPUT_PATH)
         for line in f:
             annotationParser.CLASSES.append(line.split("\n")[0])
-            classes_name.write(line)
-        annotationParser.PascalVOC2YOLO(os.join(dataset_path, "dataset"), output_path)  # , datasetPath + os.sep + "images"
-    def organize(self, dataset_path, output_path, train_percentage):
+        annotationParser.PascalVOC2YOLO(self.DATASET, self.OUTPUT_PATH, self.DATASET_NAME)  # , datasetPath + os.sep + "images"
+    def organize(self, train_percentage):
         # dataset_name, darknet_path, dataset_path, train%_split
         # this function prepare the dataset to the yolo estructure
-        dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-        fn.datasetSplit(dataset_name, output_path, dataset_path, train_percentage)
-        shutil.copy(os.path.join(dataset_path[:dataset_path.rfind(os.sep)], "classes.names"),
-                    os.path.join(output_path, dataset_name))
-    def createModel(self, datasetPath):
+        # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
+        fn.datasetSplit(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET, train_percentage)
+        shutil.rmtree(os.path.join(".", "datasets",self.DATASET_NAME,"Annotations"))
+        shutil.rmtree(os.path.join(".", "datasets",self.DATASET_NAME,"JPEGImages"))
+
+        # shutil.copy(os.path.join(self.DATASET[:self.DATASET.rfind(os.sep)], "classes.names"),
+        #             os.path.join(self.DATASET, self.DATASET_NAME))
+    def createModel(self):
         pass
-    def train(self, dataset_path):
+    def train(self, framework_path = None):
         pass
-    def evaluate(self, dataset_path):
+    def evaluate(self):
         pass

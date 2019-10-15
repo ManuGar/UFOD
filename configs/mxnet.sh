@@ -8,5 +8,5 @@ module load python/3.6.1
 # Cargar el entorno virtual
 source ~/mxnet/bin/activate
 # Ejecutar fichero con código a ejecutar
-python3 finetune_detection.py -c kangaroo_config.py
-exit 0
+#python3 finetune_detection.py -c kangaroo_config.py
+#exit 0

@@ -13,8 +13,8 @@ from sklearn.model_selection import train_test_split
 
 class RCNNDetector(IObjectDetection):
 
-    def __init__(self):
-        IObjectDetection.__init__(self)
+    def __init__(self, dataset_path, dataset_name, output_path):
+        IObjectDetection.__init__(self, dataset_path, dataset_name)
         self.train_set = ClassDataset()
         self.test_set = ClassDataset()
         # self.train_set = KangarooDataset()
@@ -22,53 +22,49 @@ class RCNNDetector(IObjectDetection):
         self.model = ""
         self.config = Config()
 
-    def transform(self, dataset_path, output_path):
+    def transform(self):
        pass
-    def organize(self, dataset_path, output_path, train_percentage):
-        print(output_path)
-        dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-        fn.organizeDataset(dataset_name, output_path, dataset_path)
 
-        self.train_set.load_dataset(dataset_path, .75, True)
+    def organize(self, train_percentage):
+        fn.organizeDataset(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET)
+        self.train_set.load_dataset(self.DATASET, train_percentage, True)
         # self.train_set.load_dataset(dataset_path, True)
         self.train_set.prepare()
-
-        self.test_set.load_dataset(dataset_path, .75, False)
+        self.test_set.load_dataset(self.DATASET, train_percentage, False)
         # self.test_set.load_dataset(dataset_path, False)
         self.test_set.prepare()
 
-    def createModel(self, dataset_path):
-        dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
-
-        classes_file = os.path.join(dataset_path, "classes.names")
+    def createModel(self):
+        # En este caso tambien debe ser output por que ya se ha hecho la division y se ha guardado
+        classes_file = os.path.join(self.OUTPUT_PATH, "classes.names")
         file = open(os.path.join(classes_file))
         classes = []
         for line in file:
             classes.append(line)
         n_classes = fn.count_classes(classes)
-        n_images = len(glob.glob(dataset_path))
+        n_images = len(glob.glob(self.DATASET))
         ClassConfig.NUM_CLASSES += n_classes
         ClassConfig.STEPS_PER_EPOCH = 131
-        ClassConfig.NAME = dataset_name
+        ClassConfig.NAME = self.DATASET_NAME
         ClassConfig.N_IMAGES = n_images
         self.config = ClassConfig()
-        self.model = MaskRCNN(mode='training', model_dir=os.path.join(dataset_path,"model"), config=self.config)
+        # Por lo mismo de antes. El dataset ya esta procesado y guardado ahi. Es donde se tiene que trabajar con el en este caso
+        self.model = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
         self.model.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 
-    def train(self, dataset_path):
+    def train(self, framework_path = None):
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
         self.model.train(self.train_set, self.test_set, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
-    def evaluate(self, dataset_path):
-        dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
-        classes_file = os.path.join(dataset_path, "classes.names")
+    def evaluate(self, framework_path = None):
+        classes_file = os.path.join(self.DATASET, "classes.names")
         file = open(os.path.join(classes_file))
         classes = []
         for line in file:
             classes.append(line)
         n_classes = fn.count_classes(classes)
-        cfg = PredictionConfig(dataset_name, n_classes)
-        model = MaskRCNN(mode='inference', model_dir=dataset_path, config=cfg)
+        cfg = PredictionConfig(self.DATASET_NAME, n_classes)
+        model = MaskRCNN(mode='inference', model_dir=self.DATASET, config=cfg)
         # model.load_weights('mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
 
 class ClassDataset(Dataset):
@@ -85,8 +81,8 @@ class ClassDataset(Dataset):
             i += 1
 
         # define data locations
-        images_dir = os.path.join(dataset_dir, "images")
-        annotations_dir = os.path.join(dataset_dir, "annots")
+        images_dir = os.path.join(dataset_dir, "JPEGImages")
+        annotations_dir = os.path.join(dataset_dir, "Annotations")
 
         list_images = list(paths.list_files(os.path.join(dataset_dir, "dataset"), validExts=(".jpg")))
         train_list, test_list, _, _ = train_test_split(list_images, list_images, train_size=percentage,random_state=5)
