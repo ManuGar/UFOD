@@ -1,0 +1,10 @@
+{
+  "dataset" : "/home/magarcd/Escritorio/dataset/fruit",
+  "dataset_name": "fruit",
+  "exec_time" : "00:05:00",
+  "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"],
+    ["Rcnn","mask-rcnn"],
+    ["Retinanet","retinanet"],
+    ["Tensorflow","ssdInception"],["Tensorflow","fasterRcnnResnet"],["Tensorflow","rfcnResnet"],["Tensorflow","maskRcnnInception"],
+    ["Darknet","tiniYolo"],["Darknet", "yolo"]]
+}
