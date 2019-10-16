@@ -19,6 +19,8 @@ def main():
         #aqui hay que crear un .sh para cada modelo que haya y meterle la llamada al train model con las variables necesarias
         file_name = "train_" + fram + "_" + mod + "_" + dataset_name + ".sh"
         f = open(file_name, "w")
+        f.write("#!/bin/sh\n")
+
         if (fram == "Mxnet"):
             f.write("source configs/mxnet.sh\n")
         if (fram == "Rcnn"):
