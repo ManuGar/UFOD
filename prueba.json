@@ -1,7 +1,7 @@
 {
   "dataset" : "../datasets/fruit",
   "dataset_name": "fruit",
-  "exec_params" : ["time" : "01:00:00", "partition" :  "gpu", "gres" : "gpu:kepler:2" , "mem" : "56GB"]
+  "exec_time" : "01:00:00"
   "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"],
     ["Rcnn","mask-rcnn"],
     ["Retinanet","retinanet"],
