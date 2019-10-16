@@ -31,8 +31,8 @@ FRAMEWORKS= {
 # }
 #     "Tensorflow" : {"ssd" : tensorflowDetector.TensorflowDetector},
 
-def createModel(framework, modelText, dataset, dataset_name, output_path):
-    model = FRAMEWORKS[framework][modelText](dataset, dataset_name, output_path)
+def createModel(framework, modelText, dataset, dataset_name):
+    model = FRAMEWORKS[framework][modelText](dataset, dataset_name)
     return model
 
 def main():

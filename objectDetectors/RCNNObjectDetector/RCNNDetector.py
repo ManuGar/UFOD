@@ -42,11 +42,12 @@ class RCNNDetector(IObjectDetection):
         for line in file:
             classes.append(line)
         n_classes = fn.count_classes(classes)
-        n_images = len(glob.glob(self.DATASET))
+        n_images = len(glob.glob(os.path.join(self.DATASET,"train/JPEGImages/*.jpg")))
         ClassConfig.NUM_CLASSES += n_classes
-        ClassConfig.STEPS_PER_EPOCH = 131
         ClassConfig.NAME = self.DATASET_NAME
         ClassConfig.N_IMAGES = n_images
+        ClassConfig.STEPS_PER_EPOCH = n_images // (ClassConfig.GPU_COUNT * ClassConfig.IMAGES_PER_GPU)
+
         self.config = ClassConfig()
         # Por lo mismo de antes. El dataset ya esta procesado y guardado ahi. Es donde se tiene que trabajar con el en este caso
         self.model = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)

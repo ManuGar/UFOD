@@ -12,9 +12,8 @@ def main():
     conf = Conf(config)
     dataset = conf["dataset"]
     dataset_name = conf["dataset_name"]
-    output_path = conf["output_path"]
-    frameworks = conf["frameworks"]
     exec_time = conf["exec_time"]
+    frameworks = conf["frameworks"]
 
     for fram, mod in frameworks:
         #aqui hay que crear un .sh para cada modelo que haya y meterle la llamada al train model con las variables necesarias
@@ -30,9 +29,7 @@ def main():
             f.write("source configs/tensorflow.sh\n")
         if (fram == "Darknet"):
             f.write("source configs/yolo.sh\n")
-
-
-        f.write("python trainModel.py -f " + fram + " -m " + mod + " -d " + dataset + " -dn " + dataset_name + " -o " + output_path)
+        f.write("python trainModel.py -f " + fram + " -m " + mod + " -d " + dataset + " -dn " + dataset_name)
         f.close()
         os.system("sbatch -p gpu --gres=gpu:kepler:2 --time=" + exec_time + " " + file_name)
 
