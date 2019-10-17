@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 class RCNNDetector(IObjectDetection):
 
-    def __init__(self, dataset_path, dataset_name, output_path):
+    def __init__(self, dataset_path, dataset_name):
         IObjectDetection.__init__(self, dataset_path, dataset_name)
         self.train_set = ClassDataset()
         self.test_set = ClassDataset()

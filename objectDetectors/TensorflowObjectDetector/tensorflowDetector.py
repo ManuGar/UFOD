@@ -11,7 +11,7 @@ import tarfile
 import shutil
 
 class TensorflowDetector(IObjectDetection):
-    def __init__(self, dataset_path, dataset_name, output_path, model):
+    def __init__(self, dataset_path, dataset_name, model):
         self.model = model
         IObjectDetection.__init__(self, dataset_path, dataset_name)
 

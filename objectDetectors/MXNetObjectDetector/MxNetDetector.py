@@ -14,8 +14,8 @@ import os
 
 
 class MxNetDetector(IObjectDetection):
-    def __init__(self, dataset_path, dataset_name, output_path):
-        IObjectDetection.__init__(self, dataset_path, dataset_name, output_path)
+    def __init__(self, dataset_path, dataset_name):
+        IObjectDetection.__init__(self, dataset_path, dataset_name)
 
     def transform(self):
         pass

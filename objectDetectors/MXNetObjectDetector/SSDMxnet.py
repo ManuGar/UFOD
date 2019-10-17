@@ -14,9 +14,9 @@ import time
 
 
 class SSDMxnet(MxNetDetector):
-    def __init__(self, dataset_path, dataset_name, output_path, model):
+    def __init__(self, dataset_path, dataset_name, model):
         self.model = model
-        MxNetDetector.__init__(self, dataset_path, dataset_name, output_path)
+        MxNetDetector.__init__(self, dataset_path, dataset_name)
 
     def transform(self):
         pass
