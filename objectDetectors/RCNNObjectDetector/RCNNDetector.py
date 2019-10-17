@@ -1,5 +1,6 @@
 import  os
 import glob
+import wget
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from imutils import paths
 from numpy import zeros, asarray
@@ -51,6 +52,8 @@ class RCNNDetector(IObjectDetection):
         self.config = ClassConfig()
         # Por lo mismo de antes. El dataset ya esta procesado y guardado ahi. Es donde se tiene que trabajar con el en este caso
         self.model = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
+        if not os.path.exists('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5'):
+            wget.download("https://www.dropbox.com/s/12ou730jt730qvu/mask_rcnn_coco.h5?dl=0", 'objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5')
         self.model.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 
     def train(self, framework_path = None):

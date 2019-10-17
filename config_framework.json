@@ -1,0 +1,8 @@
+{
+  "Mxnet" : "../datasets/fruit",
+  "Rcnn": "fruit",
+  "Tensorflow" : "01:00:00",
+  "Darknet" :   "",
+  "Retinanet": "fruit"
+
+}
