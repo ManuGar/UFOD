@@ -1,5 +1,3 @@
-
-
 # FRAMEWORKS= {
 #     "Mxnet" : {"ssdVgg16" : lambda d,n,o : SSDMxnet.SSDMxnet(d,n,"ssd_300_vgg16_atrous_custom"),
 #                "ssdVgg16_512" : lambda d,n,o : SSDMxnet.SSDMxnet(d,n,"ssd_512_vgg16_atrous_custom"),
