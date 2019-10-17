@@ -4,8 +4,6 @@ import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
 
-import subprocess
-import shutil
 
 class YoloV3Detector(darknetDetector.DarknetAbstract):
     def __init__(self, dataset_path, dataset_name):
@@ -50,6 +48,8 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         # !./darknet detector train voc.data yolov3-voc.cfg darknet53.conv.74
         data = [p for p in os.listdir(self.DATASET) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(self.DATASET) if p.endswith(".cfg")][0]
+        if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
+            wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=0", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
 
         os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(self.DATASET+ os.sep + data) + " " +
                   os.path.abspath(self.DATASET+ os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")

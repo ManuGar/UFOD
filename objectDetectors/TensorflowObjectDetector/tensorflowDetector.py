@@ -8,8 +8,6 @@ from objectDetectors.TensorflowObjectDetector import functions as fn
 import wget
 import tarfile
 
-import tensorflow as tf
-from google.protobuf import text_format
 import shutil
 
 class TensorflowDetector(IObjectDetection):

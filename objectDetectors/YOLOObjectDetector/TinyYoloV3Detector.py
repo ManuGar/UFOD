@@ -1,12 +1,7 @@
 from objectDetectors.YOLOObjectDetector import darknetDetector
-import annotationParser
 import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
-
-
-from imutils import paths
-import shutil
 
 
 

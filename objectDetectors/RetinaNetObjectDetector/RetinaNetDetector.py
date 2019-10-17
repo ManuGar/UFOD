@@ -1,6 +1,5 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from objectDetectors.RetinaNetObjectDetector import functions as fn
-import shutil
 import  os
 
 class RetinaNetDetector(IObjectDetection):
