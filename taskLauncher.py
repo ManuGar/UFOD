@@ -38,7 +38,7 @@ def main():
                 f.write("source configs_slurm/tensorflow.sh\n")
             if (fram == "Darknet"):
                 f.write("source configs_slurm/yolo.sh\n")
-        if type =="local":
+        elif type =="local":
             if (fram == "Mxnet"):
                 f.write("source configs_local/mxnet.sh\n")
             if (fram == "Rcnn"):
@@ -51,7 +51,12 @@ def main():
                 f.write("source configs_local/yolo.sh\n")
         f.write("python3 trainModel.py -f " + fram + " -m " + mod + " -d " + dataset + " -dn " + dataset_name)
         f.close()
-        os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"] + " " + file_name + " --mem " + params["mem"])
+
+        if type == "slurm":
+            os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"] + " " + file_name + " --mem " + params["mem"])
+        elif type =="local":
+            os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params[
+                    "time"] + " " + file_name + " --mem " + params["mem"])
 
 if __name__ == "__main__":
     main()
