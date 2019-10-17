@@ -2,9 +2,5 @@
   "dataset" : "../datasets/fruit",
   "dataset_name": "fruit",
   "exec" : {"type":"local", "params" :{"time" : "01:00:00", "partition" :  "gpu", "gres" : "gpu:kepler:2" , "mem" : "56GB"}, "n_gpus": 2},
-  "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"],
-    ["Rcnn","mask-rcnn"],
-    ["Retinanet","retinanet"],
-    ["Tensorflow","ssdInception"],["Tensorflow","fasterRcnnResnet"],["Tensorflow","rfcnResnet"],["Tensorflow","maskRcnnInception"],
-    ["Darknet","tiniYolo"],["Darknet", "yolo"]]
+  "frameworks" : [["Mxnet","ssdVgg16"]]
 }
