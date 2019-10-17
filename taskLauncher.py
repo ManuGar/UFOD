@@ -55,8 +55,7 @@ def main():
         if type == "slurm":
             os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"] + " " + file_name + " --mem " + params["mem"])
         elif type =="local":
-            os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params[
-                    "time"] + " " + file_name + " --mem " + params["mem"])
+            os.system("bash " + file_name)
 
 if __name__ == "__main__":
     main()
