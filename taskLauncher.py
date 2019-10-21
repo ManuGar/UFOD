@@ -1,6 +1,7 @@
 import argparse
-from conf import Conf
 import os
+from conf import Conf
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -13,10 +14,10 @@ def main():
     dataset = conf["dataset"]
     dataset_name = conf["dataset_name"]
     frameworks = conf["frameworks"]
-    exec = conf["exec"]
-    type = exec["type"]
-    params = exec["params"]
-    n_gpus = exec["ngpus"]
+    execu = conf["exec"]
+    type = execu["type"]
+    params = execu["params"]
+    n_gpus = execu["ngpus"]
 
     if (not (os.path.exists(os.path.join(".", "scripts")))):
         os.makedirs(os.path.join(".", "scripts"))
