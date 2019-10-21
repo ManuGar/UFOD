@@ -34,12 +34,12 @@ class SSDMxnet(MxNetDetector):
         # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
         # MXNET_ENABLE_GPU_P2P = 0
         n_gpu = mx.context.num_gpus()
-        try:
-            ctx = [mx.gpu(0), mx.gpu(1), mx.gpu(2), mx.gpu(3)] if n_gpu == 4 else [mx.gpu(0), mx.gpu(1),
+        # try:
+        ctx = [mx.gpu(0), mx.gpu(1), mx.gpu(2), mx.gpu(3)] if n_gpu == 4 else [mx.gpu(0), mx.gpu(1),
                                                                                    mx.gpu(2)] if n_gpu == 3 else [
                 mx.gpu(0), mx.gpu(1)] if n_gpu == 2 else [mx.gpu(0)]
-        except:
-            ctx = [mx.cpu()]
+        # except:
+        #     ctx = [mx.cpu()]
         # Como en el anterior caso debe ser output_path por que es donde se ha guardado el dataset partido en entrenamiento y test
         dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),))
         dataset.CLASSES = classes
