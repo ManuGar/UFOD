@@ -37,10 +37,10 @@ class MxNetDetector(IObjectDetection):
         testtxt = open(os.path.join(outputPath, "ImageSets", "Main", "test.txt"), "w")
         for f_train in listaFicheros_train:
             name = os.path.basename(f_train).split('.')[0]
-            traintxt.write(name)
+            traintxt.write(name + "\n")
         for f_test in listaFicheros_test:
             name = os.path.basename(f_test).split('.')[0]
-            testtxt.write(name)
+            testtxt.write(name + "\n")
             shutil.copy(f_test, os.path.join(outputPath, "JPEGImages"))
 
             ficherolabel = f_test[0:f_test.rfind('.')] + '.xml'
