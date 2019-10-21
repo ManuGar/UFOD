@@ -1,15 +1,19 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
-from objectDetectors.MXNetObjectDetector import  functions as fn
+from imutils import paths
+import gluoncv as gcv
+import shutil
+import os
+
+
+# from objectDetectors.MXNetObjectDetector import  functions as fn
 
 # from gluoncv import model_zoo, data, utils
 # from mxnet import gluon, autograd
 # from mxnet.gluon.model_zoo import vision as models
 # from mxnet.gluon import data, utils
 # from mxnet.gluon.data.vision import datasets, transforms
-import gluoncv as gcv
 # import mxnet as mx
-import shutil
-import os
+
 
 
 
@@ -18,15 +22,35 @@ class MxNetDetector(IObjectDetection):
         IObjectDetection.__init__(self, dataset_path, dataset_name)
 
     def transform(self):
-        pass
+        listaFicheros_train = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train"), validExts=(".jpg")))
+        listaFicheros_test = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"test"), validExts=(".jpg")))
+
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME)
+
+        shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), os.path.join(outputPath, "JPEGImages"))
+        shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","Annotations"), os.path.join(outputPath, "Annotations"))
+        if (not (os.path.exists(os.path.join(outputPath, "ImageSets")))):
+            os.makedirs(os.path.join(outputPath, "ImageSets", "Main"))
+
+        shutil.copy(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"), outputPath)
+        traintxt = open(os.path.join(outputPath, "ImageSets", "Main", "train.txt"), "w")
+        testtxt = open(os.path.join(outputPath, "ImageSets", "Main", "test.txt"), "w")
+        for f_train in listaFicheros_train:
+            name = os.path.basename(f_train).split('.')[0]
+            traintxt.write(name)
+        for f_test in listaFicheros_test:
+            name = os.path.basename(f_test).split('.')[0]
+            testtxt.write(name)
+            shutil.copy(f_test, os.path.join(outputPath, "JPEGImages"))
+
+            ficherolabel = f_test[0:f_test.rfind('.')] + '.xml'
+            ficherolabel = ficherolabel.replace("JPEGImages", "Annotations")  # obetenemos el nombre de los ficheros
+            shutil.copy(ficherolabel, os.path.join(outputPath, "Annotations"))
+            #     Aqui hemos usado la ruta para ir copiando los archivos de test en las carpetas correspondientes por que al estar ya la carpeta no podemos hacerlo de golpe
+        shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
     def organize(self, train_percentage):
-        # dataset_name, darknet_path, dataset_path, train%_split
-        # this function prepare the dataset to the yolo estructure
-        # dataset_name = self.DATASET[self.DATASET.rfind(os.sep) + 1:]
-        fn.datasetSplit(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET, train_percentage)
-        shutil.copy(os.path.join(self.DATASET, "classes.names"),
-                    os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME))
+        IObjectDetection.organize(self, train_percentage)
 
     def createModel(self):
         pass

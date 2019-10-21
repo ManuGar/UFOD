@@ -19,14 +19,13 @@ class SSDMxnet(MxNetDetector):
         MxNetDetector.__init__(self, dataset_path, dataset_name)
 
     def transform(self):
-        pass
+        MxNetDetector.transform(self)
 
     def organize(self, train_percentage):
         MxNetDetector.organize(self, train_percentage)
 
     def createModel(self):
         pass
-
     def train(self, framework_path = None):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 50
@@ -34,28 +33,22 @@ class SSDMxnet(MxNetDetector):
         # En este caso debera ser el output path que es donde se guardo el dataset preparado
         # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
         # MXNET_ENABLE_GPU_P2P = 0
-
         n_gpu = mx.context.num_gpus()
-
         try:
             ctx = [mx.gpu(0), mx.gpu(1), mx.gpu(2), mx.gpu(3)] if n_gpu == 4 else [mx.gpu(0), mx.gpu(1),
                                                                                    mx.gpu(2)] if n_gpu == 3 else [
                 mx.gpu(0), mx.gpu(1)] if n_gpu == 2 else [mx.gpu(0)]
         except:
             ctx = [mx.cpu()]
-
         # Como en el anterior caso debe ser output_path por que es donde se ha guardado el dataset partido en entrenamiento y test
         dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),))
         dataset.CLASSES = classes
-
         # Revisar esto para que funcione con varios modelos que se entrenan igual
         # net = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=classes,
         #                               pretrained_base=False, transfer='voc')
         net = gcv.model_zoo.get_model(self.model, classes=classes,
                                       pretrained_base=False, transfer='voc')
-
         train_data = fn.get_dataloader(net, dataset, 512, 16, 0)
-
         net.collect_params().reset_ctx(ctx)
         trainer = gluon.Trainer(
             net.collect_params(), 'sgd',

@@ -8,7 +8,7 @@ import shutil
 
 
 def datasetSplit(dataset_name, dataset_path, output_path, porcentaje):
-    listaFicheros = list(paths.list_files(os.path.join(dataset_path,"dataset"), validExts=(".jpg")))
+    listaFicheros = list(paths.list_files(dataset_path, validExts=(".jpg")))
     train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
     if (not os.path.exists(os.path.join(output_path, dataset_name))):
