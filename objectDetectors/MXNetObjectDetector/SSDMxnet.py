@@ -41,8 +41,7 @@ class SSDMxnet(MxNetDetector):
         # except:
         #     ctx = [mx.cpu()]
         # Como en el anterior caso debe ser output_path por que es donde se ha guardado el dataset partido en entrenamiento y test
-        dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),))
-        dataset.CLASSES = classes
+        dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),),classes=classes)
         # Revisar esto para que funcione con varios modelos que se entrenan igual
         # net = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=classes,
         #                               pretrained_base=False, transfer='voc')
@@ -91,7 +90,7 @@ class SSDMxnet(MxNetDetector):
                         epoch, i, batch_size / (time.time() - btic), name1, loss1, name2, loss2))
                 btic = time.time()
             if (epoch % 25 == 0):
-                net.save_parameters('ssd_512_resnet50_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
+                net.save_parameters(self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):
