@@ -1,0 +1,6 @@
+{
+  "dataset" : "../datasets/OpticDiscLocation",
+  "dataset_name": "OpticDiscLocation",
+  "exec" : {"type":"local", "ngpus": 2},
+  "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"]]
+}
