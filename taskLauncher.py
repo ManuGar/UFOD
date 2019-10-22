@@ -16,7 +16,8 @@ def main():
     frameworks = conf["frameworks"]
     execu = conf["exec"]
     type = execu["type"]
-    params = execu["params"]
+    if type == "slurm":
+        params = execu["params"]
     n_gpus = execu["ngpus"]
 
     if (not (os.path.exists(os.path.join(".", "scripts")))):

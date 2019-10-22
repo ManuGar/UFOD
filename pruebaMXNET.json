@@ -1,6 +1,0 @@
-{
-  "dataset" : "../datasets/fruit",
-  "dataset_name": "fruit",
-  "exec_params" : {"time" : "01:00:00", "partition" :  "gpu", "gres" : "gpu:kepler:2" , "mem" : "56GB"},
-  "frameworks" : [["Mxnet","ssdVgg16"]]
-}

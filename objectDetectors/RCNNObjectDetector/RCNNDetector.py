@@ -27,6 +27,7 @@ class RCNNDetector(IObjectDetection):
        pass
 
     def organize(self, train_percentage):
+        IObjectDetection.organize(train_percentage)
         fn.organizeDataset(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET)
         self.train_set.load_dataset(self.DATASET, train_percentage, True)
         # self.train_set.load_dataset(dataset_path, True)

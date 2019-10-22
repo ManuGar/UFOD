@@ -19,41 +19,15 @@ def datasetSplit(Nproyecto, outputPath, pathImages, porcentaje):
     if (not (os.path.exists(os.path.join(outputPath, Nproyecto, "ImageSets")))):
         os.makedirs(os.path.join(outputPath, "ImageSets","Main"))
 
-    # # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
-    # os.makedirs(os.path.join(outputPath, Nproyecto, 'train', 'JPEGImages'))
-    # # esta carpeta contendra las anotaciones de las imagenes de entrenamiento
-    # os.makedirs(os.path.join(outputPath, Nproyecto, 'train', 'labels'))
-    # # y esta ultima carpeta va a contener tanto las imagenes como los ficheros de anotaciones del test
-    # os.makedirs(os.path.join(outputPath, Nproyecto, 'test', 'JPEGImages'))
-    # # para las imagenes de entrenamiento
-
     traintxt = open(os.path.join(outputPath, "ImageSets","Main", "train.txt"), "w")
     testtxt = open(os.path.join(outputPath, "ImageSets","Main", "test.txt"), "w")
     for file in train_list:
-        # obtenemos el fichero .txt asociado
-        # ficherolabel = file[0:file.rfind('.')] + '.txt'
-        # obetenemos el nombre de los ficheros
         name = os.path.basename(file).split('.')[0]
-        # image_splited = os.path.join(outputPath, 'JPEGImages', name)
         traintxt.write(name + "\n")
-        # traintxt.write(os.path.abspath(image_splited) + "\n")
-        # movemos las imagenes a la carpeta JpegImages
-        # shutil.copy(file, image_splited)
-        # movemos las anotaciones a la carpeta
-        # shutil.copy(ficherolabel, os.path.join(outputPath, Nproyecto, 'train', 'labels', name + '.xml'))
-    # para las imagenes de entrenamiento
+
     for file in test_list:
-        # obtenemos el fichero .txt asociado
-        # ficherolabel = file[0:file.rfind('.')] + '.txt'
-        # obetenemos el nombre de los ficheros
         name = os.path.basename(file).split('.')[0]
-        # image_splited = os.path.join(outputPath,'JPEGImages', name + '.jpg')
-        # testtxt.write(os.path.abspath(image_splited) + "\n")
         testtxt.write(name+ "\n")
-        # movemos las imagenes a la carpeta JpegImages
-        # shutil.copy(file, image_splited)
-        # movemos las anotaciones a la carpeta
-        # shutil.copy(ficherolabel, os.path.join(outputPath, Nproyecto, 'test', 'JPEGImages', name + '.xml'))
 
 def readClasses(dataset_path):
     classes = []

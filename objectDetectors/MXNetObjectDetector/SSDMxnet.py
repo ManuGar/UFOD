@@ -10,6 +10,7 @@ import gluoncv as gcv
 import mxnet as mx
 import os
 import time
+import shutil
 
 
 
@@ -91,6 +92,7 @@ class SSDMxnet(MxNetDetector):
                 btic = time.time()
             if (epoch % 25 == 0):
                 net.save_parameters(self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
+        shutil.rmtree(os.path.join(self.OUTPUT_PATH,"VOC"+self.DATASET_NAME))
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):

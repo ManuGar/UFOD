@@ -1,3 +1,3 @@
 #!/bin/sh
 
-workon mxnet
+source ~./virtualenvs/mxnet/bin/activate
