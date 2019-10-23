@@ -119,12 +119,12 @@ class ClassDataset(Dataset):
         root = tree.getroot()
         # extract each bounding box
         boxes = list()
-        for box in root.findall('.//bndbox'):
+        for box in root.findall('.//object'):
             xmin = int(box.find('xmin').text)
             ymin = int(box.find('ymin').text)
             xmax = int(box.find('xmax').text)
             ymax = int(box.find('ymax').text)
-            coors = [xmin, ymin, xmax, ymax]
+            coors = [xmin, ymin, xmax, ymax, box.find('name').text]
             boxes.append(coors)
         # extract image dimensions
         width = int(root.find('.//size/width').text)
@@ -148,7 +148,7 @@ class ClassDataset(Dataset):
             row_s, row_e = box[1], box[3]
             col_s, col_e = box[0], box[2]
             masks[row_s:row_e, col_s:col_e, i] = 1
-            class_ids.append(self.class_names.index('kangaroo'))
+            class_ids.append(self.class_names.index(box[4]))
         return masks, asarray(class_ids, dtype='int32')
 
     # load an image reference
