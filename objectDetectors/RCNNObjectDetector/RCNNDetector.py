@@ -38,7 +38,7 @@ class RCNNDetector(IObjectDetection):
 
     def createModel(self):
         # En este caso tambien debe ser output por que ya se ha hecho la division y se ha guardado
-        classes_file = os.path.join(self.OUTPUT_PATH, "classes.names")
+        classes_file = os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, "classes.names")
         file = open(os.path.join(classes_file))
         classes = []
         for line in file:
