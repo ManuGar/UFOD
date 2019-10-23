@@ -1,3 +1,3 @@
 #!/bin/sh
 
-workon retinanet
+source ~/.virtualenvs/retinanet/bin/activate

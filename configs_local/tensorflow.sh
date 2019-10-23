@@ -1,2 +1,3 @@
 #!/bin/sh
-workon tensorflow
+
+source ~/.virtualenvs/tensorflow/bin/activate

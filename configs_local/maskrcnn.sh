@@ -1,6 +1,6 @@
 #!/bin/sh
 
-workon rcnn
+source ~/.virtualenvs/rcnn/bin/activate
 
 
 
