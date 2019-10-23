@@ -25,10 +25,10 @@ class RCNNDetector(IObjectDetection):
 
     def transform(self):
         # fn.organizeDataset(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET)
-        self.train_set.load_dataset(self.OUTPUT_PATH, True)
+        self.train_set.load_dataset(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), True)
         # self.train_set.load_dataset(dataset_path, True)
         self.train_set.prepare()
-        self.test_set.load_dataset(self.OUTPUT_PATH, False)
+        self.test_set.load_dataset(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), False)
         # self.test_set.load_dataset(dataset_path, False)
         self.test_set.prepare()
 
