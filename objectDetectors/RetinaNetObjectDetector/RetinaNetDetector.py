@@ -10,13 +10,13 @@ class RetinaNetDetector(IObjectDetection):
         # os.system('sudo python3 keras-retinanet/setup.py install')
 
     def transform(self):
-        pass
+        fn.datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH)
 
     def organize(self, train_percentage):
+        IObjectDetection.organize(self, train_percentage)
         # dataset_name = self.DATASET[self.DATASET.rfind(os.sep) + 1:]
         # images_path = list(paths.list_files(datasetPath, validExts=(".jpg")))
         # annotations_path = list(paths.list_files(datasetPath, validExts=(".xml")))
-        fn.datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH,self.DATASET,train_percentage)
 
     def createModel(self):
         pass

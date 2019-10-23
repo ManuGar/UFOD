@@ -1,3 +1,3 @@
 #!/bin/sh
 
-source ~./virtualenvs/mxnet/bin/activate
+source ~/.virtualenvs/mxnet/bin/activate

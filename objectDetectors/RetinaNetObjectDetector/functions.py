@@ -7,22 +7,28 @@ import xml.etree.ElementTree as ElementTree
 
 
 
-def datasetSplit(Nproyecto, output_path, pathImages, porcentaje):
-    listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
-    train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje,random_state=5)
+def datasetSplit(Nproyecto, output_path):
+    # listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
+    train_list = list(paths.list_files(os.path.join(output_path, Nproyecto, "train"), validExts=(".jpg")))
+    test_list = list(paths.list_files(os.path.join(output_path, Nproyecto, "test"), validExts=(".jpg")))
+    annotations_dir_train = os.path.join(output_path, "train", "Annotations")
+    annotations_dir_test = os.path.join(output_path, "test", "Annotations")
+
+    # train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje,random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
     if (not os.path.exists(os.path.join(output_path, Nproyecto, 'images'))):
         os.makedirs(os.path.join(output_path, Nproyecto, 'images'))
     # esta carpeta contendra las anotaciones de las imagenes de entrenamiento
     # os.makedirs(os.path.join(output_path, Nproyecto, 'annotations'))
-    # y esta ultima carpeta va a contener tanto las imagenes como los ficheros de anotaciones del test
-    # para las imagenes de entrenamiento
+
     traincsv = open(os.path.join(output_path, Nproyecto, Nproyecto + "_train.csv"),"w")
     testcsv = open(os.path.join(output_path, Nproyecto, Nproyecto + "_test.csv"),"w")
     classes = set()
     for file in train_list:
         name = os.path.basename(file).split('.')[0]
-        annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+        # annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+        annotation_file = os.path.join(annotations_dir_train,name + ".xml")
+
         image_splited = os.path.join(output_path, Nproyecto, 'images', name + '.jpg')
         boxes = obtain_box(annotation_file)
         for bo in boxes:
@@ -33,7 +39,9 @@ def datasetSplit(Nproyecto, output_path, pathImages, porcentaje):
     # para las imagenes de entrenamiento
     for file in test_list:
         name = os.path.basename(file).split('.')[0]
-        annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+        # annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+        annotation_file = os.path.join(annotations_dir_test,name + ".xml")
+
         image_splited = os.path.join(output_path, Nproyecto, 'images', name + '.jpg')
         boxes = obtain_box(annotation_file)
         for bo in boxes:
@@ -48,6 +56,9 @@ def datasetSplit(Nproyecto, output_path, pathImages, porcentaje):
     classescsv.close()
     traincsv.close()
     testcsv.close()
+    shutil.rmtree(os.path.join(output_path, Nproyecto, "train"))
+    shutil.rmtree(os.path.join(output_path, Nproyecto, "test"))
+
 
 
 def obtain_box(anno_path):

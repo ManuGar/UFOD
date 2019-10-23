@@ -24,17 +24,17 @@ class RCNNDetector(IObjectDetection):
         self.config = Config()
 
     def transform(self):
-       pass
-
-    def organize(self, train_percentage):
-        IObjectDetection.organize(train_percentage)
-        fn.organizeDataset(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET)
-        self.train_set.load_dataset(self.DATASET, train_percentage, True)
+        # fn.organizeDataset(self.DATASET_NAME, self.OUTPUT_PATH, self.DATASET)
+        self.train_set.load_dataset(self.OUTPUT_PATH, True)
         # self.train_set.load_dataset(dataset_path, True)
         self.train_set.prepare()
-        self.test_set.load_dataset(self.DATASET, train_percentage, False)
+        self.test_set.load_dataset(self.OUTPUT_PATH, False)
         # self.test_set.load_dataset(dataset_path, False)
         self.test_set.prepare()
+
+    def organize(self, train_percentage):
+        IObjectDetection.organize(self, train_percentage)
+
 
     def createModel(self):
         # En este caso tambien debe ser output por que ya se ha hecho la division y se ha guardado
@@ -44,7 +44,7 @@ class RCNNDetector(IObjectDetection):
         for line in file:
             classes.append(line)
         n_classes = fn.count_classes(classes)
-        n_images = len(glob.glob(os.path.join(self.DATASET,"train/JPEGImages/*.jpg")))
+        n_images = len(glob.glob(os.path.join(self.OUTPUT_PATH,"train/JPEGImages/*.jpg")))
         ClassConfig.NUM_CLASSES += n_classes
         ClassConfig.NAME = self.DATASET_NAME
         ClassConfig.N_IMAGES = n_images
@@ -75,7 +75,7 @@ class RCNNDetector(IObjectDetection):
 class ClassDataset(Dataset):
     # load the dataset definitions
 
-    def load_dataset(self, dataset_dir, percentage, is_train=True):
+    def load_dataset(self, dataset_dir, is_train=True):
         # define one class
         classes_file = open(os.path.join(dataset_dir, "classes.names"))
         # self.add_class("dataset", 1, classes_file[0].split("\n")[0])
@@ -86,23 +86,29 @@ class ClassDataset(Dataset):
             i += 1
 
         # define data locations
-        images_dir = os.path.join(dataset_dir, "JPEGImages")
-        annotations_dir = os.path.join(dataset_dir, "Annotations")
+        images_dir_train = os.path.join(dataset_dir,"train", "JPEGImages")
+        annotations_dir_train = os.path.join(dataset_dir,"train", "Annotations")
+        images_dir_test = os.path.join(dataset_dir, "test", "JPEGImages")
+        annotations_dir_test = os.path.join(dataset_dir, "test", "Annotations")
 
-        list_images = list(paths.list_files(os.path.join(dataset_dir, "dataset"), validExts=(".jpg")))
-        train_list, test_list, _, _ = train_test_split(list_images, list_images, train_size=percentage,random_state=5)
+        # list_images = list(paths.list_files(os.path.join(dataset_dir, "dataset"), validExts=(".jpg")))
+        train_list = list(paths.list_files(os.path.join(dataset_dir, "train"), validExts=(".jpg")))
+        test_list = list(paths.list_files(os.path.join(dataset_dir, "test"), validExts=(".jpg")))
+
+        # train_list, test_list, _, _ = train_test_split(list_images, list_images, train_size=percentage,random_state=5)
+
         if (is_train):
                 for filename in train_list:
                     imageid = filename.split(os.sep)[-1][:-4]
-                    img_path = os.path.join(images_dir, imageid + ".jpg")
-                    ann_path = os.path.join(annotations_dir, imageid + ".xml")
+                    img_path = os.path.join(images_dir_train, imageid + ".jpg")
+                    ann_path = os.path.join(annotations_dir_train, imageid + ".xml")
                     self.add_image('dataset', image_id=imageid, path=os.path.abspath(img_path), annotation=os.path.abspath(ann_path))
 
         else:
                 for filename in test_list:
                     imageid = filename.split(os.sep)[-1][:-4]
-                    img_path = os.path.join(images_dir, imageid + ".jpg")
-                    ann_path = os.path.join(annotations_dir, imageid + ".xml")
+                    img_path = os.path.join(images_dir_test, imageid + ".jpg")
+                    ann_path = os.path.join(annotations_dir_test, imageid + ".xml")
                     self.add_image('dataset', image_id=imageid, path=os.path.abspath(img_path), annotation=os.path.abspath(ann_path))
 
     # extract bounding boxes from an annotation file

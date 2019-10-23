@@ -92,6 +92,7 @@ class SSDMxnet(MxNetDetector):
                 btic = time.time()
             if (epoch % 25 == 0):
                 net.save_parameters(self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
+        net.save_parameters(self.model + '_' + self.DATASET_NAME + '_final.params')
         shutil.rmtree(os.path.join(self.OUTPUT_PATH,"VOC"+self.DATASET_NAME))
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
