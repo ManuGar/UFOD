@@ -28,9 +28,9 @@ class RCNNDetector(IObjectDetection):
         self.train_set.load_dataset(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), True)
         # self.train_set.load_dataset(dataset_path, True)
         self.train_set.prepare()
-        self.test_set.load_dataset(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), False)
+        #self.test_set.load_dataset(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), False)
         # self.test_set.load_dataset(dataset_path, False)
-        self.test_set.prepare()
+        #self.test_set.prepare()
 
     def organize(self, train_percentage):
         IObjectDetection.organize(self, train_percentage)
@@ -44,9 +44,10 @@ class RCNNDetector(IObjectDetection):
         for line in file:
             classes.append(line)
         n_classes = fn.count_classes(classes)
-        n_images = len(glob.glob(os.path.join(self.OUTPUT_PATH,"train/JPEGImages/*.jpg")))
+        n_images = len(glob.glob(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train/JPEGImages/*.jpg")))
         ClassConfig.NUM_CLASSES += n_classes
         ClassConfig.NAME = self.DATASET_NAME
+        
         ClassConfig.N_IMAGES = n_images
         ClassConfig.STEPS_PER_EPOCH = n_images // (ClassConfig.GPU_COUNT * ClassConfig.IMAGES_PER_GPU)
 
@@ -59,7 +60,7 @@ class RCNNDetector(IObjectDetection):
 
     def train(self, framework_path = None):
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
-        self.model.train(self.train_set, self.test_set, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
+        self.model.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
     def evaluate(self, framework_path = None):
         classes_file = os.path.join(self.DATASET, "classes.names")
@@ -84,10 +85,10 @@ class ClassDataset(Dataset):
         for cl in classes_file:
             self.add_class("dataset", i, cl.split("\n")[0])
             i += 1
-
+        
         # define data locations
-        images_dir_train = os.path.join(dataset_dir,"train", "JPEGImages")
-        annotations_dir_train = os.path.join(dataset_dir,"train", "Annotations")
+        images_dir_train = os.path.join(dataset_dir,"train", "JPEGImages/")
+        annotations_dir_train = os.path.join(dataset_dir,"train", "Annotations/")
         images_dir_test = os.path.join(dataset_dir, "test", "JPEGImages")
         annotations_dir_test = os.path.join(dataset_dir, "test", "Annotations")
 
@@ -98,11 +99,11 @@ class ClassDataset(Dataset):
         # train_list, test_list, _, _ = train_test_split(list_images, list_images, train_size=percentage,random_state=5)
 
         if (is_train):
-                for filename in train_list:
-                    imageid = filename.split(os.sep)[-1][:-4]
-                    img_path = os.path.join(images_dir_train, imageid + ".jpg")
-                    ann_path = os.path.join(annotations_dir_train, imageid + ".xml")
-                    self.add_image('dataset', image_id=imageid, path=os.path.abspath(img_path), annotation=os.path.abspath(ann_path))
+                for filename in listdir(images_dir_train):
+                    imageid = filename[:-4]
+                    img_path = images_dir_train + filename
+                    ann_path = annotations_dir_train + imageid + '.xml'
+                    self.add_image('dataset', image_id=imageid,path=img_path, annotation=ann_path)
 
         else:
                 for filename in test_list:
@@ -119,13 +120,14 @@ class ClassDataset(Dataset):
         root = tree.getroot()
         # extract each bounding box
         boxes = list()
-        for box in root.findall('.//object'):
-            xmin = int(box.find('xmin').text)
-            ymin = int(box.find('ymin').text)
-            xmax = int(box.find('xmax').text)
-            ymax = int(box.find('ymax').text)
-            coors = [xmin, ymin, xmax, ymax, box.find('name').text]
-            boxes.append(coors)
+        for objeto in root.findall('.//object'):
+            for box in objeto.findall('.//bndbox'):
+                xmin = int(box.find('xmin').text)
+                ymin = int(box.find('ymin').text)
+                xmax = int(box.find('xmax').text)
+                ymax = int(box.find('ymax').text)
+                coors = [xmin, ymin, xmax, ymax, objeto.find('name').text]
+                boxes.append(coors)
         # extract image dimensions
         width = int(root.find('.//size/width').text)
         height = int(root.find('.//size/height').text)
@@ -159,7 +161,7 @@ class ClassDataset(Dataset):
 
 class ClassConfig(Config):
     NAME = "kangaroo"
-    NUM_CLASSES = 1
+    NUM_CLASSES = 1 
     BACKBONE = "resnet50"
     IMAGE_RESIZE_MODE = "square"
     IMAGE_MIN_DIM = 512
@@ -169,7 +171,7 @@ class ClassConfig(Config):
     IMAGES_PER_GPU = 4
     N_IMAGES = 1
     # number of training steps per epoch
-    STEPS_PER_EPOCH = N_IMAGES // (GPU_COUNT * IMAGES_PER_GPU)
+    STEPS_PER_EPOCH = 1000 // (GPU_COUNT * IMAGES_PER_GPU)
 
 
 class PredictionConfig(Config):
@@ -184,73 +186,3 @@ class PredictionConfig(Config):
         IMAGES_PER_GPU = 1
 
 
-class KangarooDataset(Dataset):
-    # load the dataset definitions
-    def load_dataset(self, dataset_dir, is_train=True):
-        # define one class
-        self.add_class("dataset", 1, "kangaroo")
-        # define data locations
-        images_dir = dataset_dir + '/images/'
-        annotations_dir = dataset_dir + '/annots/'
-        # find all images
-        for filename in listdir(images_dir):
-            image_id = filename[:-4]
-            # skip bad images
-            if image_id in ['00090']:
-                continue
-            # skip all images after 150 if we are building the train set
-            if is_train and int(image_id) >= 150:
-                continue
-            # skip all images before 150 if we are building the test/val set
-            if not is_train and int(image_id) < 150:
-                continue
-            img_path = images_dir + filename
-            ann_path = annotations_dir + image_id + '.xml'
-            # add to dataset
-
-            self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
-
-    # extract bounding boxes from an annotation file
-    def extract_boxes(self, filename):
-        # load and parse the file
-        tree = ElementTree.parse(filename)
-        # get the root of the document
-        root = tree.getroot()
-        # extract each bounding box
-        boxes = list()
-        for box in root.findall('.//bndbox'):
-            xmin = int(box.find('xmin').text)
-            ymin = int(box.find('ymin').text)
-            xmax = int(box.find('xmax').text)
-            ymax = int(box.find('ymax').text)
-            coors = [xmin, ymin, xmax, ymax]
-            boxes.append(coors)
-        # extract image dimensions
-        width = int(root.find('.//size/width').text)
-        height = int(root.find('.//size/height').text)
-        return boxes, width, height
-
-    # load the masks for an image
-    def load_mask(self, image_id):
-        # get details of image
-        info = self.image_info[image_id]
-        # define box file location
-        path = info['annotation']
-        # load XML
-        boxes, w, h = self.extract_boxes(path)
-        # create one array for all masks, each on a different channel
-        masks = zeros([h, w, len(boxes)], dtype='uint8')
-        # create masks
-        class_ids = list()
-        for i in range(len(boxes)):
-            box = boxes[i]
-            row_s, row_e = box[1], box[3]
-            col_s, col_e = box[0], box[2]
-            masks[row_s:row_e, col_s:col_e, i] = 1
-            class_ids.append(self.class_names.index('kangaroo'))
-        return masks, asarray(class_ids, dtype='int32')
-
-    # load an image reference
-    def image_reference(self, image_id):
-        info = self.image_info[image_id]
-        return info['path']
