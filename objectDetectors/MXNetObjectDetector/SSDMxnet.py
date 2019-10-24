@@ -29,7 +29,7 @@ class SSDMxnet(MxNetDetector):
         pass
     def train(self, framework_path = None):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-        n_epoch = 50
+        n_epoch = 10
         classes = fn.readClasses(os.path.join(self.OUTPUT_PATH,"VOC" + self.DATASET_NAME))
         # En este caso debera ser el output path que es donde se guardo el dataset preparado
         # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
@@ -90,7 +90,7 @@ class SSDMxnet(MxNetDetector):
                     print('[Epoch {}][Batch {}], Speed: {:.3f} samples/sec, {}={:.3f}, {}={:.3f}'.format(
                         epoch, i, batch_size / (time.time() - btic), name1, loss1, name2, loss2))
                 btic = time.time()
-            if (epoch % 25 == 0):
+            if (epoch % 5 == 0):
                 net.save_parameters(self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
         net.save_parameters(self.model + '_' + self.DATASET_NAME + '_final.params')
         shutil.rmtree(os.path.join(self.OUTPUT_PATH,"VOC"+self.DATASET_NAME))

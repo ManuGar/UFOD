@@ -71,6 +71,13 @@ def PascalVOC2TensorflowRecords(dataset_path, output_path):
 
 
 def PascalVOC2YOLO(dataset_path, output_path, dataset_name):
+    listaFicheros_train = list(
+        paths.list_files(os.path.join(output_path, dataset_name, "train"), validExts=(".jpg")))
+    listaFicheros_test = list(
+        paths.list_files(os.path.join(output_path, dataset_name, "test"), validExts=(".jpg")))
+
+
+
     anno_paths = list(paths.list_files(dataset_path, validExts=(".xml")))
     # anno_paths = [os.path.join(dataset_path, p) for p in os.listdir(dataset_path) if p.endswith(".xml")]
     # image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]

@@ -10,7 +10,6 @@ from objectDetectors.RCNNObjectDetector import functions as fn
 from mrcnn.config import Config
 from mrcnn.model import MaskRCNN
 from mrcnn.utils import Dataset
-from sklearn.model_selection import train_test_split
 
 class RCNNDetector(IObjectDetection):
 

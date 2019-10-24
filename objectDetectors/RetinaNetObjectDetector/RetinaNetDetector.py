@@ -1,6 +1,8 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from objectDetectors.RetinaNetObjectDetector import functions as fn
 import  os
+import shutil
+from imutils import paths
 
 class RetinaNetDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name):
@@ -10,7 +12,58 @@ class RetinaNetDetector(IObjectDetection):
         # os.system('sudo python3 keras-retinanet/setup.py install')
 
     def transform(self):
-        fn.datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH)
+        # listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
+        train_list = list(paths.list_files(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train"), validExts=(".jpg")))
+        test_list = list(paths.list_files(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "test"), validExts=(".jpg")))
+        annotations_dir_train = os.path.join(self.OUTPUT_PATH, "train", "Annotations")
+        annotations_dir_test = os.path.join(self.OUTPUT_PATH, "test", "Annotations")
+
+        # train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje,random_state=5)
+        # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
+        if (not os.path.exists(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images'))):
+            os.makedirs(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images'))
+        # esta carpeta contendra las anotaciones de las imagenes de entrenamiento
+        # os.makedirs(os.path.join(output_path, Nproyecto, 'annotations'))
+
+        traincsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv"), "w")
+        testcsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_test.csv"), "w")
+        classes = set()
+        for file in train_list:
+            name = os.path.basename(file).split('.')[0]
+            # annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+            annotation_file = os.path.join(annotations_dir_train, name + ".xml")
+
+            image_splited = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images', name + '.jpg')
+            boxes = fn.obtain_box(annotation_file)
+            for bo in boxes:
+                traincsv.write(
+                    os.path.abspath(image_splited) + "," + str(int(bo["x_min"])) + "," + str(int(bo["y_min"])) + ","
+                    + str(int(bo["x_max"])) + "," + str(int(bo["y_max"])) + "," + str(bo["class"]) + "\n")
+                classes.add(bo["class"])
+            shutil.copy(file, image_splited)
+        # para las imagenes de entrenamiento
+        for file in test_list:
+            name = os.path.basename(file).split('.')[0]
+            # annotation_file = file[:file.rfind(os.sep) + 1] + name + ".xml"
+            annotation_file = os.path.join(annotations_dir_test, name + ".xml")
+
+            image_splited = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images', name + '.jpg')
+            boxes = fn.obtain_box(annotation_file)
+            for bo in boxes:
+                testcsv.write(
+                    os.path.abspath(image_splited) + "," + str(int(bo["x_min"])) + "," + str(int(bo["y_min"])) + ","
+                    + str(int(bo["x_max"])) + "," + str(int(bo["y_max"])) + "," + str(bo["class"]) + "\n")
+                classes.add(bo["class"])
+            shutil.copy(file, image_splited)
+
+        classescsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"), "w")
+        rows = [",".join([c, str(i)]) for (i, c) in enumerate(classes)]
+        classescsv.write("\n".join(rows))
+        classescsv.close()
+        traincsv.close()
+        testcsv.close()
+        # shutil.rmtree(os.path.join(output_path, Nproyecto, "train"))
+        # shutil.rmtree(os.path.join(output_path, Nproyecto, "test"))
 
     def organize(self, train_percentage):
         IObjectDetection.organize(self, train_percentage)

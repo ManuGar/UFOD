@@ -47,7 +47,7 @@ class MxNetDetector(IObjectDetection):
             ficherolabel = ficherolabel.replace("JPEGImages", "Annotations")  # obetenemos el nombre de los ficheros
             shutil.copy(ficherolabel, os.path.join(outputPath, "Annotations"))
             #     Aqui hemos usado la ruta para ir copiando los archivos de test en las carpetas correspondientes por que al estar ya la carpeta no podemos hacerlo de golpe
-        shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
+        # shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
     def organize(self, train_percentage):
         IObjectDetection.organize(self, train_percentage)

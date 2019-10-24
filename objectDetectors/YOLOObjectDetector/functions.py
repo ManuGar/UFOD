@@ -2177,14 +2177,14 @@ def datasetSplit(dataset_name, output_path, pathImages, porcentaje):
         shutil.copy(ficherolabel, os.path.join(output_path, dataset_name, 'test', 'labels', name + '.txt'))
 
 
-def generaFicheroTrain(darknetPath, Nproyecto):
-    # creamos el fichero train.txt
-    f = open(os.path.join(darknetPath, Nproyecto, "train.txt"), 'w')
-    # listamos todos los ficheros .jpg del conjunto de entrenamiento
-    files = os.listdir(os.path.join(darknetPath, Nproyecto, "train/JPEGImages/"))
-    # recorremos la lista e imprimimos una imagen por linea
-    for l in files:
-        f.write(os.path.join(darknetPath, Nproyecto, "train/JPEGImages/", l) + '\n')
+# def generaFicheroTrain(outputPath, Nproyecto):
+#     # creamos el fichero train.txt
+#     f = open(os.path.join(outputPath, Nproyecto, "train.txt"), 'w')
+#     # listamos todos los ficheros .jpg del conjunto de entrenamiento
+#     files = os.listdir(os.path.join(outputPath, Nproyecto, "train/JPEGImages/"))
+#     # recorremos la lista e imprimimos una imagen por linea
+#     for l in files:
+#         f.write(os.path.join(outputPath, Nproyecto, "train/JPEGImages/", l) + '\n')
 
 
 def generaFicheroTest(darknetPath, Nproyecto):
