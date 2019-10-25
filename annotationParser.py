@@ -69,59 +69,43 @@ def PascalVOC2TensorflowRecords(dataset_path, output_path):
     # longitud del dataset, entonces crearas un archivo para cada anotacion
     # process_dataset('test', test_image_paths, test_anno_paths, test_path, num_shards=20)
 
-
-def PascalVOC2YOLO(dataset_path, output_path, dataset_name):
+def PascalVOC2YOLO(dataset_path, dataset_name):
     listaFicheros_train = list(
-        paths.list_files(os.path.join(output_path, dataset_name, "train"), validExts=(".jpg")))
+        paths.list_files(os.path.join(dataset_path, dataset_name, "train"), validExts=(".xml")))
     listaFicheros_test = list(
-        paths.list_files(os.path.join(output_path, dataset_name, "test"), validExts=(".jpg")))
+        paths.list_files(os.path.join(dataset_path, dataset_name, "test"), validExts=(".xml")))
+    result_path = os.path.join(dataset_path, dataset_name)
+    if (not (os.path.exists(os.path.join(result_path,"train","labels"))) and not(os.path.exists(os.path.join(result_path,"train","labels")))):
+        os.makedirs(os.path.join(result_path,"train","labels"))
+        os.makedirs(os.path.join(result_path,"test","labels"))
+    for anno in listaFicheros_train:
+        write_anno(anno,os.path.join(result_path,"train","labels"))
+    for anno_test in listaFicheros_test:
+        write_anno(anno_test, os.path.join(result_path,"test","labels"))
 
+def write_anno(anno_path, result_path):
+    tree = ElementTree.parse(anno_path)
+    root = tree.getroot()
+    size = root.find('size')
+    w = int(size.find('width').text)
+    h = int(size.find('height').text)
+    dw = 1. / w
+    dh = 1. / h
+    boxes = process_anno(anno_path)
+    f_name = os.path.join(result_path, str(os.path.basename(anno_path).split(".")[0]) + ".txt")
+    f = open(f_name, "w")
+    for bo in boxes:
+        w = bo['x_max'] - bo['x_min']
+        h = bo['y_max'] - bo['y_min']
+        x = (bo['x_min'] + bo['x_max']) / 2.0
+        y = (bo['y_min'] + bo['y_max']) / 2.0
 
-
-    anno_paths = list(paths.list_files(dataset_path, validExts=(".xml")))
-    # anno_paths = [os.path.join(dataset_path, p) for p in os.listdir(dataset_path) if p.endswith(".xml")]
-    # image_paths = [os.path.join(images_path, p) for p in os.listdir(images_path)]
-    # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-    result_path = os.path.join(output_path, dataset_name)      #".." + os.sep + "output" + os.sep + "YOLO"
-    if (not os.path.exists(result_path)):
-        os.makedirs(os.path.join(result_path, "JPEGImages"))
-        os.makedirs(os.path.join(result_path, "Annotations"))
-
-
-    image_path = os.path.join(dataset_path, "JPEGImages")
-    shutil.copy(os.path.join(dataset_path,"classes.names"),result_path)
-    for anno in anno_paths:
-        name = str(os.path.basename(anno).split('.')[0])
-        # name = anno[anno.rfind("/")+1:anno.rfind(".")]
-        filename = os.path.join(image_path, name+".jpg")
-        # filename = anno[:anno.rfind(".")] + ".jpg"
-        shutil.copy(filename,os.path.join(result_path,"JPEGImages"))
-        tree = ElementTree.parse(anno)
-        root = tree.getroot()
-        size = root.find('size')
-        w = int(size.find('width').text)
-        h = int(size.find('height').text)
-        dw = 1. / w
-        dh = 1. / h
-        boxes = process_anno(anno)
-        f_name = os.path.join(result_path,"Annotations",str(os.path.basename(anno).split(".")[0])+".txt")
-        # f_name = result_path + anno[anno.rfind(os.sep):anno.rfind(".")] + ".txt"
-        f = open(f_name, "w")
-        for bo in boxes:
-            w = bo['x_max'] - bo['x_min']
-            h = bo['y_max'] - bo['y_min']
-            x = (bo['x_min'] + bo['x_max'])/2.0
-            y = (bo['y_min'] + bo['y_max'])/2.0
-
-            x = x * dw
-            y = y * dh
-            w = w * dw
-            h = h * dh
-            f.write(str(bo['class']) + " " + str(x) + " " + str(y) + " " + str(w) + " " + str(h) + "\n")
-        f.close()
-    # Este metodo hay que pasarlo para cada una de las imagenes. Se parsea una por una. Aprovechar y hacerlo para cada
-    # imagen que se te tiene que leer. Hacerlo cuando se recorren los archivos vaya
-
+        x = x * dw
+        y = y * dh
+        w = w * dw
+        h = h * dh
+        f.write(str(bo['class']) + " " + str(x) + " " + str(y) + " " + str(w) + " " + str(h) + "\n")
+    f.close()
 
 """Convert Pascal VOC 2007+2012 detection dataset to TFRecords.
 Does not preserve full XML annotations.
@@ -297,7 +281,6 @@ def process_anno(anno_path):
             'x_max': float(xml_box.find('xmax').text) / width
         }
         boxes.append(bbox)
-
     return boxes
 
 def dict_to_tf_example(data,

@@ -10,9 +10,10 @@ class IObjectDetection(object):
         self.OUTPUT_PATH = os.path.join(".","datasets")
         if (not os.path.exists(self.OUTPUT_PATH)):
             os.makedirs(self.OUTPUT_PATH)
-
+    # This function prepares the dataset to the structure of the selected framework
     def transform(self):
         pass
+    # This function divides the dataset into train and test sets
     def organize(self, train_percentage):
         if (not os.path.exists(os.path.join(self.DATASET, "test"))):
             datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH, self.DATASET,train_percentage)
@@ -25,10 +26,6 @@ class IObjectDetection(object):
         pass
     def evaluate(self, framework_path = None):
         pass
-
-
-
-
 
 
 def datasetSplit(dataset_name, output_path, dataset_path, percentage):
