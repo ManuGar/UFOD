@@ -11,7 +11,7 @@ class DarknetAbstract(IObjectDetection):
         super(DarknetAbstract, self).__init__(dataset_path, dataset_name)
     def transform(self):
         # this function prepare the dataset to the yolo estructure
-        f = open(os.path.join(self.DATASET, self.DATASET_NAME, "classes.names"), "r")
+        f = open(os.path.join(self.DATASET, "classes.names"), "r")
         for line in f:
             annotationParser.CLASSES.append(line.split("\n")[0])
         train_images = list(
