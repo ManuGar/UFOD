@@ -30,8 +30,8 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         fn.CLASSES = classes
         # dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
         # os.path.join(darknetPath, "cfg", Nproyecto + ".data")
-        fn.generaFicheroData(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME),n_classes,self.DATASET_NAME)
-        fn.generaFicherosYoloTrain(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), self.DATASET_NAME, n_classes)
+        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME)
+        fn.generaFicherosYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME, n_classes)
 
     def train(self, framework_path = None):
         data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
