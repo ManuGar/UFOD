@@ -1,10 +1,9 @@
 import os
 import annotationParser
-import shutil
 from imutils import paths
 
 from objectDetectors.objectDetectionInterface import IObjectDetection
-from objectDetectors.YOLOObjectDetector import functions as fn
+# from objectDetectors.YOLOObjectDetector import functions as fn
 
 
 class DarknetAbstract(IObjectDetection):

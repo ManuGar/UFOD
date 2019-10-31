@@ -2,7 +2,7 @@
 import os
 
 from objectDetectors.objectDetectionInterface import IObjectDetection
-from annotationParser import PascalVOC2TensorflowRecords
+from objectDetectors.TensorflowObjectDetector.functions import PascalVOC2TensorflowRecords
 from objectDetectors.TensorflowObjectDetector import functions as fn
 
 import wget
