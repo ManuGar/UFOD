@@ -1,11 +1,10 @@
-import annotationParser
 import os
-
+import objectDetectors.TensorflowObjectDetector.functions as fn
 class SSDobjectDetector():
 
 
     def transform(datasetPath):
-        annotationParser.PascalVOC2YOLO(datasetPath + os.sep + "annotations",
+        fn.PascalVOC2TensorflowRecords(datasetPath + os.sep + "annotations",
                                                      datasetPath + os.sep + "images")
     def organize(self):
         pass

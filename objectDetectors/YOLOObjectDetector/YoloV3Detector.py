@@ -1,5 +1,4 @@
 from objectDetectors.YOLOObjectDetector import darknetDetector
-import annotationParser
 import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
@@ -28,15 +27,15 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         for line in file:
             classes.append(line)
         n_classes = fn.contarClases(classes)
-        annotationParser.CLASSES = classes
+        fn.CLASSES = classes
         # dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
         # os.path.join(darknetPath, "cfg", Nproyecto + ".data")
         fn.generaFicheroData(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME),n_classes,self.DATASET_NAME)
         fn.generaFicherosYoloTrain(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), self.DATASET_NAME, n_classes)
 
     def train(self, framework_path = None):
-        data = [p for p in os.listdir(self.DATASET) if p.endswith(".data")][0]
-        confi = [p for p in os.listdir(self.DATASET) if p.endswith(".cfg")][0]
+        data = [p for p in os.listdir(self.OUTPUT_PATH) if p.endswith(".data")][0]
+        confi = [p for p in os.listdir(self.OUTPUT_PATH) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=0", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
 

@@ -1,9 +1,8 @@
 import os
-import annotationParser
 from imutils import paths
 
 from objectDetectors.objectDetectionInterface import IObjectDetection
-# from objectDetectors.YOLOObjectDetector import functions as fn
+from objectDetectors.YOLOObjectDetector import functions as fn
 
 
 class DarknetAbstract(IObjectDetection):
@@ -13,7 +12,7 @@ class DarknetAbstract(IObjectDetection):
         # this function prepare the dataset to the yolo estructure
         f = open(os.path.join(self.DATASET, "classes.names"), "r")
         for line in f:
-            annotationParser.CLASSES.append(line.split("\n")[0])
+            fn.CLASSES.append(line.split("\n")[0])
         train_images = list(
             paths.list_files(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train"), validExts=(".jpg")))
         test_images = list(
@@ -26,7 +25,7 @@ class DarknetAbstract(IObjectDetection):
             testtxt.write(os.path.abspath(te_im) + "\n")
         traintxt.close()
         testtxt.close()
-        annotationParser.PascalVOC2YOLO(self.OUTPUT_PATH, self.DATASET_NAME)  # , datasetPath + os.sep + "images"
+        fn.PascalVOC2YOLO(self.OUTPUT_PATH, self.DATASET_NAME)  # , datasetPath + os.sep + "images"
     # def organize(self, train_percentage):
     #     super(DarknetAbstract, self).organize(train_percentage)
     # def createModel(self):
