@@ -9,7 +9,7 @@ from objectDetectors.YOLOObjectDetector import functions as fn
 
 class DarknetAbstract(IObjectDetection):
     def __init__(self,dataset_path, dataset_name):
-        IObjectDetection.__init__(self,dataset_path, dataset_name)
+        super(DarknetAbstract, self).__init__(dataset_path, dataset_name)
     def transform(self):
         # this function prepare the dataset to the yolo estructure
         f = open(os.path.join(self.DATASET, self.DATASET_NAME, "classes.names"), "r")
@@ -30,8 +30,8 @@ class DarknetAbstract(IObjectDetection):
         annotationParser.PascalVOC2YOLO(self.OUTPUT_PATH, self.DATASET_NAME)  # , datasetPath + os.sep + "images"
     # def organize(self, train_percentage):
     #     super(DarknetAbstract, self).organize(train_percentage)
-    def createModel(self):
-        pass
+    # def createModel(self):
+    #     pass
     def train(self, framework_path = None):
         pass
     def evaluate(self, framework_path = None):
