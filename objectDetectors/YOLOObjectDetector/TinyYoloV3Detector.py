@@ -37,14 +37,10 @@ class TinyYoloV3Detector(darknetDetector.DarknetAbstract):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
         # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
         os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
-                  os.path.abspath(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show")
+                  os.path.abspath(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus 0,1,2,3" )
 
     def evaluate(self, framework_path = None):
-        data = [p for p in os.listdir(framework_path) if p.endswith(".data")][0]
-        confi = [p for p in os.listdir(framework_path) if p.endswith(".cfg")][0]
-        os.system(os.path.join(framework_path, "darknet") + " detector map " + os.path.abspath(self.DATASET + os.sep + data) + " " + os.path.abspath(
-                self.DATASET + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-
+        pass
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
     pass

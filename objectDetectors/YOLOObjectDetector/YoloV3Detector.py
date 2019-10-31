@@ -40,7 +40,7 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
 
         os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
-                  os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show")
+                  os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus 0,1,2,3")
 
         # para entrenarlo pasar solo el path que contiene todo, ahi tenemos el datset dividido y cogemos la parte de
         # como se van a usar todos los pasos seguidos no va a hacer falta que se le pasen los parametros de uno en uno
@@ -49,16 +49,7 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         # tambien habria que compilar darknet para que se pudiera usar o eso lo suponemos que esta hecho de antes
 
     def evaluate(self, framework_path = None):
-        # evaluar el modelo en el conjunto de test
-
-        data = [p for p in os.listdir(self.DATASET) if p.endswith(".data")][0]
-        confi = [p for p in os.listdir(self.DATASET) if p.endswith(".cfg")][0]
-
-        os.system(os.path.join(framework_path, "darknet") + " detector map " + os.path.abspath(self.DATASET + os.sep + data) + " " + os.path.abspath(
-                self.DATASET + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show")
-        # print("./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
-        #         dataset_path + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-
+       pass
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
     pass
