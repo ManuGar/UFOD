@@ -108,7 +108,7 @@ def generaFicheroData(output_path, NClases, Nproyecto):
     # f = open(os.path.join(darknetPath, Nproyecto + ".data"), 'w')
     if (not (os.path.exists(output_path))):
         os.makedirs(output_path)
-    f = open(output_path + os.sep + Nproyecto + ".data", 'w')
+    f = open(os.path.join(output_path ,Nproyecto,Nproyecto + ".data"), 'w')
 
     # empezamos poniendo el numero de clases
     f.write('classes= ' + str(NClases) + '\n')
