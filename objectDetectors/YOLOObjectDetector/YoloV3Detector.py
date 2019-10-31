@@ -34,8 +34,8 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         fn.generaFicherosYoloTrain(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), self.DATASET_NAME, n_classes)
 
     def train(self, framework_path = None):
-        data = [p for p in os.listdir(self.OUTPUT_PATH) if p.endswith(".data")][0]
-        confi = [p for p in os.listdir(self.OUTPUT_PATH) if p.endswith(".cfg")][0]
+        data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
+        confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=0", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
 
