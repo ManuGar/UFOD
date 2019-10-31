@@ -14,11 +14,6 @@ import xml.etree.ElementTree as ElementTree
 
 
 
-
-
-
-
-
 CLASSES= []
 def process_anno(anno_path):
     """Process Pascal VOC annotations."""
@@ -37,10 +32,10 @@ def process_anno(anno_path):
         xml_box = obj.find('bndbox')
         bbox = {
             'class': CLASSES.index(label),
-            'y_min': float(xml_box.find('ymin').text) / height,
-            'x_min': float(xml_box.find('xmin').text) / width,
-            'y_max': float(xml_box.find('ymax').text) / height,
-            'x_max': float(xml_box.find('xmax').text) / width
+            'y_min': float(xml_box.find('ymin').text),
+            'x_min': float(xml_box.find('xmin').text) ,
+            'y_max': float(xml_box.find('ymax').text) ,
+            'x_max': float(xml_box.find('xmax').text)
         }
         boxes.append(bbox)
     return boxes
@@ -71,16 +66,16 @@ def write_anno(anno_path, result_path):
     f_name = os.path.join(result_path, str(os.path.basename(anno_path).split(".")[0]) + ".txt")
     f = open(f_name, "w")
     for bo in boxes:
-        w = bo['x_max'] - bo['x_min']
-        h = bo['y_max'] - bo['y_min']
+        w2 = bo['x_max'] - bo['x_min']
+        h2 = bo['y_max'] - bo['y_min']
         x = (bo['x_min'] + bo['x_max']) / 2.0
         y = (bo['y_min'] + bo['y_max']) / 2.0
 
         x = x * dw
         y = y * dh
-        w = w * dw
-        h = h * dh
-        f.write(str(bo['class']) + " " + str(x) + " " + str(y) + " " + str(w) + " " + str(h) + "\n")
+        w2 = w2 * dw
+        h2 = h2 * dh
+        f.write(str(bo['class']) + " " + str(x) + " " + str(y) + " " + str(w2) + " " + str(h2) + "\n")
     f.close()
 
 """Convert Pascal VOC 2007+2012 detection dataset to TFRecords.
