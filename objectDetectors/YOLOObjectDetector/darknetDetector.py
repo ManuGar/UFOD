@@ -28,8 +28,8 @@ class DarknetAbstract(IObjectDetection):
         traintxt.close()
         testtxt.close()
         annotationParser.PascalVOC2YOLO(self.OUTPUT_PATH, self.DATASET_NAME)  # , datasetPath + os.sep + "images"
-    def organize(self, train_percentage):
-        IObjectDetection.organize(self, train_percentage)
+    # def organize(self, train_percentage):
+    #     super(DarknetAbstract, self).organize(train_percentage)
     def createModel(self):
         pass
     def train(self, framework_path = None):

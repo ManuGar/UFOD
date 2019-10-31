@@ -17,16 +17,17 @@ import shutil
 class SSDMxnet(MxNetDetector):
     def __init__(self, dataset_path, dataset_name, model):
         self.model = model
-        MxNetDetector.__init__(self, dataset_path, dataset_name)
+        super(SSDMxnet, self).__init__(dataset_path, dataset_name)
+        # MxNetDetector.__init__(self, dataset_path, dataset_name)
 
-    def transform(self):
-        MxNetDetector.transform(self)
+    # def transform(self):
+    #     MxNetDetector.transform(self)
+    #
+    # def organize(self, train_percentage):
+    #     MxNetDetector.organize(self, train_percentage)
 
-    def organize(self, train_percentage):
-        MxNetDetector.organize(self, train_percentage)
-
-    def createModel(self):
-        pass
+    # def createModel(self):
+    #     pass
     def train(self, framework_path = None):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 10

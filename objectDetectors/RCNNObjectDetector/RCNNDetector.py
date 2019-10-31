@@ -14,7 +14,7 @@ from mrcnn.utils import Dataset
 class RCNNDetector(IObjectDetection):
 
     def __init__(self, dataset_path, dataset_name):
-        IObjectDetection.__init__(self, dataset_path, dataset_name)
+        super(RCNNDetector, self).__init__( dataset_path, dataset_name)
         self.train_set = ClassDataset()
         self.test_set = ClassDataset()
         # self.train_set = KangarooDataset()
@@ -31,8 +31,8 @@ class RCNNDetector(IObjectDetection):
         # self.test_set.load_dataset(dataset_path, False)
         #self.test_set.prepare()
 
-    def organize(self, train_percentage):
-        IObjectDetection.organize(self, train_percentage)
+    # def organize(self, train_percentage):
+    #     super(RCNNDetector, self).organize( train_percentage)
 
 
     def createModel(self):

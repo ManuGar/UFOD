@@ -15,22 +15,14 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         # if(not (os.path.isfile("objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74"))):
         #     filename2 = wget.download(urlWeights,"objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74")
 
-    def transform(self):
-        darknetDetector.DarknetAbstract.transform(self)
-        # f = open(classes_path, "r")
-        # if (not os.path.exists(output_path)):
-        #     os.makedirs(output_path)
-        # classes_name = open(os.path.join(output_path,"classes.names"), "w")
-        # for line in f:
-        #     annotationParser.CLASSES.append(line.split("\n")[0])
-        #     classes_name.write(line)
-        # annotationParser.PascalVOC2YOLO(dataset_path, output_path)#, datasetPath + os.sep + "images"
-
-    def organize(self, train_percentage):
-        darknetDetector.DarknetAbstract.organize(self, train_percentage)
+    # def transform(self):
+    #     super(YoloV3Detector, self).transform()
+    #     # darknetDetector.DarknetAbstract.transform(self)
+    # def organize(self, train_percentage):
+    #     super(YoloV3Detector, self).organize(train_percentage)
+    #     # darknetDetector.DarknetAbstract.organize(self, train_percentage)
 
     def createModel(self):
-        # en el fichero de data hay que asegurarse de la ruta que se le pone, por que le aniade data/ que no se ha creado esa carpeta
         file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
         classes = []
         for line in file:
@@ -43,9 +35,6 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         fn.generaFicherosYoloTrain(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME), self.DATASET_NAME, n_classes)
 
     def train(self, framework_path = None):
-        # !git clone https: // github.com / AlexeyAB / darknet.git
-        # !make
-        # !./darknet detector train voc.data yolov3-voc.cfg darknet53.conv.74
         data = [p for p in os.listdir(self.DATASET) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(self.DATASET) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
@@ -70,7 +59,6 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
                 self.DATASET + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show")
         # print("./darknet/darknet detector map " + os.path.abspath(dataset_path + os.sep + data) + " " + os.path.abspath(
         #         dataset_path + os.sep + confi) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74")
-
 
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")

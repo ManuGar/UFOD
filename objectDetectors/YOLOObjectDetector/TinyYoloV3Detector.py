@@ -12,12 +12,14 @@ class TinyYoloV3Detector(darknetDetector.DarknetAbstract):
         # if(not (os.path.isfile("objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74"))):
         #     filename2 = wget.download(urlWeights,"objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74")
 
-    def transform(self):
-        darknetDetector.DarknetAbstract.transform(self)
+    # def transform(self):
+    #     super(TinyYoloV3Detector, self).transform()
+    #     # darknetDetector.DarknetAbstract.transform(self)
 
 
-    def organize(self, train_percentage):
-        darknetDetector.DarknetAbstract.organize(self, train_percentage)
+    # def organize(self, train_percentage):
+    #     super(TinyYoloV3Detector, self).organize(train_percentage)
+    #     # darknetDetector.DarknetAbstract.organize(self, train_percentage)
 
     def createModel(self):
         file = open(os.path.join(self.DATASET, "classes.names"))

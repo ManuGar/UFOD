@@ -49,11 +49,11 @@ class MxNetDetector(IObjectDetection):
             #     Aqui hemos usado la ruta para ir copiando los archivos de test en las carpetas correspondientes por que al estar ya la carpeta no podemos hacerlo de golpe
         # shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
-    def organize(self, train_percentage):
-        IObjectDetection.organize(self, train_percentage)
+    # def organize(self, train_percentage):
+    #     super(MxNetDetector, self).organize( train_percentage)
 
-    def createModel(self):
-        pass
+    # def createModel(self):
+    #     pass
 
     def train(self, framework_path = None):
         pass

@@ -57,6 +57,9 @@ def contarClases(clases):
 # funcion que nos genera los ficheros de YOLO
 def generaFicherosYoloTrain(darknetPath, Nproyecto, NClases):
     # creamos el fichero yolo.cfg con la configuracion correspondiente a YOLO
+    epochs = 2000*NClases
+    if (epochs<4000):
+        epochs=4000
     if (not (os.path.exists(darknetPath))):
         os.makedirs(darknetPath)
     f = open(darknetPath + os.sep + Nproyecto + "train.cfg", 'w')
@@ -82,7 +85,7 @@ hue=.1
 
 learning_rate=0.001
 burn_in=1000
-max_batches = 500200
+max_batches = """ + str(epochs) + """
 policy=steps
 steps=400000,450000
 scales=.1,.1
@@ -1665,6 +1668,9 @@ random=1"""
 
 def generaFicherosTinyYoloTrain(darknetPath, Nproyecto, NClases):
     # creamos el fichero yolo.cfg con la configuracion correspondiente a YOLO
+    epochs = 2000 * NClases
+    if (epochs < 4000):
+        epochs = 4000
     f = open(os.path.join(darknetPath, "cfg", Nproyecto + "test.cfg"), 'w')
     # Texto del fichero
     mensaje = """[net]
@@ -1686,7 +1692,7 @@ hue=.1
 
 learning_rate=0.001
 burn_in=1000
-max_batches = 500200
+max_batches = """+ str(epochs)+"""
 policy=steps
 steps=400000,450000
 scales=.1,.1

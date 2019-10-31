@@ -6,7 +6,8 @@ from imutils import paths
 
 class RetinaNetDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name):
-        IObjectDetection.__init__(self, dataset_path, dataset_name)
+        super(RetinaNetDetector, self).__init__(dataset_path, dataset_name)
+        # IObjectDetection.__init__(self, dataset_path, dataset_name)
         # if (not os.path.exists("./keras-retinanet")):
             # os.system("git clone https://github.com/fizyr/keras-retinanet")
         # os.system('sudo python3 keras-retinanet/setup.py install')
@@ -65,14 +66,16 @@ class RetinaNetDetector(IObjectDetection):
         # shutil.rmtree(os.path.join(output_path, Nproyecto, "train"))
         # shutil.rmtree(os.path.join(output_path, Nproyecto, "test"))
 
-    def organize(self, train_percentage):
-        IObjectDetection.organize(self, train_percentage)
+    # def organize(self, train_percentage):
+    #     super(RetinaNetDetector, self).organize(train_percentage)
+        # IObjectDetection.organize(self, train_percentage)
+
         # dataset_name = self.DATASET[self.DATASET.rfind(os.sep) + 1:]
         # images_path = list(paths.list_files(datasetPath, validExts=(".jpg")))
         # annotations_path = list(paths.list_files(datasetPath, validExts=(".xml")))
 
-    def createModel(self):
-        pass
+    # def createModel(self):
+    #     pass
 
     def train(self, framework_path = None):
         # dataset_name = self.DATASET[self.DATASET.rfind(os.sep)+1:]

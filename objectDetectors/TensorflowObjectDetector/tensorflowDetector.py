@@ -13,7 +13,8 @@ import shutil
 class TensorflowDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name, model):
         self.model = model
-        IObjectDetection.__init__(self, dataset_path, dataset_name)
+        super(TensorflowDetector, self).__init__(dataset_path,dataset_name)
+        # IObjectDetection.__init__(self, dataset_path, dataset_name)
 
     def transform(self):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
@@ -41,8 +42,6 @@ class TensorflowDetector(IObjectDetection):
     def organize(self, train_percentage):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         fn.datasetSplit(self.DATASET_NAME,self.DATASET,self.OUTPUT_PATH,train_percentage)
-        shutil.rmtree(os.path.join(".", "datasets", self.DATASET_NAME, "Annotations"))
-        shutil.rmtree(os.path.join(".", "datasets", self.DATASET_NAME, "JPEGImages"))
 
     def createModel(self):
 
