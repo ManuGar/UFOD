@@ -112,10 +112,10 @@ def generaFicheroData(output_path, NClases, Nproyecto):
 
     # empezamos poniendo el numero de clases
     f.write('classes= ' + str(NClases) + '\n')
-    f.write('train  = ' + os.path.abspath(output_path + Nproyecto + os.sep + "train.txt") + '\n')
-    f.write('valid  = ' + os.path.abspath(output_path + Nproyecto + os.sep + "test.txt" )+ '\n')
-    f.write('names = ' + os.path.abspath(output_path + Nproyecto + os.sep + "classes.names" )+ '\n')
-    f.write('backup = backup' + '\n')
+    f.write('train  = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "train.txt")) + '\n')
+    f.write('valid  = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "test.txt" ))+ '\n')
+    f.write('names = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "classes.names" ))+ '\n')
+    f.write('backup = '+ os.path.abspath(os.path.join(output_path ,Nproyecto)) + '\n')
     f.close()
 
 
