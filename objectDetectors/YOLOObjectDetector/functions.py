@@ -152,7 +152,7 @@ def generaFicherosYoloTrain(darknetPath, Nproyecto, NClases):
         epochs=4000
     if (not (os.path.exists(darknetPath))):
         os.makedirs(darknetPath)
-    f = open(darknetPath + os.sep + Nproyecto + "train.cfg", 'w')
+    f = open(os.path.join(output_path ,Nproyecto,Nproyecto + "train.cfg"), 'w')
 
     # f = open(os.path.join(darknetPath, "cfg", Nproyecto + "train.cfg"), 'w')
     # Texto del fichero
