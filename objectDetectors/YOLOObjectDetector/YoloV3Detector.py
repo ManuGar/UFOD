@@ -39,7 +39,7 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
 
-        print(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
+        os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
                   os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show")
 
         # para entrenarlo pasar solo el path que contiene todo, ahi tenemos el datset dividido y cogemos la parte de
