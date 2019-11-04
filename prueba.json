@@ -1,6 +1,6 @@
 {
   "dataset" : "../datasets/fruit",
   "dataset_name": "fruit",
-  "exec" : {"type":"local", "params" :{"time" : "01:00:00", "partition" :  "gpu", "gres" : "gpu:kepler:2" , "mem" : "56GB"}, "ngpus": 2},
+  "exec" : {"type":"slurm", "params" :{"time" : "01:00:00", "partition" :  "gpu", "gres" : "gpu:kepler:2" , "mem" : "56GB"}, "ngpus": 2},
   "frameworks" : [["Mxnet","ssdVgg16"]]
 }
