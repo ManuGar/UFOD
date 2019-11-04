@@ -74,7 +74,7 @@ class TensorflowDetector(IObjectDetection):
         fn.generateTensorFlowConfigFile(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),n_classes)
 
 
-    def train(self, framework_path= None):
+    def train(self, framework_path= None, n_gpus = 1):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         # os.system("python3 " +os.path.join(tensorFlow_path, "research", "object_detection", "legacy", "train.py") + " --logtostderr --train_dir=" + os.path.abspath(
         #     dataset_path) + " --pipeline_config_path=" + os.path.join(dataset_path, "ssd_inception_v2_pets.config"))

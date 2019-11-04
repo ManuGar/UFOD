@@ -28,7 +28,7 @@ class SSDMxnet(MxNetDetector):
 
     # def createModel(self):
     #     pass
-    def train(self, framework_path = None):
+    def train(self, framework_path = None, n_gpus = 1):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 10
         classes = fn.readClasses(os.path.join(self.OUTPUT_PATH,"VOC" + self.DATASET_NAME))

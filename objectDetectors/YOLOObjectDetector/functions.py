@@ -1758,7 +1758,7 @@ def generaFicherosTinyYoloTrain(darknetPath, Nproyecto, NClases):
         epochs = 4000
     if not os.path.exists(os.path.join(darknetPath, "cfg")):
         os.mkdir(os.path.join(darknetPath, "cfg"))
-    f = open(os.path.join(darknetPath, Nproyecto,Nproyecto + "train.cfg"), 'w')
+    f = open(os.path.join(darknetPath, Nproyecto,Nproyecto + "TinyTrain.cfg"), 'w')
     # Texto del fichero
     mensaje = """[net]
 # Testing

@@ -30,7 +30,7 @@ class DarknetAbstract(IObjectDetection):
     #     super(DarknetAbstract, self).organize(train_percentage)
     # def createModel(self):
     #     pass
-    def train(self, framework_path = None):
+    def train(self, framework_path = None, n_gpus = 1):
         pass
     def evaluate(self, framework_path = None):
         pass

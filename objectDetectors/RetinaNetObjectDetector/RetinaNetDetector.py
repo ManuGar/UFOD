@@ -77,7 +77,7 @@ class RetinaNetDetector(IObjectDetection):
     # def createModel(self):
     #     pass
 
-    def train(self, framework_path = None):
+    def train(self, framework_path = None, n_gpus = 1):
         # dataset_name = self.DATASET[self.DATASET.rfind(os.sep)+1:]
         epochs = 50
         batch_size = 2

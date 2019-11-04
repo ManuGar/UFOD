@@ -57,7 +57,8 @@ class RCNNDetector(IObjectDetection):
             wget.download("https://www.dropbox.com/s/12ou730jt730qvu/mask_rcnn_coco.h5?dl=1", 'objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5')
         self.model.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 
-    def train(self, framework_path = None):
+    def train(self, framework_path = None, n_gpus = 1):
+        ClassConfig.GPU_COUNT = n_gpus
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
         self.model.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
