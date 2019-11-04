@@ -82,12 +82,12 @@ class RetinaNetDetector(IObjectDetection):
         epochs = 50
         batch_size = 2
         # Como en todos los casos anteriores el dataset debe estar guardado ahi ya dividido en train/test
-        traincsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_train.csv"))
+        traincsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv"))
         num_files = len(traincsv.readlines())
         steps = round(num_files/batch_size)
         command = framework_path + "/retinanet-train --batch-size 2 --steps " + str(steps) + " --epochs " + str(epochs) + " --snapshot-path " +\
-                  self.OUTPUT_PATH + "/snapshots" + " csv " + self.OUTPUT_PATH + os.sep + self.DATASET_NAME + "_train.csv " +  \
-                  self.OUTPUT_PATH + os.sep + self.DATASET_NAME + "_classes.csv"
+                  self.OUTPUT_PATH + "/snapshots" + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv") +  \
+                  os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
         os.system(command)
         os.system(framework_path + '/retinanet -convert-model weapons/snapshots/resnet50_csv_50.h5 output.h5')
 
