@@ -16,8 +16,8 @@ class RetinaNetDetector(IObjectDetection):
         # listaFicheros = list(paths.list_files(pathImages, validExts=(".jpg")))
         train_list = list(paths.list_files(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train"), validExts=(".jpg")))
         test_list = list(paths.list_files(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "test"), validExts=(".jpg")))
-        annotations_dir_train = os.path.join(self.OUTPUT_PATH, "train", "Annotations")
-        annotations_dir_test = os.path.join(self.OUTPUT_PATH, "test", "Annotations")
+        annotations_dir_train = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train", "Annotations")
+        annotations_dir_test = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "test", "Annotations")
 
         # train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=porcentaje,random_state=5)
         # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento

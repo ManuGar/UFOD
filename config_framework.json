@@ -4,5 +4,4 @@
   "Tensorflow" : "01:00:00",
   "Darknet" :   "~/darknet/",
   "Retinanet": "fruit"
-
 }
