@@ -17,7 +17,7 @@ def main():
     modelText = args["model"]
     dataset = args["dataset"]
     dataset_name = args["dataset_name"]
-    ngpus = args["ngpus"]
+    ngpus = int(args["ngpus"])
 
 
     conf = Conf("./config_framework.json")
