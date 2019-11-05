@@ -86,9 +86,9 @@ class RetinaNetDetector(IObjectDetection):
         num_files = len(traincsv.readlines())
         steps = round(num_files/batch_size)
         command = "python3 " + framework_path + "/bin/train.py --multi-gpu " + str(n_gpus) +" --batch-size 2 --steps " + str(steps) + " --epochs " + str(epochs) + " --snapshot-path " +\
-                  self.OUTPUT_PATH + "/snapshots" + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv") +  \
+                  self.OUTPUT_PATH + "/snapshots" + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv ") +  \
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
-        print(command)
+        os.system(command)
         os.system(framework_path + '/retinanet -convert-model weapons/snapshots/resnet50_csv_50.h5 output.h5')
 
 
