@@ -55,7 +55,7 @@ def main():
         f.close()
 
         if type == "slurm":
-            os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"]+ " --mem=" + params["mem"] + " " + file_name )
+            print("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"]+ " --mem=" + params["mem"] + " " + file_name )
         elif type =="local":
             os.system("bash " + file_name)
 
