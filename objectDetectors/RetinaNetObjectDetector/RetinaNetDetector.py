@@ -89,7 +89,7 @@ class RetinaNetDetector(IObjectDetection):
                   self.OUTPUT_PATH + "/snapshots" + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv ") +  \
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
         os.system(command)
-        os.system(framework_path + '/retinanet -convert-model weapons/snapshots/resnet50_csv_50.h5 output.h5')
+        os.system(framework_path + '/retinanet -convert-model datasets/snapshots/resnet50_csv_50.h5 output.h5')
 
 
         # retinanet-train --batch-size 2 --steps 1309 --epochs 50 --weights weapons/resnet50_coco_best_v2.1.0.h5 --snapshot-path weapons/snapshots csv weapons/retinanet_train.csv
