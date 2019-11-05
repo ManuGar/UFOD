@@ -79,7 +79,7 @@ class RetinaNetDetector(IObjectDetection):
 
     def train(self, framework_path = None, n_gpus = 1):
         # dataset_name = self.DATASET[self.DATASET.rfind(os.sep)+1:]
-        epochs = 50
+        epochs = 5
         batch_size = 2
         # Como en todos los casos anteriores el dataset debe estar guardado ahi ya dividido en train/test
         traincsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv"))

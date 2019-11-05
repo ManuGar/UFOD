@@ -1,13 +1,13 @@
-from objectDetectors.YOLOObjectDetector import darknetDetector
+from objectDetectors.YOLOObjectDetector.darknetDetector import DarknetAbstract
 import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
 
 
 
-class TinyYoloV3Detector(darknetDetector.DarknetAbstract):
+class TinyYoloV3Detector(DarknetAbstract):
     def __init__(self, dataset_path, dataset_name):
-        darknetDetector.DarknetAbstract.__init__(self,dataset_path,dataset_name)
+        DarknetAbstract.__init__(self,dataset_path,dataset_name)
         # urlWeights = "https://pjreddie.com/media/files/darknet53.conv.74"
         # if(not (os.path.isfile("objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74"))):
         #     filename2 = wget.download(urlWeights,"objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74")

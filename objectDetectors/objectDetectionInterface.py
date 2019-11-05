@@ -26,8 +26,6 @@ class IObjectDetection(object):
         pass
     def evaluate(self, framework_path = None):
         pass
-    def test(self):
-        pass
 
 
 def datasetSplit(dataset_name, output_path, dataset_path, percentage):
