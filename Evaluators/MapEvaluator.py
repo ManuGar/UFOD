@@ -24,7 +24,7 @@ class MapEvaluator(IEvaluator):
         # In this moment we have the images predicted. Now we are going to tranform the predicted annotations to Darknet format
         os.system("python3 map/pascal2yolo_detection.py -d " + os.path.join(
             os.path.join(aux_path,"detection") + " -f " + os.path.join(aux_path, "classes.names")))
-        os.system("find `pwd`map/" + self.dataset_name+"/labels -name '*.txt' > " + aux_path + "/test.txt")
+        os.system("find `pwd`/map/" + self.dataset_name+"/labels -name '*.txt' > " + aux_path + "/test.txt")
         os.system("map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/results.txt")
 
 def main():
