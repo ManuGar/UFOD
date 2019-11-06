@@ -10,7 +10,6 @@ class MapEvaluator(IEvaluator):
         aux_path = os.path.join("..", "map", self.dataset_name)
         if (not (os.path.exists(aux_path))):
             os.makedirs(os.path.join(aux_path,"labels"))
-        os.makedirs(os.path.join(aux_path,"labels"))
         shutil.copy(os.path.join(self.dataset_path, "classes.names"), os.path.join(aux_path, "classes.names"))
 
         image_paths = list(paths.list_files(os.path.join(self.dataset_path, "test"), validExts=(".jpg")))
