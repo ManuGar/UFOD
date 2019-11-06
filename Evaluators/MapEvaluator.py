@@ -7,7 +7,7 @@ class MapEvaluator(IEvaluator):
     def __init__(self, predictor, dataset_name,dataset_path):
         super().__init__(predictor,dataset_name,dataset_path)
     def evaluate(self):
-        aux_path = os.path.join("..", "map", self.dataset_name)
+        aux_path = os.path.join("map", self.dataset_name)
         if (not (os.path.exists(aux_path))):
             os.makedirs(os.path.join(aux_path,"labels"))
         shutil.copy(os.path.join(self.dataset_path, "classes.names"), os.path.join(aux_path, "classes.names"))
