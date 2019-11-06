@@ -12,8 +12,8 @@ class DarknetPredict(IPredictor):
     NMSTRESHOLD = 0.45  # Non-maximum suppression threshold
     INPWIDTH = 416  # Width of network's input image
     INPHEIGHT = 416  # Height of network's input image
-    def __init__(self, imagePaths,modelWeights,classesFile,modelConfiguration):
-        super().__init__(imagePaths,modelWeights,classesFile)
+    def __init__(self, modelWeights,classesFile,modelConfiguration):
+        super().__init__(modelWeights,classesFile)
         self.modelConfiguration = modelConfiguration
         # classes = None
         with open(self.classesFile, 'rt') as f:
@@ -23,8 +23,8 @@ class DarknetPredict(IPredictor):
         self.net = cv.dnn.readNetFromDarknet(self.modelConfiguration, self.modelWeights)
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
         self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
-    def predict(self):
-        for i, image in enumerate(self.imagePaths):
+    def predict(self, imagePaths):
+        for i, image in enumerate(imagePaths):
             try:
                 generateXMLFromImage(image)
             except:
@@ -82,15 +82,12 @@ def postprocess(frame, outs):
     # Cambiado para que tome valores de confianza.
     return boxes,confidences,classIds
 
-
-
 def prettify(elem):
     """Return a pretty-printed XML string for the Element.
     """
     rough_string = ET.tostring(elem, 'utf-8')
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
-
 
 # Cambiado para que tome valores de confianza.
 def generateXML(filename, outputPath, w, h, d, boxes, confidences, classIds):
@@ -140,9 +137,7 @@ def generateXML(filename, outputPath, w, h, d, boxes, confidences, classIds):
         childYmax.text = str(y + hb)
     return prettify(top)
 
-
 # In[8]:
-
 
 def generateXMLFromImage(imagePath):
     im = cv.VideoCapture(imagePath)

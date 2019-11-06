@@ -1,8 +1,7 @@
 class IPredictor(object):
-    def __init__(self, imagePaths,modelWeights,classesFile):
-        self.imagePaths = imagePaths
+    def __init__(self,modelWeights,classesFile):
         self.modelWeights = modelWeights
         self.classesFile = classesFile
         pass
-    def predict(self):
+    def predict(self, imagePaths):
         pass

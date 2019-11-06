@@ -1,4 +1,6 @@
 from objectDetectors.YOLOObjectDetector import darknetDetector
+from Predictors.DarknetPredict import DarknetPredict
+from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
@@ -49,7 +51,11 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         # tambien habria que compilar darknet para que se pudiera usar o eso lo suponemos que esta hecho de antes
 
     def evaluate(self, framework_path = None):
-       pass
+        # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
+        yoloPredict = DarknetPredict(modelWeights,os.path.join("..","map", self.DATASET_NAME, "classes.names"),os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,self.DATASET_NAME + "train.cfg"))
+        map = Map(yoloPredict, self.DATASET_NAME,os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
+        map.evaluate()
+
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
     pass
