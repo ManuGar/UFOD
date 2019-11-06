@@ -24,6 +24,7 @@ class DarknetPredict(IPredictor):
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
         self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
     def predict(self, imagePaths):
+        imagePaths = list(paths.list_images(imagePaths))
         for i, image in enumerate(imagePaths):
             try:
                 generateXMLFromImage(image)

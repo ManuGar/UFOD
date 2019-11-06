@@ -22,7 +22,7 @@ class MapEvaluator(IEvaluator):
             anno_splited = os.path.join(self.dataset_path, "test", "Annotations", name + ".xml")
             shutil.copy(anno_splited, os.path.join(aux_path,"labels",name + ".xml"))
         os.system("python3 map/pascal2yolo_labels.py -d " + os.path.join(os.path.join(aux_path,"labels/") + " -f " + os.path.join(aux_path,"classes.names")))
-        self.predictor.predict(os.path.join(aux_path,"detection"))
+        self.predictor.predict(os.path.join(aux_path,"detection/"))
         # In this moment we have the images predicted. Now we are going to tranform the predicted annotations to Darknet format
         os.system("python3 map/pascal2yolo_detection.py -d " + os.path.join(
             os.path.join(aux_path,"detection/") + " -f " + os.path.join(aux_path, "classes.names")))
