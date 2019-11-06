@@ -1,4 +1,6 @@
 from objectDetectors.YOLOObjectDetector.darknetDetector import DarknetAbstract
+from Predictors.DarknetPredict import DarknetPredict
+from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
@@ -40,7 +42,13 @@ class TinyYoloV3Detector(DarknetAbstract):
                   os.path.abspath(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus " + ",".join(str(i) for i in range(0,n_gpus)) )
 
     def evaluate(self, framework_path = None):
-        pass
+        yoloPredict = DarknetPredict(
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "TinyTrain_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train.cfg"))
+        map = Map(yoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
+        map.evaluate()
+
 def main():
     # PascalVOC2TensorflowRecords("../datasets/VOC2012/Annotations", "../datasets/VOC2012/JPEGImages")
     pass
