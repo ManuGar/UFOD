@@ -1,7 +1,7 @@
 from objectDetectors.MXNetObjectDetector.MxNetDetector import MxNetDetector, VOCLike
-from objectDetectors.MXNetObjectDetector import  functions as fn
-
-# Creo que el model zoo de esta libreria y la de mxnet son las mismas o muy parecidas asi que intentar usar solo la de mxnet por depencias
+from objectDetectors.MXNetObjectDetector import functions as fn
+from Predictors.MxNetPredict import MxNetPredict
+from Evaluators.MapEvaluator import MapEvaluator as Map
 # from gluoncv import model_zoo, data, utils
 from mxnet import gluon, autograd
 # from mxnet.gluon.model_zoo import vision as models
@@ -98,7 +98,11 @@ class SSDMxnet(MxNetDetector):
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):
-        pass
+        mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
+            self.model)
+        map = Map(mxnetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
+        map.evaluate()
 
 def main():
     pass

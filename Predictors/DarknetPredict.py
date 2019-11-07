@@ -4,8 +4,6 @@ import xml.etree.ElementTree as ET
 import cv2 as cv
 import numpy as np
 from imutils import paths
-import argparse
-import os
 
 class DarknetPredict(IPredictor):
     CONFTRESHOLD = 0.25  # Confidence threshold

@@ -1,60 +1,63 @@
+from Predictors.IPredictor import IPredictor
 # USAGE
 # python predict_batch.py --input logos/images --output output
-from Predictors.IPredictor import IPredictor
+from keras.preprocessing.image import load_img
+from keras.preprocessing.image import img_to_array
+from mrcnn.config import Config
+from mrcnn.model import MaskRCNN
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from imutils import paths
-from mxnet import autograd, gluon
-from mxnet import autograd, gluon
-import numpy as np
-import mxnet as mx
-import gluoncv as gcv
-import xml.etree.ElementTree as ET
-import cv2
-import os
 
-class MxNetPredict(IPredictor):
-    CONFIDENCE=0.5
-    def __init__(self,modelWeights,classesFile, model):
-        super().__init__(modelWeights,classesFile)
-        self.model = model
+
+
+class RCNNPredict(IPredictor):
+    CONFIDENCE = 0.5
+
+    def __init__(self, modelWeights, classesFile):
+        super().__init__(modelWeights, classesFile)
         with open(self.classesFile, 'rt') as f:
             self.classes = f.read().rstrip('\n').split('\n')
 
     def predict(self, imagePaths):
-        net = gcv.model_zoo.get_model(self.model, classes=self.classes, pretrained_base=False)
-        net.load_parameters(self.modelWeights)
-        imagePaths = list(paths.list_images(imagePaths))
+        # define the model
+        testConfig = TestConfig()
+        testConfig.NUM_CLASSES = 1+len(self.classes)
+        rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
+        # load coco model weights
+        # J. modificar con el path al modelo.
+        rcnn.load_weights(self.modelWeights, by_name=True)
 
+        imagePaths = list(paths.list_images(imagePaths))
+        # loop over the input image paths
         for (i, imagePath) in enumerate(imagePaths):
             # load the input image (in BGR order), clone it, and preprocess it
             # print("[INFO] predicting on image {} of {}".format(i + 1,
             #	len(imagePaths)))
 
             # load the input image (in BGR order), clone it, and preprocess it
-            image = cv2.imread(imagePath)
-            (hI, wI, d) = image.shape
+            img = load_img(imagePath)
+            img = img_to_array(img)
+            (hI, wI, d) = img.shape
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
-            x, image = gcv.data.transforms.presets.ssd.load_test(imagePath, min(wI, hI), max_size=max(wI, hI))
-            cid, score, bbox = net(x)
+            results = rcnn.detect([img], verbose=0)
+            r = results[0]
             boxes1 = []
-            # Añadir cid[0]
-            for (cid, box, score) in zip(cid[0], bbox[0], score[0]):
+            for (box, score, cid) in zip(r['rois'], r['scores'], r['class_ids']):
                 if score < self.CONFIDENCE:
                     continue
                 # Añadir label que sera con net.classes[cid]
-                boxes1.append(([net.classes[cid[0].asnumpy()[0].astype('int')], box], score))
+                boxes1.append(([self.classes[cid - 1], box], score))
 
             # parse the filename from the input image path, construct the
             # path to the output image, and write the image to disk
-            filename = imagePath.split(os.path.sep)[-1]
+            # filename = imagePath.split(os.path.sep)[-1]
             # outputPath = os.path.sep.join([args["output"], filename])
             file = open(imagePath[0:imagePath.rfind(".")] + ".xml", "w")
             file.write(self.generateXML(imagePath[0:imagePath.rfind(".")], imagePath, wI, hI, d, boxes1))
             file.close()
-
-        # cv2.imwrite(outputPath, output)
 
     def prettify(self,elem):
         """Return a pretty-printed XML string for the Element.
@@ -88,12 +91,15 @@ class MxNetPredict(IPredictor):
             # Cambiar categoria por label
             category = box[0]
             box = box[1].astype("int")
-            (x, y, xmax, ymax) = box
+            #######
+            # Cuidado esto está cambiado con respecto a lo que es habitualmente
+            #######
+            (y, x, ymax, xmax) = box
             childObject = ET.SubElement(top, 'object')
             childName = ET.SubElement(childObject, 'name')
             childName.text = category
             childScore = ET.SubElement(childObject, 'confidence')
-            childScore.text = str(score.asscalar())
+            childScore.text = str(score)
             childPose = ET.SubElement(childObject, 'pose')
             childPose.text = 'Unspecified'
             childTruncated = ET.SubElement(childObject, 'truncated')
@@ -102,11 +108,33 @@ class MxNetPredict(IPredictor):
             childDifficult.text = '0'
             childBndBox = ET.SubElement(childObject, 'bndbox')
             childXmin = ET.SubElement(childBndBox, 'xmin')
-            childXmin.text = str(x.asscalar())
+            childXmin.text = str(x)
             childYmin = ET.SubElement(childBndBox, 'ymin')
-            childYmin.text = str(y.asscalar())
+            childYmin.text = str(y)
             childXmax = ET.SubElement(childBndBox, 'xmax')
-            childXmax.text = str(xmax.asscalar())
+            childXmax.text = str(xmax)
             childYmax = ET.SubElement(childBndBox, 'ymax')
-            childYmax.text = str(ymax.asscalar())
+            childYmax.text = str(ymax)
         return self.prettify(top)
+
+
+class TestConfig(Config):
+    NAME = "test"
+    GPU_COUNT = 1
+    BACKBONE = "resnet50"
+    IMAGE_RESIZE_MODE = "square"
+    IMAGE_MIN_DIM = 512
+    IMAGE_MAX_DIM = 512
+    IMAGES_PER_GPU = 1
+    ##### J. Esto hay que cambiarlo dependiendo de cada problema
+    NUM_CLASSES = 1 + len(RCNNPredict.classes)
+
+
+
+
+
+
+
+
+
+# cv2.imwrite(outputPath, output)
