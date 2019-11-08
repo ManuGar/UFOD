@@ -1,5 +1,7 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from objectDetectors.RetinaNetObjectDetector import functions as fn
+from Predictors.RetinanetPredict import RetinanetPredictor
+from Evaluators.MapEvaluator import MapEvaluator as Map
 import  os
 import shutil
 from imutils import paths
@@ -7,6 +9,7 @@ from imutils import paths
 class RetinaNetDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name):
         super(RetinaNetDetector, self).__init__(dataset_path, dataset_name)
+        self.model = "retinanet"
         # IObjectDetection.__init__(self, dataset_path, dataset_name)
         # if (not os.path.exists("./keras-retinanet")):
             # os.system("git clone https://github.com/fizyr/keras-retinanet")
@@ -99,6 +102,9 @@ class RetinaNetDetector(IObjectDetection):
         #
 
     def evaluate(self, framework_path = None):
-        os.system("retinanet-evaluate csv " + self.OUTPUT_PATH + os.sep + self.OUTPUT_PATH + "_train.csv " +  self.OUTPUT_PATH +
-                  os.sep + self.DATASET_NAME + "_classes.csv " + self.OUTPUT_PATH + os.sep+ " output.h5")
-        # retinanet-evaluate csv weapons/retinanet_test.csv weapons/retinanet_classes.csv output.h5
+        # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
+        yoloPredict = RetinanetPredictor(
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
+        map = Map(yoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map.evaluate()

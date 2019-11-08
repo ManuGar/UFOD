@@ -2,6 +2,8 @@ import  os
 import glob
 import wget
 from objectDetectors.objectDetectionInterface import IObjectDetection
+from Predictors.RCNNPredict import RCNNPredict
+from Evaluators.MapEvaluator import MapEvaluator as Map
 from imutils import paths
 from numpy import zeros, asarray
 from os import listdir
@@ -19,7 +21,8 @@ class RCNNDetector(IObjectDetection):
         self.test_set = ClassDataset()
         # self.train_set = KangarooDataset()
         # self.test_set = KangarooDataset()
-        self.model = ""
+        self.model = "rcnn"
+        self.modelWeights = None
         self.config = Config()
 
     def transform(self):
@@ -52,26 +55,23 @@ class RCNNDetector(IObjectDetection):
 
         self.config = ClassConfig()
         # Por lo mismo de antes. El dataset ya esta procesado y guardado ahi. Es donde se tiene que trabajar con el en este caso
-        self.model = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
+        self.modelWeights = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
         if not os.path.exists('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5'):
             wget.download("https://www.dropbox.com/s/12ou730jt730qvu/mask_rcnn_coco.h5?dl=1", 'objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5')
-        self.model.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
+        self.modelWeights.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 
     def train(self, framework_path = None, n_gpus = 1):
         ClassConfig.GPU_COUNT = n_gpus
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
-        self.model.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
+        self.modelWeights.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
     def evaluate(self, framework_path = None):
-        classes_file = os.path.join(self.DATASET, "classes.names")
-        file = open(os.path.join(classes_file))
-        classes = []
-        for line in file:
-            classes.append(line)
-        n_classes = fn.count_classes(classes)
-        cfg = PredictionConfig(self.DATASET_NAME, n_classes)
-        model = MaskRCNN(mode='inference', model_dir=self.DATASET, config=cfg)
-        # model.load_weights('mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
+        # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
+        rcnnPredict = RCNNPredict(
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
+        map = Map(rcnnPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map.evaluate()
 
 class ClassDataset(Dataset):
     # load the dataset definitions

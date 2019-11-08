@@ -8,6 +8,7 @@ class IObjectDetection(object):
         self.DATASET =dataset_path
         self.DATASET_NAME =dataset_name
         self.OUTPUT_PATH = os.path.join(".","datasets")
+        self.model = None
         if (not os.path.exists(self.OUTPUT_PATH)):
             os.makedirs(self.OUTPUT_PATH)
     # This function prepares the dataset to the structure of the selected framework

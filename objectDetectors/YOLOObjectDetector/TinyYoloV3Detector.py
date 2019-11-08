@@ -10,6 +10,7 @@ import objectDetectors.YOLOObjectDetector.functions as fn
 class TinyYoloV3Detector(DarknetAbstract):
     def __init__(self, dataset_path, dataset_name):
         DarknetAbstract.__init__(self,dataset_path,dataset_name)
+        self.model = "tinyYolov3"
         # urlWeights = "https://pjreddie.com/media/files/darknet53.conv.74"
         # if(not (os.path.isfile("objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74"))):
         #     filename2 = wget.download(urlWeights,"objectDetectors" + os.sep + "YOLOObjectDetector" + os.sep + "darknet53.conv.74")
@@ -42,11 +43,11 @@ class TinyYoloV3Detector(DarknetAbstract):
                   os.path.abspath(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus " + ",".join(str(i) for i in range(0,n_gpus)) )
 
     def evaluate(self, framework_path = None):
-        yoloPredict = DarknetPredict(
+        tinyyoloPredict = DarknetPredict(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "TinyTrain_final.weights"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train.cfg"))
-        map = Map(yoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
+        map = Map(tinyyoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),self.model)
         map.evaluate()
 
 def main():

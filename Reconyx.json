@@ -1,0 +1,6 @@
+{
+  "dataset" : "../datasets/ReconyxCameraTrapData",
+  "dataset_name": "ReconyxCameraTrapData",
+  "exec" : {"type":"local", "ngpus": 2},
+  "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"],["Rcnn","mask-rcnn"],["Darknet","yolo"],["Darknet","tinyYolo"]]
+}

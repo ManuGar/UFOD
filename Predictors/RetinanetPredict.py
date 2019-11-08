@@ -22,11 +22,8 @@ class RetinanetPredictor(IPredictor):
     def __init__(self, modelWeights, classesFile):
         super().__init__(modelWeights, classesFile)
         f = open(self.classesFile, 'rt')
-        self.labels = {i: L for i,L in enumerate(self.LABELS)}
-        with open(self.classesFile, 'rt') as f:
-            self.classes = f.read().rstrip('\n').split('\n')
-            self.LABELS = open(classesFile).read().strip().split("\n")
-            self.LABELS = {int(L.split(",")[1]): L.split(",")[0] for L in self.LABELS}
+        self.labels = {i: L for i,L in enumerate(f)}
+
 
     def predict(self, imagePaths):
         # TODO:

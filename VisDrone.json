@@ -1,0 +1,6 @@
+{
+  "dataset" : "../datasets/VisDrone",
+  "dataset_name": "VisDrone",
+  "exec" : {"type":"local", "ngpus": 2},
+  "frameworks" : [["Mxnet","ssdVgg16"], ["Mxnet","ssdVgg16_512"], ["Mxnet","ssdResnet"], ["Mxnet","ssdMobilenet"],["Rcnn","mask-rcnn"],["Darknet","yolo"],["Darknet","tinyYolo"]]
+}
