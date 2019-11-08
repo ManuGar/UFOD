@@ -25,6 +25,7 @@ class MxNetPredict(IPredictor):
         net.load_parameters(self.modelWeights)
         imagePaths = list(paths.list_images(imagePaths))
 
+        print(imagePaths)
         for (i, imagePath) in enumerate(imagePaths):
             # load the input image (in BGR order), clone it, and preprocess it
             # print("[INFO] predicting on image {} of {}".format(i + 1,
