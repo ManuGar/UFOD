@@ -66,9 +66,8 @@ class RCNNDetector(IObjectDetection):
         self.modelWeights.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
     def evaluate(self, framework_path = None):
-        # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
         rcnnPredict = RCNNPredict(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "mask_rcnn_"+self.DATASET_NAME + "_0005.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
         map = Map(rcnnPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
