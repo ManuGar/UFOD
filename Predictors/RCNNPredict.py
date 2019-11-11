@@ -44,7 +44,7 @@ class RCNNPredict(IPredictor):
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
-            results = rcnn.detect([img], verbose=0)
+            results = rcnn.detect([img], verbose=1)
             r = results[0]
             boxes1 = []
             for (box, score, cid) in zip(r['rois'], r['scores'], r['class_ids']):
