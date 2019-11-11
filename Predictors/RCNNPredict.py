@@ -26,7 +26,8 @@ class RCNNPredict(IPredictor):
         rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
         # load coco model weights
         # J. modificar con el path al modelo.
-        print(self.modelWeights)
+        print(testConfig.NUM_CLASSES)
+        print("22222222222222222222222222222222222222222222222222")
         rcnn.load_weights(self.modelWeights, by_name=True)
 
         imagePaths = list(paths.list_images(imagePaths))
