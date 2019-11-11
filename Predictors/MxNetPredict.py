@@ -21,6 +21,7 @@ class MxNetPredict(IPredictor):
             self.classes = f.read().rstrip('\n').split('\n')
 
     def predict(self, imagePaths):
+        print(self.model)
         net = gcv.model_zoo.get_model(self.model, classes=self.classes, pretrained_base=False)
         net.load_parameters(self.modelWeights)
         imagePaths = list(paths.list_images(imagePaths))
