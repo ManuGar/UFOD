@@ -127,7 +127,7 @@ class TestConfig(Config):
     IMAGE_MAX_DIM = 512
     IMAGES_PER_GPU = 1
     ##### J. Esto hay que cambiarlo dependiendo de cada problema
-    NUM_CLASSES = 1 + len(RCNNPredict.classes)
+    NUM_CLASSES = 0#1 + len(RCNNPredict.classes)
 
 
 
