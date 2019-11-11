@@ -36,7 +36,7 @@ class MxNetPredict(IPredictor):
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
-            x, image = gcv.data.transforms.presets.ssd.load_test(imagePath)#, min(wI, hI), max_size=max(wI, hI))
+            x, image = gcv.data.transforms.presets.ssd.load_test(imagePath,min(wI, hI))#, max_size=max(wI, hI))
             cid, score, bbox = net(x)
             boxes1 = []
             # Añadir cid[0]
