@@ -3,7 +3,7 @@ from imutils import paths
 
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from objectDetectors.YOLOObjectDetector import functions as fn
-
+import wget
 
 class DarknetAbstract(IObjectDetection):
     def __init__(self,dataset_path, dataset_name):
@@ -31,6 +31,16 @@ class DarknetAbstract(IObjectDetection):
     # def createModel(self):
     #     pass
     def train(self, framework_path = None, n_gpus = 1):
-        pass
+        data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
+        confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
+        if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
+            wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1",
+                          "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
+        # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
+        os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
+                  os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,
+                                               confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus " + ",".join(
+            str(i) for i in range(0, n_gpus)))
     def evaluate(self, framework_path = None):
         pass

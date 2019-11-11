@@ -67,7 +67,7 @@ class RCNNDetector(IObjectDetection):
 
     def evaluate(self, framework_path = None):
         rcnnPredict = RCNNPredict(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "mask_rcnn_"+ self.DATASET_NAME.lower() + "_0005.h5"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "mask_rcnn_"+ self.DATASET_NAME.lower() + "_0004.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
         map = Map(rcnnPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
