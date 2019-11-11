@@ -98,9 +98,12 @@ class SSDMxnet(MxNetDetector):
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):
+        print(self.model)
+        print("22222222222222222")
         mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
             self.model)
+
         map = Map(mxnetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
 
