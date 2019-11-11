@@ -26,8 +26,6 @@ class RCNNPredict(IPredictor):
         rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
         # load coco model weights
         # J. modificar con el path al modelo.
-        print(testConfig.NUM_CLASSES)
-        print("22222222222222222222222222222222222222222222222222")
         rcnn.load_weights(self.modelWeights, by_name=True)
 
         imagePaths = list(paths.list_images(imagePaths))
@@ -44,6 +42,9 @@ class RCNNPredict(IPredictor):
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
+            print(rcnn.config.NUM_CLASSES)
+            print("22222222222222222222222222222222222222222222222222")
+
             results = rcnn.detect([img], verbose=1)
             r = results[0]
             boxes1 = []
