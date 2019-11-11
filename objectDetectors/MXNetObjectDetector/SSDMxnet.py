@@ -17,6 +17,8 @@ import shutil
 class SSDMxnet(MxNetDetector):
     def __init__(self, dataset_path, dataset_name, model):
         self.model = model
+        print(self.model)
+        print("33333333333")
         super(SSDMxnet, self).__init__(dataset_path, dataset_name)
         # MxNetDetector.__init__(self, dataset_path, dataset_name)
 
