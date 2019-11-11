@@ -23,6 +23,7 @@ class RCNNPredict(IPredictor):
         # define the model
         testConfig = TestConfig()
         testConfig.NUM_CLASSES = 1+len(self.classes)
+        testConfig.IMAGE_META_SIZE = 1 + 3 + 3 + 4 + 1 + testConfig.NUM_CLASSES
         rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
         # load coco model weights
         # J. modificar con el path al modelo.
@@ -131,7 +132,7 @@ class TestConfig(Config):
     IMAGE_MAX_DIM = 512
     IMAGES_PER_GPU = 1
     ##### J. Esto hay que cambiarlo dependiendo de cada problema
-    NUM_CLASSES = 12#1 + len(RCNNPredict.classes)
+    NUM_CLASSES = 0#1 + len(RCNNPredict.classes)
 
 
 
