@@ -21,8 +21,8 @@ class RCNNPredict(IPredictor):
 
     def predict(self, imagePaths):
         # define the model
-        testConfig = TestConfig(len(self.classes))
-        # testConfig.NUM_CLASSES = 1+len(self.classes)
+        testConfig = TestConfig()
+        testConfig.NUM_CLASSES = 1+len(self.classes)
         rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
         # load coco model weights
         # J. modificar con el path al modelo.
@@ -123,17 +123,15 @@ class RCNNPredict(IPredictor):
 
 class TestConfig(Config):
 
-    def __init__(self, classes):
-        self.NAME = "test"
-        self.GPU_COUNT = 1
-        self.BACKBONE = "resnet50"
-        self.IMAGE_RESIZE_MODE = "square"
-        self.IMAGE_MIN_DIM = 512
-        self.IMAGE_MAX_DIM = 512
-        self.IMAGES_PER_GPU = 1
-        ##### J. Esto hay que cambiarlo dependiendo de cada problema
-        self.NUM_CLASSES = classes #1 + len(RCNNPredict.classes)
-        super().__init__()
+    NAME = "test"
+    GPU_COUNT = 1
+    BACKBONE = "resnet50"
+    IMAGE_RESIZE_MODE = "square"
+    IMAGE_MIN_DIM = 512
+    IMAGE_MAX_DIM = 512
+    IMAGES_PER_GPU = 1
+    ##### J. Esto hay que cambiarlo dependiendo de cada problema
+    NUM_CLASSES = 13#1 + len(RCNNPredict.classes)
 
 
 
