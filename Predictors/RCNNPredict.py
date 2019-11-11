@@ -43,8 +43,6 @@ class RCNNPredict(IPredictor):
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
-            print(rcnn.config.NUM_CLASSES)
-            print("22222222222222222222222222222222222222222222222222")
 
             results = rcnn.detect([img], verbose=1)
             r = results[0]
