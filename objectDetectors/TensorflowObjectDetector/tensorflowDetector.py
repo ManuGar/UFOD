@@ -12,8 +12,8 @@ import shutil
 
 class TensorflowDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name, model):
-        self.model = model
         super(TensorflowDetector, self).__init__(dataset_path,dataset_name)
+        self.model = model
         # IObjectDetection.__init__(self, dataset_path, dataset_name)
 
     def transform(self):

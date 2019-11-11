@@ -66,8 +66,8 @@ class VOCLike(gcv.data.VOCDetection):
     CLASSES = []
 
     def __init__(self, root, splits, transform=None, index_map=None, preload_label=True, classes=[]):
-        type(self).CLASSES=classes
         super(VOCLike, self).__init__(root, splits, transform, index_map, preload_label)
+        type(self).CLASSES=classes
 
 def main():
     pass

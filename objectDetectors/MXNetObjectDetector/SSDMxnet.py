@@ -18,8 +18,6 @@ class SSDMxnet(MxNetDetector):
     def __init__(self, dataset_path, dataset_name, model):
         super(SSDMxnet, self).__init__(dataset_path, dataset_name)
         self.model = model
-        print(self.model)
-        print("33333333333")
         # MxNetDetector.__init__(self, dataset_path, dataset_name)
 
     # def transform(self):
@@ -100,8 +98,6 @@ class SSDMxnet(MxNetDetector):
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):
-        print(self.model)
-        print("22222222222222222")
         mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
             self.model)
