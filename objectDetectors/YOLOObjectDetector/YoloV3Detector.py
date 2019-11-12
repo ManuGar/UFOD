@@ -53,7 +53,9 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
 
     def evaluate(self, framework_path = None):
         # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
-        yoloPredict = DarknetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME +"train_final.weights"),os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,self.DATASET_NAME + "train.cfg"))
+        yoloPredict = DarknetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME +"train_final.weights"),
+                                     os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
+                                     os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,self.DATASET_NAME + "train.cfg"))
         map = Map(yoloPredict, self.DATASET_NAME,os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
 
