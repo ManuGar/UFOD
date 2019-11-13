@@ -37,7 +37,7 @@ class TinyYoloV3Detector(DarknetAbstract):
 
         data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
         # confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
-        confi = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"TinyTrain.cfg")
+        confi =  self.DATASET_NAME+"TinyTrain.cfg"
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1", "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
         # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
