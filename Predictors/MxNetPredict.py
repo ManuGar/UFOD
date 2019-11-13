@@ -36,16 +36,18 @@ class MxNetPredict(IPredictor):
 
             # detect objects in the input image and correct for the image scale
             # Poner short=512
-            x, image = gcv.data.transforms.presets.ssd.load_test(imagePath,min(wI, hI))#, max_size=max(wI, hI))
+            x, image = gcv.data.transforms.presets.ssd.load_test(imagePath, 512)
             cid, score, bbox = net(x)
+            (HI, WI, d) = image.shape
             boxes1 = []
             # Añadir cid[0]
             for (cid, box, score) in zip(cid[0], bbox[0], score[0]):
                 if score < self.CONFIDENCE:
                     continue
                 # Añadir label que sera con net.classes[cid]
+                (x, y, xmax, ymax) = box.asnumpy()
+                box = (x * wI / WI, y * hI / HI, xmax * wI / WI, ymax * hI / HI)
                 boxes1.append(([net.classes[cid[0].asnumpy()[0].astype('int')], box], score))
-
             # parse the filename from the input image path, construct the
             # path to the output image, and write the image to disk
             filename = imagePath.split(os.path.sep)[-1]
@@ -87,7 +89,7 @@ class MxNetPredict(IPredictor):
         for (box, score) in boxes:
             # Cambiar categoria por label
             category = box[0]
-            box = box[1].astype("int")
+            box = box[1]
             (x, y, xmax, ymax) = box
             childObject = ET.SubElement(top, 'object')
             childName = ET.SubElement(childObject, 'name')
