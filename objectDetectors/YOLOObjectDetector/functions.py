@@ -1766,7 +1766,7 @@ def generaFicherosTinyYoloTrain(darknetPath, Nproyecto, NClases):
 #subdivisions=1
 # Training
 batch=64
-subdivisions=2
+subdivisions=16
 width=416
 height=416
 channels=3
