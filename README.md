@@ -41,6 +41,21 @@ Currently, UFOD provides support for the following algorithms.
 
 ### Dataset
 
+The dataset needs to be annotated using the Pascal VOC format. An application that produces such a format is [LabelImg](https://github.com/tzutalin/labelImg). The folder containing the dataset must contain two folders:
+- JPEGImages folder: containing the images. 
+- Annotations folder: containing the annotations using the Pascal format. 
+
+This dataset will be later split. If the user wants to provide a explicit split, the organisation must be as follows:
+- train
+  - JPEGImages: folder containing the images of the training set. 
+  - Annotations: folder containing the annotations of the training set. 
+- test
+  - JPEGImages: folder containing the images of the testing set. 
+  - Annotations: folder containing the annotations of the testing set. 
+
+A dataset with this organization is provided in the [fruits folder](fruits).
+
+
 ### Configuration File
 
 UFOD training process is configured by means of a json file, that must contain the following information:
