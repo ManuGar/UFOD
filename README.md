@@ -53,7 +53,7 @@ This dataset will be later split. If the user wants to provide a explicit split,
   - JPEGImages: folder containing the images of the testing set. 
   - Annotations: folder containing the annotations of the testing set. 
 
-A dataset with this organization is provided in the [fruits folder](fruits).
+A dataset with this organization is provided in the [fruits folder](fruit).
 
 
 ### Configuration File
