@@ -39,9 +39,32 @@ Currently, UFOD provides support for the following algorithms.
 
 ### Dependencies and installation
 
-### Configuration
+### Dataset
 
+### Configuration File
 
+UFOD training process is configured by means of a json file, that must contain the following information:
+
+- "dataset": path to the dataset of images. 
+- "dataset_name": a name to the dataset.
+- "exec": the execution mode. There are two execution modes:
+  - "local". The training process is run locally. In this option it is necessary to provide the number of available gpus with the "ngpus" parameter. 
+  - "slurm". The training process is run in a cluster with SLURM. There are several parameters to configure in this option, such as the execution time ("time" parameter), the partition ("partition" parameter), the gres ("gres" parameter), the memory ("mem" parameter), or the number of gpus  ("ngpus" parameter).
+- "frameworks": the list of models to train. Currently, the following options are available:
+  - ["Mxnet","ssdVgg16"]: SSD with the VGG16 backbone of the MXNet framework. 
+  - ["Mxnet","ssdVgg16_512"]: SSD with the VGG16 backbone and image size of 512 of the MXNet framework. 
+  - ["Mxnet","ssdResnet"]: SSD with the Resnet backbone of the MXNet framework.
+  - ["Mxnet","ssdMobilenet"]: SSD with the mobilenet backbone of the MXNet framework.
+  - ["Rcnn","mask-rcnn"]: Mask-RCNN algorithm using a Keras library. 
+  - ["Darknet","yolo"]: YOLO with the Darknet framework.
+  - ["Darknet","tinyYolo"]: TinyYOLO with the Darknet framework.
+  - ["Retinanet","retinanet"]: RetinaNet algorithm using a Keras library. 
+  - ["Tensorflow", "ssdInception"]: SSD with the inception backbone using the Tensorflow framework.
+  - ["Tensorflow", "fasterRcnnResnet"]: Faster RCNN with the inception backbone using the Tensorflow framework.
+  - ["Tensorflow", "rfcnResnet"]: RFCN with the inception backbone using the Tensorflow framework.
+  - ["Tensorflow", "maskRcnnInception"]: Mask RCNN with the inception backbone using the Tensorflow framework.
+  
+Examples of this configurations files can be seen in the [Optic.json](Optic.json) (local execution) and the [prueba.json](prueba.json) (cluster execution) files.
 
 
 ### How to launch the training process
