@@ -15,7 +15,7 @@ class IObjectDetection(object):
     def transform(self):
         pass
     # This function divides the dataset into train and test sets
-    def organize(self, train_percentage):
+    def split(self, train_percentage):
         if (not os.path.exists(os.path.join(self.DATASET, "test"))):
             datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH, self.DATASET,train_percentage)
         else:

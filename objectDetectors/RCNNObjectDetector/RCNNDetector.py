@@ -37,7 +37,6 @@ class RCNNDetector(IObjectDetection):
     # def organize(self, train_percentage):
     #     super(RCNNDetector, self).organize( train_percentage)
 
-
     def createModel(self):
         # En este caso tambien debe ser output por que ya se ha hecho la division y se ha guardado
         classes_file = os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, "classes.names")
@@ -55,7 +54,10 @@ class RCNNDetector(IObjectDetection):
 
         self.config = ClassConfig()
         # Por lo mismo de antes. El dataset ya esta procesado y guardado ahi. Es donde se tiene que trabajar con el en este caso
-        self.modelWeights = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
+        # self.modelWeights = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,"model"), config=self.config)
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
+        self.modelWeights = MaskRCNN(mode='training', model_dir=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"), config=self.config)
         if not os.path.exists('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5'):
             wget.download("https://www.dropbox.com/s/12ou730jt730qvu/mask_rcnn_coco.h5?dl=1", 'objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5')
         self.modelWeights.load_weights('objectDetectors/RCNNObjectDetector/mask_rcnn_coco.h5', by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
@@ -92,8 +94,8 @@ class ClassDataset(Dataset):
         annotations_dir_test = os.path.join(dataset_dir, "test", "Annotations")
 
         # list_images = list(paths.list_files(os.path.join(dataset_dir, "dataset"), validExts=(".jpg")))
-        train_list = list(paths.list_files(os.path.join(dataset_dir, "train"), validExts=(".jpg")))
-        test_list = list(paths.list_files(os.path.join(dataset_dir, "test"), validExts=(".jpg")))
+        # train_list = list(paths.list_files(os.path.join(dataset_dir, "train"), validExts=(".jpg")))
+        # test_list = list(paths.list_files(os.path.join(dataset_dir, "test"), validExts=(".jpg")))
 
         # train_list, test_list, _, _ = train_test_split(list_images, list_images, train_size=percentage,random_state=5)
 
@@ -105,7 +107,7 @@ class ClassDataset(Dataset):
                     self.add_image('dataset', image_id=imageid,path=img_path, annotation=ann_path)
 
         else:
-                for filename in test_list:
+                for filename in listdir(images_dir_test):
                     imageid = filename.split(os.sep)[-1][:-4]
                     img_path = os.path.join(images_dir_test, imageid + ".jpg")
                     ann_path = os.path.join(annotations_dir_test, imageid + ".xml")
@@ -171,17 +173,4 @@ class ClassConfig(Config):
     N_IMAGES = 1
     # number of training steps per epoch
     STEPS_PER_EPOCH = 1000 // (GPU_COUNT * IMAGES_PER_GPU)
-
-
-class PredictionConfig(Config):
-    # define the name of the configuration
-    def __init__(self, name, n_classes):
-        Config.__init__(self)
-        NAME = name
-        # number of classes (background + kangaroo)
-        NUM_CLASSES = 1 + n_classes
-        # simplify GPU config
-        GPU_COUNT = 1
-        IMAGES_PER_GPU = 1
-
 

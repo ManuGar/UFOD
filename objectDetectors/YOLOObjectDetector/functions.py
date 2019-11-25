@@ -110,7 +110,7 @@ def generaFicheroData(output_path, NClases, Nproyecto):
     f.write('train  = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "train.txt")) + '\n')
     f.write('valid  = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "test.txt" ))+ '\n')
     f.write('names = ' + os.path.abspath(os.path.join(output_path ,Nproyecto, "classes.names" ))+ '\n')
-    f.write('backup = '+ os.path.abspath(os.path.join(output_path ,Nproyecto)) + '\n')
+    f.write('backup = '+ os.path.abspath(os.path.join(output_path ,Nproyecto,"models")) + '\n')
     f.close()
 
 

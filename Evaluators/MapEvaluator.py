@@ -28,6 +28,10 @@ class MapEvaluator(IEvaluator):
             os.path.join(aux_path,"detection/") + " -f " + os.path.join(aux_path, "classes.names")))
         os.system("find `pwd`/map/" + self.dataset_name+"/labels -name '*.txt' > " + aux_path + "/test.txt")
         os.system("./map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/" + self.model_name+ "results.txt")
+        shutil.rmtree(os.path.join(aux_path,"detection"))
+        shutil.rmtree(os.path.join(aux_path,"labels"))
+        os.remove(os.path.join(aux_path,"classes.names"))
+
 
 def main():
     pass

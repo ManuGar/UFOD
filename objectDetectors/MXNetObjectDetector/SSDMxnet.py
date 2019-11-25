@@ -12,8 +12,6 @@ import os
 import time
 import shutil
 
-
-
 class SSDMxnet(MxNetDetector):
     def __init__(self, dataset_path, dataset_name, model):
         super(SSDMxnet, self).__init__(dataset_path, dataset_name)
@@ -31,7 +29,9 @@ class SSDMxnet(MxNetDetector):
     def train(self, framework_path = None, n_gpus = 1):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 10
-        classes = fn.readClasses(os.path.join(self.OUTPUT_PATH,"VOC" + self.DATASET_NAME))
+        classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
         # En este caso debera ser el output path que es donde se guardo el dataset preparado
         # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
         # MXNET_ENABLE_GPU_P2P = 0
@@ -92,9 +92,12 @@ class SSDMxnet(MxNetDetector):
                         epoch, i, batch_size / (time.time() - btic), name1, loss1, name2, loss2))
                 btic = time.time()
             if (epoch % 5 == 0):
-                net.save_parameters(self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')
-        net.save_parameters(self.model + '_' + self.DATASET_NAME + '_final.params')
-        shutil.rmtree(os.path.join(self.OUTPUT_PATH,"VOC"+self.DATASET_NAME))
+                net.save_parameters(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models",self.model + '_' + self.DATASET_NAME + '_' + str(epoch) + '.params')) #Cambiar para que se guarde en la carpeta models dentro de la carpeta que se genere del dataset
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
+
+        net.save_parameters(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models",self.model + '_' + self.DATASET_NAME + '_final.params'))
+        shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self, framework_path = None):

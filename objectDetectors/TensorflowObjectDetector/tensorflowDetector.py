@@ -39,12 +39,11 @@ class TensorflowDetector(IObjectDetection):
 
     # En este caso tendremos que hacer primero la division del dataset para que luego la transformacion se haga
     # desde el dataset de entrenamiento y de evaluacion
-    def organize(self, train_percentage):
-        # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-        fn.datasetSplit(self.DATASET_NAME,self.DATASET,self.OUTPUT_PATH,train_percentage)
+    # def organize(self, train_percentage):
+    #     # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
+    #     fn.datasetSplit(self.DATASET_NAME,self.DATASET,self.OUTPUT_PATH,train_percentage)
 
     def createModel(self):
-
         # aqui ademas de crear el archivo de configuracion hay que descargar el modelo que se va a usar en ese modelo de configuracion
         # ademas, hay que usar el modelo ssd_inception_v2_coco y el faster_rcnn_resnet50_coco
         # crear como siempre una clase para cada "modelo" que hay. Solo habria que crear estos dos para tensorflow de momento. con el organize y el transform igual.
@@ -64,7 +63,6 @@ class TensorflowDetector(IObjectDetection):
 
         classes = []
         n_classes = 0
-
         with open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "label_map.pbtxt")) as f:
             for line in f:
                 classes.append(line)
@@ -72,7 +70,6 @@ class TensorflowDetector(IObjectDetection):
                     n_classes += 1
 
         fn.generateTensorFlowConfigFile(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),n_classes)
-
 
     def train(self, framework_path= None, n_gpus = 1):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
@@ -85,5 +82,5 @@ class TensorflowDetector(IObjectDetection):
 
         # python train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_inception_v2_coco.config
 
-    def evaluate(self, framework_path = None):
-        pass
+    # def evaluate(self, framework_path = None):
+    #     pass

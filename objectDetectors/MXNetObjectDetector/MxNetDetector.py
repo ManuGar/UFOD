@@ -5,27 +5,16 @@ import shutil
 import os
 
 
-# from objectDetectors.MXNetObjectDetector import  functions as fn
-
-# from gluoncv import model_zoo, data, utils
-# from mxnet import gluon, autograd
-# from mxnet.gluon.model_zoo import vision as models
-# from mxnet.gluon import data, utils
-# from mxnet.gluon.data.vision import datasets, transforms
-# import mxnet as mx
-
-
-
-
 class MxNetDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name):
         IObjectDetection.__init__(self, dataset_path, dataset_name)
+        self.model = None
 
     def transform(self):
         listaFicheros_train = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train"), validExts=(".jpg")))
         listaFicheros_test = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"test"), validExts=(".jpg")))
 
-        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME)
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model)
 
         shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), os.path.join(outputPath, "JPEGImages"))
         shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","Annotations"), os.path.join(outputPath, "Annotations"))
@@ -55,12 +44,12 @@ class MxNetDetector(IObjectDetection):
     # def createModel(self):
     #     pass
 
-    def train(self, framework_path = None, n_gpus = 1):
-        pass
-
-
-    def evaluate(self, framework_path = None):
-        pass
+    # def train(self, framework_path = None, n_gpus = 1):
+    #     pass
+    #
+    #
+    # def evaluate(self, framework_path = None):
+    #     pass
 
 class VOCLike(gcv.data.VOCDetection):
     CLASSES = []

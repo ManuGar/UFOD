@@ -37,10 +37,21 @@ class DarknetAbstract(IObjectDetection):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1",
                           "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
         # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
         os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
                   os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,
                                                confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus " + ",".join(
             str(i) for i in range(0, n_gpus)))
-    def evaluate(self, framework_path = None):
-        pass
+
+
+        os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train.txt"))
+        os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "test.txt"))
+        os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train.txt"))
+        os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + ".data"))
+
+
+
+    # def evaluate(self, framework_path = None):
+    #     pass
