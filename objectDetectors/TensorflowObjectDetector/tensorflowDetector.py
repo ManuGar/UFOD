@@ -18,9 +18,8 @@ class TensorflowDetector(IObjectDetection):
 
     def transform(self):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-        if (not os.path.exists(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))):
-            os.makedirs(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME))
-        class_path = os.path.join(self.DATASET, "classes.names")
+
+        class_path = os.path.join(self.OUTPUT_PATH, self.DATASET, "classes.names")
         result_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)
         file = open(class_path, "r")
         cl_txt = ""
