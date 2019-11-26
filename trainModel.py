@@ -23,7 +23,7 @@ def main():
     conf = Conf("./config_framework.json")
 
     model = factoryModel.createModel(framework, modelText, dataset, dataset_name)
-    model.organize(0.75)
+    model.split(0.75)
     model.transform()
     model.createModel()
     model.train(conf[framework], ngpus) #En algunos casos tendremos que aniadir el path del framework para que pueda trabajar con el
