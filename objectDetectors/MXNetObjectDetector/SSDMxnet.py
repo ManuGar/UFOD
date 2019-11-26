@@ -43,7 +43,8 @@ class SSDMxnet(MxNetDetector):
         # except:
         #     ctx = [mx.cpu()]
         # Como en el anterior caso debe ser output_path por que es donde se ha guardado el dataset partido en entrenamiento y test
-        dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME+"_"+self.model, 'train'),),classes=classes)
+        print((self.DATASET_NAME+"_"+self.model, 'train'))
+        dataset = VOCLike(root=self.OUTPUT_PATH, splits=((self.DATASET_NAME, 'train'),),classes=classes)
         # Revisar esto para que funcione con varios modelos que se entrenan igual
         # net = gcv.model_zoo.get_model('ssd_512_mobilenet1.0_custom', classes=classes,
         #                               pretrained_base=False, transfer='voc')
