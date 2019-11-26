@@ -29,7 +29,8 @@ class SSDMxnet(MxNetDetector):
     def train(self, framework_path = None, n_gpus = 1):
         # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
         n_epoch = 10
-        classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
+        # classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
+        classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME))
         if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
             os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
         # En este caso debera ser el output path que es donde se guardo el dataset preparado
