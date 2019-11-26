@@ -48,10 +48,7 @@ class DarknetAbstract(IObjectDetection):
 
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train.txt"))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "test.txt"))
-        os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "train.txt"))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + ".data"))
-
-
 
     # def evaluate(self, framework_path = None):
     #     pass
