@@ -35,8 +35,7 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
     listaFicheros = list(paths.list_files(dataset_path, validExts=(".jpg")))
     train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=percentage, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
-    if (not os.path.exists(os.path.join(output_path, dataset_name))):
-        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
+    if (not os.path.exists(os.path.join(output_path, dataset_name,"train"))):
         os.makedirs(os.path.join(output_path, dataset_name, "train","JPEGImages"))
         os.makedirs(os.path.join(output_path, dataset_name, "train","Annotations"))
         os.makedirs(os.path.join(output_path, dataset_name, "test","JPEGImages"))
