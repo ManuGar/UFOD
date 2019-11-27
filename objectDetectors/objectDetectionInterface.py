@@ -48,7 +48,8 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
         ficherolabel = ficherolabel.replace("JPEGImages", "Annotations")
         # obetenemos el nombre de los ficheros
         name = str(os.path.basename(file).split('.')[0])
-        image_splited = os.path.join(output_path, dataset_name, "train","JPEGImages", name + ".jpg")
+        # image_splited = os.path.join(output_path, dataset_name, "train","JPEGImages", name + ".jpg")
+        image_splited = os.path.join(output_path, dataset_name, "train","JPEGImages")
         # movemos las imagenes a la carpeta JpegImages
         print(image_splited+"\n")
         print(file)
