@@ -11,8 +11,6 @@ class IObjectDetection(object):
         self.model = None
         if (not os.path.exists(self.OUTPUT_PATH)):
             os.makedirs(self.OUTPUT_PATH)
-        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
-            os.makedirs(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
     # This function prepares the dataset to the structure of the selected framework
     def transform(self):
         pass
@@ -36,12 +34,13 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
     train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=percentage, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
     if (not os.path.exists(os.path.join(output_path, dataset_name,"train"))):
-        print(os.path.join(output_path, dataset_name, "train","JPEGImages")+"\n")
         os.mkdir(os.path.join(output_path, dataset_name, "train","JPEGImages"))
         os.makedirs(os.path.join(output_path, dataset_name, "train","JPEGImages"))
         os.makedirs(os.path.join(output_path, dataset_name, "train","Annotations"))
         os.makedirs(os.path.join(output_path, dataset_name, "test","JPEGImages"))
         os.makedirs(os.path.join(output_path, dataset_name, "test","Annotations"))
+        os.makedirs(os.path.join(output_path, dataset_name, "models"))
+
 
     shutil.copy(os.path.join(dataset_path, "classes.names"), os.path.join(output_path, dataset_name, "classes.names"))
     for file in train_list:
