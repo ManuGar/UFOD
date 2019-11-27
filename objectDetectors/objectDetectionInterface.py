@@ -36,6 +36,7 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
     train_list, test_list, _, _ = train_test_split(listaFicheros, listaFicheros, train_size=percentage, random_state=5)
     # creamos la estructura de carpetas, la primera contendra las imagenes del entrenamiento
     if (not os.path.exists(os.path.join(output_path, dataset_name,"train"))):
+        print(os.path.join(output_path, dataset_name, "train","JPEGImages")+"\n")
         os.makedirs(os.path.join(output_path, dataset_name, "train","JPEGImages"))
         os.makedirs(os.path.join(output_path, dataset_name, "train","Annotations"))
         os.makedirs(os.path.join(output_path, dataset_name, "test","JPEGImages"))
@@ -52,8 +53,6 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
         # movemos las imagenes a la carpeta JpegImages
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
-        print(output_path+"\n")
-        print(dataset_name+"\n")
         shutil.copy(ficherolabel, os.path.join(output_path, dataset_name, "train","Annotations",  name + ".xml"))
     # para las imagenes de entrenamiento
     for file in test_list:
