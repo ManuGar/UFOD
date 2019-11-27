@@ -31,8 +31,7 @@ class SSDMxnet(MxNetDetector):
         n_epoch = 10
         classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
         # classes = fn.readClasses(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME))
-        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
-            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
+
         # En este caso debera ser el output path que es donde se guardo el dataset preparado
         # classes = fn.readClasses(os.path.join(self.DATASET,"VOC" + self.DATASET_NAME))
         # MXNET_ENABLE_GPU_P2P = 0

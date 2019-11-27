@@ -26,13 +26,13 @@ class TinyYoloV3Detector(DarknetAbstract):
     #     # darknetDetector.DarknetAbstract.organize(self, train_percentage)
 
     def createModel(self):
-        file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
+        file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, "classes.names"))
         classes = []
         for line in file:
             classes.append(line)
         n_classes = fn.contarClases(classes)
-        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME)
-        fn.generaFicherosTinyYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME, n_classes)
+        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME+"_"+self.model)
+        fn.generaFicherosTinyYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, n_classes)
 
     # def train(self, framework_path = None, n_gpus = 1):
     #
@@ -51,9 +51,9 @@ class TinyYoloV3Detector(DarknetAbstract):
 
     def evaluate(self, framework_path = None):
         tinyyoloPredict = DarknetPredict(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", self.DATASET_NAME + "TinyTrain_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", self.DATASET_NAME+"_"+self.model + "TinyTrain_final.weights"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "TinyTrain.cfg"))
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_"+self.model + "TinyTrain.cfg"))
         map = Map(tinyyoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),self.model)
         map.evaluate()
 

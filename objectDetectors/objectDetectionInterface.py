@@ -11,6 +11,8 @@ class IObjectDetection(object):
         self.model = None
         if (not os.path.exists(self.OUTPUT_PATH)):
             os.makedirs(self.OUTPUT_PATH)
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
     # This function prepares the dataset to the structure of the selected framework
     def transform(self):
         pass
