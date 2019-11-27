@@ -52,7 +52,7 @@ def datasetSplit(dataset_name, output_path, dataset_path, percentage):
         image_splited = os.path.join(output_path, dataset_name, "train","JPEGImages")
         # movemos las imagenes a la carpeta JpegImages
         print(image_splited+"\n")
-        print(file)
+        print(os.path.join(output_path, dataset_name))
         shutil.copy(file, image_splited)
         # movemos las anotaciones a la carpeta
         shutil.copy(ficherolabel, os.path.join(output_path, dataset_name, "train","Annotations",  name + ".xml"))
