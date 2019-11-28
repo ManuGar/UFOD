@@ -11,7 +11,7 @@ class DarknetAbstract(IObjectDetection):
         super(DarknetAbstract, self).__init__(dataset_path, dataset_name)
     def transform(self):
         # this function prepare the dataset to the yolo estructure
-        aux_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model)
+        aux_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)
         shutil.copytree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),aux_path)
 
         f = open(os.path.join(aux_path, "classes.names"), "r")
@@ -35,8 +35,8 @@ class DarknetAbstract(IObjectDetection):
     # def createModel(self):
     #     pass
     def train(self, framework_path = None, n_gpus = 1):
-        data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model)) if p.endswith(".data")][0]
-        confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model)) if p.endswith(".cfg")][0]
+        data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
+        confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
             wget.download("https://www.dropbox.com/s/67dvod7i509lmd8/darknet53.conv.74?dl=1",
                           "objectDetectors/YOLOObjectDetector/darknet53.conv.74")
@@ -49,9 +49,9 @@ class DarknetAbstract(IObjectDetection):
             str(i) for i in range(0, n_gpus)))
 
 
-        shutil.copy(confi,os.path.join(self.OUTPUT_PATH,self.DATASET_NAME))
-        shutil.move(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model,"models"), os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
-        os.rmdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model))
+        # shutil.copy(confi,os.path.join(self.OUTPUT_PATH,self.DATASET_NAME))
+        # shutil.move(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model,"models"), os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
+        # os.rmdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model))
 
     # def evaluate(self, framework_path = None):
     #     pass
