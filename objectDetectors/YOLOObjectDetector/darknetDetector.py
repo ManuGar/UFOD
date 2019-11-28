@@ -35,6 +35,7 @@ class DarknetAbstract(IObjectDetection):
     # def createModel(self):
     #     pass
     def train(self, framework_path = None, n_gpus = 1):
+        print([p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")])
         data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
