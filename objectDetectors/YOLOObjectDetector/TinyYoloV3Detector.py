@@ -26,7 +26,8 @@ class TinyYoloV3Detector(DarknetAbstract):
     #     # darknetDetector.DarknetAbstract.organize(self, train_percentage)
 
     def createModel(self):
-        file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, "classes.names"))
+        file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
+        # file = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, "classes.names"))
         classes = []
         for line in file:
             classes.append(line)
