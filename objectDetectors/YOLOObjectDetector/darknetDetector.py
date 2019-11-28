@@ -12,7 +12,7 @@ class DarknetAbstract(IObjectDetection):
     def transform(self):
         # this function prepare the dataset to the yolo estructure
         aux_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)
-        shutil.copytree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),aux_path)
+        # shutil.copytree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),aux_path)
 
         f = open(os.path.join(aux_path, "classes.names"), "r")
         for line in f:
