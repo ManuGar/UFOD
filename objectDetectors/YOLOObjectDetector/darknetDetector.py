@@ -11,8 +11,8 @@ class DarknetAbstract(IObjectDetection):
         super(DarknetAbstract, self).__init__(dataset_path, dataset_name)
     def transform(self):
         # this function prepare the dataset to the yolo estructure
-        aux_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)
-        # shutil.copytree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),aux_path)
+        aux_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model)
+        shutil.copytree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), aux_path)
 
         f = open(os.path.join(aux_path, "classes.names"), "r")
         for line in f:
@@ -35,7 +35,6 @@ class DarknetAbstract(IObjectDetection):
     # def createModel(self):
     #     pass
     def train(self, framework_path = None, n_gpus = 1):
-        print([p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")])
         data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]
         confi = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".cfg")][0]
         if not os.path.exists("objectDetectors/YOLOObjectDetector/darknet53.conv.74"):
