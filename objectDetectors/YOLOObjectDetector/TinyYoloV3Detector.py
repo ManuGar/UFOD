@@ -56,9 +56,9 @@ class TinyYoloV3Detector(DarknetAbstract):
 
     def evaluate(self, framework_path = None):
         tinyyoloPredict = DarknetPredict(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", self.DATASET_NAME+"_"+self.model + "TinyTrain_final.weights"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", self.DATASET_NAME+"_"+self.model + "train_final.weights"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_"+self.model + "TinyTrain.cfg"))
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_"+self.model + "train.cfg"))
         map = Map(tinyyoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME),self.model)
         map.evaluate()
 
