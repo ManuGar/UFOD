@@ -2,8 +2,8 @@ from objectDetectors.YOLOObjectDetector import darknetDetector
 from Predictors.DarknetPredict import DarknetPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
-import wget
 import objectDetectors.YOLOObjectDetector.functions as fn
+import shutil
 
 
 class YoloV3Detector(darknetDetector.DarknetAbstract):
@@ -33,8 +33,11 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         fn.CLASSES = classes
         # dataset_name = dataset_path[dataset_path.rfind(os.sep)+1:]
         # os.path.join(darknetPath, "cfg", Nproyecto + ".data")
-        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME+"_"+self.model)
+        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME)
         fn.generaFicherosYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, n_classes)
+        shutil.copy(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_" + self.model,
+                                 self.DATASET_NAME + "_" + self.model + "TinyTrain.cfg"),
+                    os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
     # def train(self, framework_path = None, n_gpus = 1):
     #     data = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)) if p.endswith(".data")][0]

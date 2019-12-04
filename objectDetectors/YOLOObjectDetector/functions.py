@@ -46,7 +46,7 @@ def PascalVOC2YOLO(dataset_path, dataset_name):
     listaFicheros_test = list(
         paths.list_files(os.path.join(dataset_path, dataset_name, "test"), validExts=(".xml")))
     result_path = os.path.join(dataset_path, dataset_name)
-    if (not (os.path.exists(os.path.join(result_path,"train","labels"))) and not(os.path.exists(os.path.join(result_path,"train","labels")))):
+    if (not (os.path.exists(os.path.join(result_path,"train","labels"))) and not(os.path.exists(os.path.join(result_path,"test","labels")))):
         os.makedirs(os.path.join(result_path,"train","labels"))
         os.makedirs(os.path.join(result_path,"test","labels"))
     for anno in listaFicheros_train:

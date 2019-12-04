@@ -30,6 +30,9 @@ class DarknetAbstract(IObjectDetection):
         traintxt.close()
         testtxt.close()
         fn.PascalVOC2YOLO(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model)  # , datasetPath + os.sep + "images"
+        shutil.rmtree(os.path.join(aux_path,"train","Annotations"))
+        shutil.rmtree(os.path.join(aux_path,"test","Annotations"))
+
     # def organize(self, train_percentage):
     #     super(DarknetAbstract, self).organize(train_percentage)
     # def createModel(self):
@@ -43,8 +46,8 @@ class DarknetAbstract(IObjectDetection):
         # os.system("./darknet/darknet detector train /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012dataset.data /home/magarcd/Escritorio/salida3/VOC2012dataset/VOC2012datasettrain.cfg darknet53.conv.74")
 
         os.system(os.path.join(framework_path, "darknet") + " detector train " + os.path.abspath(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, data)) + " " +
-                  os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, data)) + " " +
+                  os.path.abspath(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model,
                                                confi)) + " objectDetectors/YOLOObjectDetector/darknet53.conv.74 -dont_show -gpus " + ",".join(
             str(i) for i in range(0, n_gpus)))
 
