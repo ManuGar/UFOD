@@ -33,7 +33,7 @@ class TinyYoloV3Detector(DarknetAbstract):
             classes.append(line)
         n_classes = fn.contarClases(classes)
         # fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME+"_"+self.model)
-        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME)
+        fn.generaFicheroData(self.OUTPUT_PATH,n_classes,self.DATASET_NAME+"_"+self.model)
         # fn.generaFicherosTinyYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, n_classes)
         fn.generaFicherosTinyYoloTrain(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model, n_classes)
         shutil.copy(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model,self.DATASET_NAME+"_"+self.model + "TinyTrain.cfg"),
