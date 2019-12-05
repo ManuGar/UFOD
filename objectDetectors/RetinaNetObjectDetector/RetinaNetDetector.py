@@ -89,7 +89,7 @@ class RetinaNetDetector(IObjectDetection):
         num_files = len(traincsv.readlines())
         steps = round(num_files/batch_size)
         command = "python3 " + framework_path + "/bin/train.py --batch-size 2 --steps " + str(steps) + " --epochs " + str(epochs) + " --snapshot-path " +\
-                  os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME,"models") + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv ") +  \
+                  os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models") + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv ") +  \
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
         if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
             os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
