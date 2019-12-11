@@ -1,6 +1,6 @@
 import argparse
 import os
-from .conf import Conf
+from conf import Conf
 
 
 def main():
