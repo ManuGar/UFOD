@@ -38,7 +38,7 @@ Currently, UFOD provides support for the following algorithms.
 ## Using UFOD
 
 ### Dependencies and installation
-To install UFOD it is necessary to have all its dependencies installed, for this, launch the following command:
+To install UFOD it is necessary to install its dependencies, for this, launch the following command:
 ```bash
 sudo pip install -r requirements.txt
 ```
