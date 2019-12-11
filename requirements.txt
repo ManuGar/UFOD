@@ -16,7 +16,7 @@ cloudpickle==0.8.0
 command-not-found==0.3
 commentjson==0.7.1
 contextlib2==0.5.5
-cryptography==2.1.4
+cryptography==2.3
 cupshelpers==1.0
 cycler==0.10.0
 cymem==2.0.2
@@ -86,7 +86,7 @@ nbconvert==5.4.1
 nbformat==4.4.0
 netifaces==0.10.4
 networkx==2.2
-notebook==5.7.6
+notebook==5.7.8
 numpy==1.16.4
 oauth==1.0.1
 object-detection==0.0.3
@@ -99,7 +99,7 @@ parso==0.3.4
 pbr==5.1.3
 pexpect==4.2.1
 pickleshare==0.7.5
-Pillow==5.1.0
+Pillow==6.2.0
 plac==0.9.6
 pluggy==0.13.0
 preshed==2.0.1
@@ -129,8 +129,8 @@ python-multipart==0.0.5
 python-utils==2.3.0
 pytz==2018.3
 PyWavelets==1.0.2
-pyxdg==0.25
-PyYAML==3.12
+pyxdg==0.26
+PyYAML==5.1
 pyzmq==18.0.1
 qtconsole==4.4.3
 reportlab==3.4.0
@@ -167,7 +167,7 @@ traitlets==4.3.2
 ubuntu-drivers-common==0.0.0
 ufw==0.36
 unattended-upgrades==0.1
-urllib3==1.22
+urllib3==1.24.2
 usb-creator==0.3.3
 uvicorn==0.9.0
 uvloop==0.13.0
@@ -176,7 +176,7 @@ wasabi==0.2.2
 wcwidth==0.1.7
 webencodings==0.5.1
 websockets==8.0.2
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wget==3.2
 widgetsnbextension==3.4.2
 wrapt==1.11.2
