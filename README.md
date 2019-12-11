@@ -38,15 +38,15 @@ Currently, UFOD provides support for the following algorithms.
 ## Using UFOD
 
 ### Dependencies and installation
-To install UFOD it is necessary to install its dependencies, for this, launch the following command:
-```bash
-sudo pip install -r requirements.txt
-```
-Once we have installed the dependencies we can install the library by launching the following command:
-```bash
-git clone https://github.com/ManuGar/UFOD.git
-```
+To install UFOD it is necessary to execute the following commands:
 
+```bash
+git clone --recursive https://github.com/ManuGar/UFOD.git
+cd UFOD
+pip3 install -r requirements.txt
+cd map
+make
+```
 
 ### Dataset
 
