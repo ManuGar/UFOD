@@ -30,6 +30,9 @@ class MapEvaluator(IEvaluator):
         os.system("./map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/" + self.model_name+ "results.txt")
         shutil.rmtree(os.path.join(aux_path,"detection"))
         shutil.rmtree(os.path.join(aux_path,"labels"))
+
+        # Esto es por si se quiere mover el archivo con lo resultados para que esten todos en la misma ubicacion
+        shutil.copy( aux_path + "/" + self.model_name+ "results.txt", os.path.join( "..", os.sep, "datasets",self.dataset_name))
         os.remove(os.path.join(aux_path,"classes.names"))
 
 
