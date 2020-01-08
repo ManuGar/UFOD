@@ -16,6 +16,7 @@ def visualize(dataset_path):
     resultsModels = []
     for r in results:
         models.append(r.replace("results",""))
+        print(r)
         r = open(r)
         for line in r:
             print(line)
