@@ -27,6 +27,8 @@ class DarknetPredict(IPredictor):
             self.generateXMLFromImage(image)
 
 
+
+
     # Get the names of the output layers
     def getOutputsNames(self,net):
         # Get the names of all the layers in the network
