@@ -58,7 +58,7 @@ class RCNNPredict(IPredictor):
             # filename = imagePath.split(os.path.sep)[-1]
             # outputPath = os.path.sep.join([args["output"], filename])
             file = open(imagePath[0:imagePath.rfind(".")] + ".xml", "w")
-            file.write(self.generateXML(imagePath[0:imagePath.rfind(".")], imagePath, wI, hI, d, boxes1))
+            file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
             file.close()
 
     def prettify(self,elem):

@@ -63,7 +63,7 @@ class RetinanetPredictor(IPredictor):
             # outputPath = os.path.sep.join([args["output"], filename])
 
             file = open(imagePath[0:imagePath.rfind(".")] + ".xml", "w")
-            file.write(self.generateXML(imagePath[0:imagePath.rfind(".")], imagePath, hI, wI, d, boxes1))
+            file.write(self.generateXML(filename, imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
             file.close()
         # cv2.imwrite(outputPath, output)
 

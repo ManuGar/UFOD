@@ -33,8 +33,6 @@ def nonMaximumSupression(detections_path):
         file.write(xml)
 
 
-
-
 def extractBoxes(annotation_path):
     boxes = []
     classes = []
