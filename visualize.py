@@ -50,7 +50,6 @@ def visualize(resulst_path):
 
 
     # This code generates the plot for the performance of the models for each class
-    # classes = np.unique(classes)
 
     y = np.array([np.repeat(i + 1, len(models)) for i, _ in enumerate(classes)]).flatten()
     fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(24, 24))

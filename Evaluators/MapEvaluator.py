@@ -9,7 +9,10 @@ class MapEvaluator(IEvaluator):
     def evaluate(self):
         aux_path = os.path.join("map", self.dataset_name)
         if (not (os.path.exists(aux_path))):
+            os.makedirs(os.path.join(aux_path))
+        if( not (os.path.exists(os.path.join(aux_path,"labels")))):
             os.makedirs(os.path.join(aux_path,"labels"))
+        if (not (os.path.exists(os.path.join(aux_path, "detection")))):
             os.makedirs(os.path.join(aux_path,"detection"))
 
         shutil.copy(os.path.join(self.dataset_path, "classes.names"), os.path.join(aux_path, "classes.names"))
@@ -28,7 +31,8 @@ class MapEvaluator(IEvaluator):
             os.path.join(aux_path,"detection/") + " -f " + os.path.join(aux_path, "classes.names")))
         os.system("find `pwd`/map/" + self.dataset_name+"/labels -name '*.txt' > " + aux_path + "/test.txt")
         os.system("./map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/" + self.model_name+ "results.txt")
-        shutil.rmtree(os.path.join(aux_path,"detection"))
+        # shutil.rmtree(os.path.join(aux_path,"detection"))
+        shutil.move(os.path.join(aux_path,"detection"),os.path.join(aux_path,"detection"+self.model_name))
         shutil.rmtree(os.path.join(aux_path,"labels"))
 
         # Esto es por si se quiere mover el archivo con lo resultados para que esten todos en la misma ubicacion
