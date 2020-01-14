@@ -65,9 +65,9 @@ class RCNNDetector(IObjectDetection):
     def train(self, framework_path = None, n_gpus = 1):
         ClassConfig.GPU_COUNT = n_gpus
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
-        self.modelWeights.train(self.train_set, None, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
+        self.modelWeights.train(self.train_set, self.train_set, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
-    def evaluate(self, framework_path = None):
+    def evaluate(self):
         rcnnPredict = RCNNPredict(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "mask_rcnn_"+ self.DATASET_NAME.lower() + "_0005.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))

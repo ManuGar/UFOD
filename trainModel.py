@@ -27,7 +27,7 @@ def main():
     model.transform()
     model.createModel()
     model.train(conf[framework], ngpus) #En algunos casos tendremos que aniadir el path del framework para que pueda trabajar con el
-    model.evaluate(conf[framework])
+    model.evaluate()
 
 if __name__ == "__main__":
     main()

@@ -107,7 +107,7 @@ class RetinaNetDetector(IObjectDetection):
         # retinanet -convert-model weapons/snapshots/resnet50_csv_50.h5 output.h5
         #
 
-    def evaluate(self, framework_path = None):
+    def evaluate(self):
         # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
         yoloPredict = RetinanetPredictor(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "train_final.weights"),

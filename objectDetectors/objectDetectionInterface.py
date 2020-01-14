@@ -26,7 +26,7 @@ class IObjectDetection(object):
         pass
     def train(self, framework_path = None, n_gpus = 1):
         pass
-    def evaluate(self, framework_path = None):
+    def evaluate(self):
         pass
 
 

@@ -1,6 +1,7 @@
 import argparse
 import os
 from conf import Conf
+from visualize import visualize
 
 
 def main():
@@ -58,6 +59,8 @@ def main():
             os.system("sbatch -p " + params["partition"] + " --gres=" + params["gres"] + " --time=" + params["time"]+ " --mem=" + params["mem"] + " " + file_name )
         elif type =="local":
             os.system("bash " + file_name)
+
+    visualize(os.path.join("map",dataset_name))
 
 if __name__ == "__main__":
     main()

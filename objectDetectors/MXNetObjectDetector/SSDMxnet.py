@@ -51,7 +51,7 @@ class SSDMxnet(MxNetDetector):
         #                               pretrained_base=False, transfer='voc')
         net = gcv.model_zoo.get_model(self.model, classes=classes,
                                       pretrained_base=False, transfer='voc')
-        train_data = fn.get_dataloader(net, dataset, 512, 16, 0)
+        train_data = fn.get_dataloader(net, dataset, 512, 8, 0)
         net.collect_params().reset_ctx(ctx)
         trainer = gluon.Trainer(
             net.collect_params(), 'sgd',
@@ -102,7 +102,7 @@ class SSDMxnet(MxNetDetector):
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
-    def evaluate(self, framework_path = None):
+    def evaluate(self):
         mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.model +"_" +self.DATASET_NAME + "_final.params"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
             self.model)

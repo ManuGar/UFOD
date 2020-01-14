@@ -54,7 +54,7 @@ class YoloV3Detector(darknetDetector.DarknetAbstract):
         # del dataset que le hemos pasado
         # tambien habria que compilar darknet para que se pudiera usar o eso lo suponemos que esta hecho de antes
 
-    def evaluate(self, framework_path = None):
+    def evaluate(self):
         # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
         yoloPredict = DarknetPredict(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models", self.DATASET_NAME+"_"+self.model +"train_final.weights"),

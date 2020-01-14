@@ -4,8 +4,10 @@ import os
 import shutil
 
 class MapEvaluator(IEvaluator):
-    def __init__(self, predictor, dataset_name,dataset_path, model_name):
+    def __init__(self, predictor=None, dataset_name=None,dataset_path=None, model_name="ensemble",ensemble=False):
         super().__init__(predictor,dataset_name,dataset_path, model_name)
+        self.ensemble = ensemble
+
     def evaluate(self):
         aux_path = os.path.join("map", self.dataset_name)
         if (not (os.path.exists(aux_path))):
@@ -25,7 +27,8 @@ class MapEvaluator(IEvaluator):
             anno_splited = os.path.join(self.dataset_path, "test", "Annotations", name + ".xml")
             shutil.copy(anno_splited, os.path.join(aux_path,"labels",name + ".xml"))
         os.system("python3 map/pascal2yolo_labels.py -d " + os.path.join(os.path.join(aux_path,"labels/") + " -f " + os.path.join(aux_path,"classes.names")))
-        self.predictor.predict(os.path.join(aux_path,"detection/"))
+        if not(self.ensemble):
+             self.predictor.predict(os.path.join(aux_path,"detection/"))
         # In this moment we have the images predicted. Now we are going to tranform the predicted annotations to Darknet format
         os.system("python3 map/pascal2yolo_detection.py -d " + os.path.join(
             os.path.join(aux_path,"detection/") + " -f " + os.path.join(aux_path, "classes.names")))
