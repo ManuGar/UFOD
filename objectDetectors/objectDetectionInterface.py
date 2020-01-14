@@ -20,7 +20,7 @@ class IObjectDetection(object):
         if (not os.path.exists(os.path.join(self.DATASET, "test"))):
             datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH, self.DATASET,train_percentage)
         else:
-            copy_tree(self.DATASET, self.OUTPUT_PATH)
+            copy_tree(self.DATASET, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
     def createModel(self):
         pass
