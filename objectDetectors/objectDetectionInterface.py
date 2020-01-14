@@ -2,6 +2,7 @@ import os
 import shutil
 from imutils import paths
 from sklearn.model_selection import train_test_split
+from distutils.dir_util import copy_tree
 
 class IObjectDetection(object):
     def __init__(self, dataset_path, dataset_name):
@@ -19,7 +20,7 @@ class IObjectDetection(object):
         if (not os.path.exists(os.path.join(self.DATASET, "test"))):
             datasetSplit(self.DATASET_NAME,self.OUTPUT_PATH, self.DATASET,train_percentage)
         else:
-            shutil.copytree(self.DATASET, self.OUTPUT_PATH)
+            copy_tree(self.DATASET, self.OUTPUT_PATH)
 
     def createModel(self):
         pass
