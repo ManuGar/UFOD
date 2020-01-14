@@ -167,8 +167,6 @@ class DarknetPredict(IPredictor):
         file = open(imagePath[0:imagePath.rfind(".")] + ".xml", "w")
         # file = open(imagePath[0:imagePath.rfind(".")]+".xml", "w")
         file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes, confidences, classIds))
-        file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
-
         file.close()
         # cv.imwrite(imagePath,frame)
 
