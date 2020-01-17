@@ -6,6 +6,21 @@ frameworks have been included in UFOD, and new tools can be easily incorporated 
 
 ## Information about UFOD
 
+1. [Workflow of the UFOD framework](#workflow-of-the-ufod-framework)
+2. [List of frameworks and libraries supported in UFOD](#list-of-frameworks-and-libraries-supported-in-ufod)
+3. [Using UFOD](#using-ufod)
+   * [Dependencies and installation](#dependencies-and-installation)
+   * [Dataset](#dataset)
+   * [Configuration](#configuration-file)
+   * [How to launch the training process](#how-to-launch-the-training-process)
+4. [Extending UFOD](#adding-new-models)
+   * [Adding new frameworks and algorithms](#adding-new-frameworks-and-algorithms)
+   * [Adding new evaluation metrics](#adding-new-evaluation-metrics)
+5. [Experiments](#experiments)
+   * [Performance of different algorithms](#performance-of-different-algorithms)
+   * [Speed of different algorithms](#speed-of-different-algorithms)
+6. [Acknowledgements](#acknowledgements)
+
 ### Workflow of the UFOD framework
 
 The workflow of UFOD, depicted in the following image, captures all the necessary steps to train several object detection 
@@ -99,6 +114,10 @@ Once the user has prepared the dataset and fixed the training options in the ```
 python3 taskLauncher.py -c config.json
 ```
 
+## Extending UFOD
+
+UFOD has been designed to be easily extensible to incorporate new frameworks and algorithms. 
+
 ### Adding new frameworks and algorithms
 
 UFOD has been designed to easily include new frameworks and object detection algorithms on it. To this aim, it is necessary to 
@@ -123,6 +142,20 @@ Each framework is able to compute the performance of their models; however, diff
 This two-step process has been modelled in the UFOD API (see the figure below) using the abstract class ```IPredictor``` to implement the first step --- this class is particularised for each framework since all the models of the same framework perform predictions in the same way --- and the abstract class ```IEvaluator``` to implement the second step --- this class is particularised with different evaluation metric; and, currently, metrics such as the mAP, the IoU or the F1-score are supported. Using this approach, the models constructed using the UFOD framework can be compared even if they were constructed using different frameworks. Moreover, this part of the UFOD API can be employed to compare models constructed outside the framework by using a common metric. 
 
 ![workflow](images/DiagramUFOD3.png)
+
+## Experiments
+
+### Perfomance of different algorithms
+
+We have tested UFOD with several detection algorithms and datasets. Here, we include the results for the [Optic Disc dataset]() and the [Reconyx dataset]().
+
+
+
+### Speed of different algorithms
+
+We have also evaluated the speed of the different algorithms in terms of training time, prediction time using GPUs, and prediction time using CPUs. All the experiments were conducted using Colab notebooks (2-core Xeon 2.3GHz, 13GB RAM, 33GB HDD, GPU Tesla P100).
+
+![speed](images/chart.png)
 
 
 ## Acknowledgments
