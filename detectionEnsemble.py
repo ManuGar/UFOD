@@ -8,6 +8,7 @@ from xml.dom import minidom
 
 # The paramater of the function is a path that contains the predictions of the
 def nonMaximumSupression(detections_path):
+    output_path = detections_path[:detections_path.rfind("/")]
     listdirmodels = [ p for p in os.listdir(detections_path) if "detection" in p]
     annotationsFiles = list(paths.list_files(os.path.join(listdirmodels[0]), validExts=(".xml")))
     for an in annotationsFiles:
@@ -28,7 +29,9 @@ def nonMaximumSupression(detections_path):
         if(len(boxes)!=0):
             boxes, modes = non_max_suppression_fast(boxes,classesBoxes,0.45)
 
-        xml =generateXML(an, boxes, modes, "detectiEnsemble")
+        if not os.path.exists(os.path.join(output_path,"detectionEnsemble")):
+            os.makedirs(os.path.join(output_path,"detectionEnsemble"))
+        xml =generateXML(an, boxes, modes, "detectionEnsemble")
         file = open(os.path.join(".","detectionEnsemble",fileName),'w')
         file.write(xml)
 

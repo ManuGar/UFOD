@@ -4,3 +4,5 @@ class IPredictor(object):
         self.classesFile = classesFile
     def predict(self, imagePaths):
         pass
+    def predictImage(self, imagePath):
+        pass

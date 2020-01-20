@@ -60,6 +60,13 @@ def main():
         elif type =="local":
             os.system("bash " + file_name)
 
+
+
+    if(conf["ensemble"]):
+        from detectionEnsemble import nonMaximumSupression
+        nonMaximumSupression(os.path.join())
+
+
     visualize(os.path.join("map",dataset_name))
 
 if __name__ == "__main__":
