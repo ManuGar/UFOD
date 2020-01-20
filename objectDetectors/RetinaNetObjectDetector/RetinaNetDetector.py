@@ -95,7 +95,7 @@ class RetinaNetDetector(IObjectDetection):
             os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
         os.system(command)
         os.system(framework_path + '/retinanet -convert-model datasets/snapshots_' + self.DATASET_NAME + '/resnet50_csv_5.h5 datasets/snapshots_' + self.DATASET_NAME + '/output.h5')
-        os.rename(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models","resnet50_csv_5"),os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models","resnet50_" + self.DATASET_NAME + ".h5")))
+        os.rename(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models","resnet50_csv_5"),os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models","resnet50_" + self.DATASET_NAME + ".h5"))
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images'))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_classes.csv"))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_test.csv"))
