@@ -98,7 +98,7 @@ class RetinanetPredictor(IPredictor):
         childSegmented = ET.SubElement(top, 'segmented')
         childSegmented.text = str(0)
         for (box, score) in boxes:
-            category = self.LABELS[box[0]]
+            category = self.labels[box[0]]
             box = box[1].astype("int")
             (x, y, xmax, ymax) = box
             childObject = ET.SubElement(top, 'object')
