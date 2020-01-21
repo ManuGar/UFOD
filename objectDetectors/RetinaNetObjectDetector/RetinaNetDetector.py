@@ -95,7 +95,7 @@ class RetinaNetDetector(IObjectDetection):
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
 
         os.system(command)
-        os.system(framework_path + '/retinanet -convert-model datasets/models/resnet50_csv_05.h5 datasets/models/output.h5')
+        os.system('/retinanet-convert-model datasets/models/resnet50_csv_05.h5 datasets/models/output.h5')
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images'))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_classes.csv"))
@@ -111,7 +111,7 @@ class RetinaNetDetector(IObjectDetection):
     def evaluate(self):
         # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
         retinanetPredict = RetinanetPredictor(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models", "resnet50_csv_05.h5"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models", "output.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
         map = Map(retinanetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
