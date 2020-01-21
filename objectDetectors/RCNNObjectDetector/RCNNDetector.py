@@ -67,7 +67,11 @@ class RCNNDetector(IObjectDetection):
         # self.model.train(self.TRAIN_SET, self.TEST_SET, learning_rate=self.CONFIG.LEARNING_RATE, epochs=5, layers='heads')
         self.modelWeights.train(self.train_set, self.train_set, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
 
+
     def evaluate(self):
+        print("*******************************************************************************************")
+        print(self.DATASET_NAME)
+        print("********************************************************************************************")
         rcnnPredict = RCNNPredict(
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", "mask_rcnn_"+ self.DATASET_NAME.lower() + "_0005.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
