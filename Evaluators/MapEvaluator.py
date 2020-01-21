@@ -39,7 +39,7 @@ class MapEvaluator(IEvaluator):
         shutil.rmtree(os.path.join(aux_path,"labels"))
 
         # Esto es por si se quiere mover el archivo con lo resultados para que esten todos en la misma ubicacion
-        shutil.copy( aux_path + "/" + self.model_name+ "results.txt", os.path.join( "..", os.sep, "datasets",self.dataset_name))
+        shutil.copy( aux_path + "/" + self.model_name+ "results.txt", os.path.join( aux_path, self.dataset_name))
         os.remove(os.path.join(aux_path,"classes.names"))
 
 
