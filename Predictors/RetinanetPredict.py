@@ -48,6 +48,9 @@ class RetinanetPredictor(IPredictor):
             (image, scale) = resize_image(image)
             image = np.expand_dims(image, axis=0)
 
+            print("_________________________________________________________________")
+            print(imagePath)
+            print("_________________________________________________________________")
             # detect objects in the input image and correct for the image scale
             (boxes, scores, labels) = model.predict_on_batch(image)
             boxes /= scale
