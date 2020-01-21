@@ -17,7 +17,7 @@ def visualize(resulst_path):
     resultsModels = []
     for r in results:
         models.append(r.replace("results.txt",""))
-        r = open(r)
+        r = open(os.path.join(resulst_path,r))
         for line in r:
             if "class_id" in line:
                 line = line.split(",")
