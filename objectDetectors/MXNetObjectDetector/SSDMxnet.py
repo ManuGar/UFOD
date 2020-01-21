@@ -103,7 +103,7 @@ class SSDMxnet(MxNetDetector):
         # https://github.com/apache/incubator-mxnet/tree/master/example/ssd
 
     def evaluate(self):
-        mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.model +"_" +self.DATASET_NAME + "_final.params"),
+        mxnetPredict = MxNetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models", self.model +"_" +self.DATASET_NAME + "_final.params"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"),
             self.model)
 

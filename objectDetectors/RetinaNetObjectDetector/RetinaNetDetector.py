@@ -88,13 +88,14 @@ class RetinaNetDetector(IObjectDetection):
         traincsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv"))
         num_files = len(traincsv.readlines())
         steps = round(num_files/batch_size)
+        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
+            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
         command = "python3 " + framework_path + "/bin/train.py --batch-size 2 --steps " + str(steps) + " --epochs " + str(epochs) + " --snapshot-path " +\
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models") + " csv " + os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_train.csv ") +  \
                   os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv")
-        if not os.path.exists(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models")):
-            os.mkdir(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
+
         os.system(command)
-        os.system(framework_path + '/retinanet -convert-model datasets/snapshots_' + self.DATASET_NAME + '/resnet50_csv_5.h5 datasets/snapshots_' + self.DATASET_NAME + '/output.h5')
+        os.system(framework_path + '/retinanet -convert-model datasets/snapshots_' + self.DATASET_NAME + '/resnet50_csv_05.h5 datasets/snapshots_' + self.DATASET_NAME + '/output.h5')
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, 'images'))
         os.remove(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME+"_classes.csv"))
@@ -110,7 +111,7 @@ class RetinaNetDetector(IObjectDetection):
     def evaluate(self):
         # yoloPredict = DarknetPredict(imagePaths,modelWeights,classesFile,modelConfiguration)
         yoloPredict = RetinanetPredictor(
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models", "resnet50_csv_5.h5"),
+            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models", "output.h5"),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))
         map = Map(yoloPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
