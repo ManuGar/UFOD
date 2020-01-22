@@ -71,22 +71,9 @@ class RCNNDetector(IObjectDetection):
         self.modelWeights.train(self.train_set, self.train_set, learning_rate=self.config.LEARNING_RATE, epochs=5, layers='heads')
         results = []
         # Path(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "models")).rglob(".h5")
-        for r in glob.glob(self.OUTPUT_PATH, self.DATASET_NAME, "models",True):
-            if r.endswith(".h5"):
-                results.append(r)
+        for r in glob.glob('datasets/fruit/models/**/*5.h5'):
+            results.append(r)
         # results = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models")) if p.endswith(".h5") and "mask_rcnn_" + self.DATASET_NAME + "_0005" in p]
-
-
-        print("___________________________________________________________________________")
-        print(results)
-        print("____________________________________________________________________________")
-
-
-
-
-
-
-
         shutil.copy2(results[0],os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","mask_rcnn_" + self.DATASET_NAME + "_0005"))
 
     def evaluate(self):
