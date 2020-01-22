@@ -52,7 +52,7 @@ class DarknetAbstract(IObjectDetection):
             str(i) for i in range(0, n_gpus)))
         shutil.copy(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME+"_"+self.model,"models",self.DATASET_NAME+"_"+self.model+"_final.weights"),
                     os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
-        shutil.rmtree(self.OUTPUT_PATH,self.DATASET_NAME+"_"+self.model)
+        # shutil.rmtree(self.OUTPUT_PATH,self.DATASET_NAME+"_"+self.model)
 
         # shutil.copy(confi,os.path.join(self.OUTPUT_PATH,self.DATASET_NAME))
         # shutil.move(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME+"_"+self.model,"models"), os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models"))
