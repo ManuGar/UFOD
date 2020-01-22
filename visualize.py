@@ -9,7 +9,6 @@ matplotlib.rcParams.update({'font.size': 15})
 
 # dataset_path(la del map)
 def visualize(resulst_path):
-    print(resulst_path)
     results = [p for p in os.listdir(resulst_path) if  p.endswith(".txt") and "results" in p]
     classes = []
     models = []
