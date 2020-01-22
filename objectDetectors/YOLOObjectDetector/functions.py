@@ -1753,9 +1753,10 @@ random=1"""
 
 def generaFicherosTinyYoloTrain(darknetPath, Nproyecto, NClases):
     # creamos el fichero yolo.cfg con la configuracion correspondiente a YOLO
-    epochs = 2000 * NClases
-    if (epochs < 4000):
-        epochs = 4000
+    # epochs = 2000 * NClases
+    # if (epochs < 4000):
+    #     epochs = 4000
+    epochs = 100
     if not os.path.exists(os.path.join(darknetPath, "cfg")):
         os.mkdir(os.path.join(darknetPath, "cfg"))
     f = open(os.path.join(darknetPath, Nproyecto,Nproyecto + "TinyTrain.cfg"), 'w')
