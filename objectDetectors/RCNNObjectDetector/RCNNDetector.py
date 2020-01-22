@@ -1,6 +1,7 @@
 import  os
 import glob
 import wget
+import shutil
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from Predictors.RCNNPredict import RCNNPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
@@ -74,7 +75,7 @@ class RCNNDetector(IObjectDetection):
 
 
 
-        os.rename(results[0],os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","mask_rcnn_" + self.DATASET_NAME + "_0005"))
+        shutil.copy2(results[0],os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","mask_rcnn_" + self.DATASET_NAME + "_0005"))
 
     def evaluate(self):
         rcnnPredict = RCNNPredict(

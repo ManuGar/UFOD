@@ -56,14 +56,40 @@ class MxNetPredict(IPredictor):
             file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
             file.close()
 
-        # cv2.imwrite(outputPath, output)
 
-    def prettify(self,elem):
-        """Return a pretty-printed XML string for the Element.
-        """
-        rough_string = ET.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
+    def predictImage(self, imagePath):
+        net = gcv.model_zoo.get_model(self.model, classes=self.classes, pretrained_base=False)
+        net.load_parameters(self.modelWeights)
+        # load the input image (in BGR order), clone it, and preprocess it
+        image = cv2.imread(imagePath)
+        xmlPath = imagePath[0:imagePath.rfind(".")] + ".xml"
+        (hI, wI, d) = image.shape
+
+        # detect objects in the input image and correct for the image scale
+        # Poner short=512
+        x, image = gcv.data.transforms.presets.ssd.load_test(imagePath, 512)
+        cid, score, bbox = net(x)
+        (HI, WI, d) = image.shape
+        boxes1 = []
+        # Añadir cid[0]
+        for (cid, box, score) in zip(cid[0], bbox[0], score[0]):
+            if score < self.CONFIDENCE:
+                continue
+            # Añadir label que sera con net.classes[cid]
+            (x, y, xmax, ymax) = box.asnumpy()
+            box = (x * wI / WI, y * hI / HI, xmax * wI / WI, ymax * hI / HI)
+            boxes1.append(([net.classes[cid[0].asnumpy()[0].astype('int')], box], score))
+        # parse the filename from the input image path, construct the
+        # path to the output image, and write the image to disk
+        filename = imagePath.split(os.path.sep)[-1]
+        # outputPath = os.path.sep.join([args["output"], filename])
+        file = open(xmlPath, "w")
+        file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
+        file.close()
+        self.combineImageAndPrediction(imagePath, xmlPath)
+
+
+
 
     def generateXML(self,filename, outputPath, w, h, d, boxes):
         top = ET.Element('annotation')

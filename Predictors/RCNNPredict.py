@@ -61,12 +61,38 @@ class RCNNPredict(IPredictor):
             file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
             file.close()
 
-    def prettify(self,elem):
-        """Return a pretty-printed XML string for the Element.
-        """
-        rough_string = ET.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
+    def predictImage(self, imagePath):
+        testConfig = TestConfig()
+        testConfig.NUM_CLASSES = 1 + len(self.classes)
+        testConfig.IMAGE_META_SIZE = 1 + 3 + 3 + 4 + 1 + testConfig.NUM_CLASSES
+        xmlPath = imagePath[0:imagePath.rfind(".")] + ".xml"
+        rcnn = MaskRCNN(mode='inference', model_dir='./', config=testConfig)
+        # load coco model weights
+        # J. modificar con el path al modelo.
+        rcnn.load_weights(self.modelWeights, by_name=True)
+
+        # load the input image (in BGR order), clone it, and preprocess it
+        img = load_img(imagePath)
+        img = img_to_array(img)
+        (hI, wI, d) = img.shape
+        # detect objects in the input image and correct for the image scale
+        # Poner short=512
+
+        results = rcnn.detect([img], verbose=1)
+        r = results[0]
+        boxes1 = []
+        for (box, score, cid) in zip(r['rois'], r['scores'], r['class_ids']):
+            if score < self.CONFIDENCE:
+                continue
+            # Añadir label que sera con net.classes[cid]
+            boxes1.append(([self.classes[cid - 1], box], score))
+
+        file = open(xmlPath, "w")
+        file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
+        file.close()
+        self.combineImageAndPrediction(imagePath,xmlPath)
+
+
 
     def generateXML(self,filename, outputPath, w, h, d, boxes):
         top = ET.Element('annotation')

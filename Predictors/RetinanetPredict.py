@@ -47,10 +47,6 @@ class RetinanetPredictor(IPredictor):
             image = preprocess_image(image)
             (image, scale) = resize_image(image)
             image = np.expand_dims(image, axis=0)
-
-            print("_________________________________________________________________")
-            print(imagePath)
-            print("_________________________________________________________________")
             # detect objects in the input image and correct for the image scale
             (boxes, scores, labels) = model.predict_on_batch(image)
             boxes /= scale
@@ -69,13 +65,36 @@ class RetinanetPredictor(IPredictor):
             file.write(self.generateXML(filename, imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
             file.close()
         # cv2.imwrite(outputPath, output)
+    def predictImage(self, imagePath):
+        model = models.load_model(self.modelWeights, backbone_name="resnet50")
+        xmlPath = imagePath[0:imagePath.rfind(".")] + ".xml"
+        # load the input image (in BGR order), clone it, and preprocess it
+        image = read_image_bgr(imagePath)
+        wI, hI, d = image.shape
+        output = image.copy()
+        image = preprocess_image(image)
+        (image, scale) = resize_image(image)
+        image = np.expand_dims(image, axis=0)
 
-    def prettify(self,elem):
-        """Return a pretty-printed XML string for the Element.
-        """
-        rough_string = ET.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
+        # detect objects in the input image and correct for the image scale
+        (boxes, scores, labels) = model.predict_on_batch(image)
+        boxes /= scale
+        boxes1 = []
+        for (box, score, label) in zip(boxes[0], scores[0], labels[0]):
+            if score < self.CONFIDENCE:
+                continue
+            boxes1.append(([label, box], score))
+
+        # parse the filename from the input image path, construct the
+        # path to the output image, and write the image to disk
+        filename = imagePath.split(os.path.sep)[-1]
+        # outputPath = os.path.sep.join([args["output"], filename])
+        file = open(xmlPath, "w")
+        file.write(self.generateXML(filename, imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes1))
+        file.close()
+        self.combineImageAndPrediction(imagePath, xmlPath)
+
+
 
     def generateXML(self, filename, outputPath, w, h, d, boxes):
         top = ET.Element('annotation')

@@ -5,6 +5,7 @@ import cv2 as cv
 import numpy as np
 from imutils import paths
 
+
 class DarknetPredict(IPredictor):
     CONFTRESHOLD = 0.25  # Confidence threshold
     NMSTRESHOLD = 0.45  # Non-maximum suppression threshold
@@ -27,7 +28,9 @@ class DarknetPredict(IPredictor):
             self.generateXMLFromImage(image)
 
     def predictImage(self, imagePath):
-        self.generateXML(imagePath)
+        xmlPath = imagePath[0:imagePath.rfind(".")] + ".xml"
+        self.generateXMLFromImage(imagePath)
+        self.combineImageAndPrediction(imagePath, xmlPath)
 
 
     # Get the names of the output layers
@@ -82,12 +85,6 @@ class DarknetPredict(IPredictor):
         # Cambiado para que tome valores de confianza.
         return boxes,confidences,classIds
 
-    def prettify(self,elem):
-        """Return a pretty-printed XML string for the Element.
-        """
-        rough_string = ET.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
 
     # Cambiado para que tome valores de confianza.
     def generateXML(self,filename, outputPath, w, h, d, boxes, confidences, classIds):
@@ -170,7 +167,6 @@ class DarknetPredict(IPredictor):
         file.write(self.generateXML(imagePath.split("/")[-1], imagePath[0:imagePath.rfind("/")], wI, hI, d, boxes, confidences, classIds))
         file.close()
         # cv.imwrite(imagePath,frame)
-
 
 
 
