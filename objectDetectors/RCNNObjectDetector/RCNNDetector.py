@@ -74,7 +74,7 @@ class RCNNDetector(IObjectDetection):
         for r in glob.glob(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","**","*5.h5" )):
             results.append(r)
         # results = [p for p in os.listdir(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models")) if p.endswith(".h5") and "mask_rcnn_" + self.DATASET_NAME + "_0005" in p]
-        shutil.copy2(results[0],os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","mask_rcnn_" + self.DATASET_NAME + "_0005"))
+        shutil.copy2(results[0],os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","mask_rcnn_" + self.DATASET_NAME + "_0005.h5"))
 
     def evaluate(self):
         rcnnPredict = RCNNPredict(
