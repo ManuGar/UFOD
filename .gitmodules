@@ -1,3 +1,9 @@
 [submodule "map"]
 	path = map
 	url = https://github.com/CoVUR/map.git
+[submodule "EfficientDet"]
+	path = EfficientDet
+	url = https://github.com/joheras/EfficientDet/
+[submodule "keras-fcos"]
+	path = keras-fcos
+	url = https://github.com/joheras/keras-fcos
