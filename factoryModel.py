@@ -16,6 +16,9 @@
 
 def createModel(framework, modelText, dataset, dataset_name):
     model = ""
+    if framework == "Efficientdet":
+        from objectDetectors.EfficientDetDetector import EfficientDetDetector
+        model = EfficientDetDetector.EfficientDetDetector(dataset, dataset_name, int(modelText))
     if framework == "Mxnet":
         from objectDetectors.MXNetObjectDetector import SSDMxnet
         if modelText == "ssdVgg16":

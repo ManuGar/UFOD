@@ -15,8 +15,6 @@ class DarknetPredict(IPredictor):
         super().__init__(modelWeights,classesFile)
         self.modelConfiguration = modelConfiguration
         # classes = None
-        print(self.classesFile)
-        print(classesFile)
         with open(self.classesFile, 'rt') as f:
             self.classes = f.read().rstrip('\n').split('\n')
         # Give the configuration and weight files for the model and

@@ -52,6 +52,8 @@ def main():
                 f.write("source configs_local/tensorflow.sh\n")
             if (fram == "Darknet"):
                 f.write("source configs_local/yolo.sh\n")
+            if (fram == "Efficientdet"):
+                f.write("source configs_local/efficientdet.sh\n")
         f.write("python3 trainModel.py -f " + fram + " -m " + mod + " -d " + dataset + " -dn " + dataset_name + " -ng " + str(n_gpus))
         f.close()
 
