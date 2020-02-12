@@ -4,6 +4,8 @@
   "Tensorflow" : "01:00:00",
   "Darknet" :   "~/darknet/",
   "Retinanet": "~/ws/holms/keras-retinanet/keras_retinanet",
-  "EfficientDet": "~/EfficientDet/"
+  "EfficientDet": "~/EfficientDet/",
+  "Fcos": "~/Fcos/"
+
 
 }

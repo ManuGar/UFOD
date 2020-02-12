@@ -1,11 +1,11 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from imutils import paths
-from Predictors.EfficientdetPredict import EfficientdetPredict
+from Predictors.FcosPredict import FcosPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import shutil
 
-class EfficientDetDetector(IObjectDetection):
+class FcosDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name,model):
         IObjectDetection.__init__(self, dataset_path, dataset_name)
         self.model = model
@@ -46,35 +46,23 @@ class EfficientDetDetector(IObjectDetection):
 
 
     def train(self, framework_path = None, n_gpus = 1):
-
         batch_size = 4
         epochs = 25
         outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model)
         image_paths = list(paths.list_files(os.path.join(outputPath,self.DATASET_NAME,"train"), validExts=(".jpg")))
-
         n_steps = (len(image_paths)/batch_size)
-
-
         if (not (os.path.exists(os.path.join(outputPath,"models")))):
             os.makedirs(os.path.join(outputPath, "models"))
-        os.system("python3 "+ framework_path + "/train.py --snapshot imagenet --snapshot-path " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --phi " + self.model + " --gpu 0 --random-transform --compute-val-loss --freeze-backbone --batch-size " + batch_size + " --epochs " + epochs
-                  + " --steps " + n_steps + " pascalCustom " + outputPath )
-
-        os.system("python3 "+ framework_path + "/train.py --snapshot " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --snapshot-path " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --phi " + self.model + " --gpu 0 --random-transform --compute-val-loss --freeze-bn --batch-size 4 --epochs 25 --steps 177 pascalCustom datasets/VOCdataset/")
+        os.system("python3 "+ framework_path + "/train.py --backbone " + self.model + " --snapshot-path " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fcos_" + self.model + '_' + self.DATASET_NAME + '.h5') + " --gpu 0 --batch-size " + batch_size + " --epochs " + epochs + " --steps " + n_steps + " pascalCustom " + outputPath)
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
 
-
-
     def evaluate(self):
-        efficientdetPredict = EfficientdetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5'),
+        fcosPredict = FcosPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","fcos_" + self.model + '_' + self.DATASET_NAME + '.h5'),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
-        map = Map(efficientdetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map = Map(fcosPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
 
 def main():
