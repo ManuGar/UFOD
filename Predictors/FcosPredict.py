@@ -9,6 +9,7 @@ import fcos.models
 from fcos.utils.image import read_image_bgr, preprocess_image, resize_image
 from fcos.utils.visualization import draw_box, draw_caption
 from fcos.utils.colors import label_color
+from imutils import paths
 
 # import miscellaneous modules
 import cv2
@@ -42,7 +43,7 @@ class FcosPredict(IPredictor):
 
 
     def predict(self, imagePaths):
-
+        imagePaths = list(paths.list_images("datasets/VOCdataset/JPEGImages/"))
         image_size = self.image_sizes[self.model]
         LABELS = open(self.classesFile).read().strip().split("\n")
         classes = [label.split(',')[0] for label in LABELS]
