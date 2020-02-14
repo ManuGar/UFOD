@@ -5,10 +5,10 @@ from xml.dom import minidom
 import gluoncv as gcv
 import xml.etree.ElementTree as ET
 import keras
-import fcos.models
-from fcos.utils.image import read_image_bgr, preprocess_image, resize_image
-from fcos.utils.visualization import draw_box, draw_caption
-from fcos.utils.colors import label_color
+import kerasfcos.models
+from kerasfcos.utils.image import read_image_bgr, preprocess_image, resize_image
+from kerasfcos.utils.visualization import draw_box, draw_caption
+from kerasfcos.utils.colors import label_color
 from imutils import paths
 
 # import miscellaneous modules
