@@ -42,13 +42,17 @@ A more detailed explanation of the main features of this framework can be found 
 Currently, UFOD provides support for the following algorithms.
 
 
-| Framework/Library | Algorithms supported |
-|---------|----------------------|
-| [Darknet](https://pjreddie.com/darknet/yolo/) | YOLO and TinyYOLO |
-| [MXNet](https://gluon-cv.mxnet.io/)   | SSD with different backbones |
-| [Tensorflow](https://github.com/tensorflow/models/tree/master/research/object_detection) | SSD and Faster-RCNN |
-| [RetinaNet for Keras](https://github.com/fizyr/keras-retinanet) | RetinaNet |
-| [MaskRCNN for Keras](https://github.com/matterport/Mask_RCNN) | Mask RCNN |
+| Framework/Library | Algorithms supported | Backbones |
+|---------|----------------------|----------------------|
+| [Darknet](https://pjreddie.com/darknet/yolo/) | YOLO | Darknet 53 |
+| | Tiny YOLO | Darknet 8|
+| [MXNet](https://gluon-cv.mxnet.io/)   | SSD  | VGG16, Mobilenet, Resnet 50 | 
+| [Tensorflow](https://github.com/tensorflow/models/tree/master/research/object_detection) | Faster-RCNN | Inception v2 |
+|  | SSD | Mobilenet v2 |
+|  | RFCN | Resnet 101 |
+| [RetinaNet for Keras](https://github.com/fizyr/keras-retinanet) | RetinaNet | Resnet 50, Resnet 101 |
+| [MaskRCNN for Keras](https://github.com/matterport/Mask_RCNN) | Mask RCNN | Resnet 50, Resnet 101 |
+
 
 ## Using UFOD
 
