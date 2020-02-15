@@ -38,8 +38,9 @@ class EfficientDetDetector(IObjectDetection):
 
         classescsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"), "w")
         classes = [cl for cl in open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))]
-        rows = [",".join([c, str(i)]) for (i, c) in enumerate(classes)]
-        classescsv.write("\n".join(rows))
+        rows = [c.replace('\n','')+","+ str(i)+"\n" for (i, c) in enumerate(classes)]
+        for row in rows:
+            classescsv.write(row	)
         classescsv.close()
         for f_train in listaFicheros_train:
             name = os.path.basename(f_train).split('.')[0]
@@ -82,7 +83,7 @@ class EfficientDetDetector(IObjectDetection):
         args.compute_val_loss=True
         args.freeze_backbone=True
         args.batch_size = batch_size
-        args.epochs=25
+        args.epochs=1
         args.steps=n_steps
         args.weighted_bifpn=False
         args.freeze_bn=False
@@ -98,17 +99,17 @@ class EfficientDetDetector(IObjectDetection):
 
         args.freeze_bn=True
         args.freeze_backbone=False
-        args.epochs=30
-        args.snapshot=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_25.h5')
+        args.epochs=1
+        args.snapshot=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_01.h5')
         trainModel(args)
 
-        shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
+        shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model)))
 
 
 
     def evaluate(self):
-        efficientdetPredict = EfficientdetPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_30.h5'),
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
+        efficientdetPredict = EfficientdetPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_01.h5'),
+            os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
         map = Map(efficientdetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
