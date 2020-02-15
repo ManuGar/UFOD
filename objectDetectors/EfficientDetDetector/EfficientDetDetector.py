@@ -107,7 +107,7 @@ class EfficientDetDetector(IObjectDetection):
 
 
     def evaluate(self):
-        efficientdetPredict = EfficientdetPredict(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_01.h5'),
+        efficientdetPredict = EfficientdetPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_01.h5'),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
