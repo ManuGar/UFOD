@@ -5,11 +5,16 @@ from xml.dom import minidom
 import gluoncv as gcv
 import xml.etree.ElementTree as ET
 import keras
-import kerasfcos.models
-from kerasfcos.utils.image import read_image_bgr, preprocess_image, resize_image
-from kerasfcos.utils.visualization import draw_box, draw_caption
-from kerasfcos.utils.colors import label_color
+import FSAF.models
+from FSAF.utils.image import read_image_bgr, preprocess_image, resize_image
+from FSAF.utils.visualization import draw_box, draw_caption
+from FSAF.utils.colors import label_color
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 from imutils import paths
+
+from FSAF.models.resnet import resnet_fsaf
+from FSAF.models.retinanet import fsaf_bbox
 
 # import miscellaneous modules
 import cv2
@@ -21,18 +26,14 @@ import glob
 
 # set tf backend to allow memory to grow, instead of claiming everything
 import tensorflow as tf
-from kerasfcos.utils.anchors import guess_shapes, compute_locations
 
-
-import tensorflow as tf
-from kerasfcos.utils.anchors import guess_shapes, compute_locations
 
 def get_session():
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     return tf.Session(config=config)
 
-class FcosPredict(IPredictor):
+class FSAFPredict(IPredictor):
     image_sizes = (512, 640, 768, 896, 1024, 1280, 1408)
     CONFIDENCE=0.5
     def __init__(self,modelWeights,classesFile, model):
@@ -43,16 +44,14 @@ class FcosPredict(IPredictor):
 
 
     def predict(self, imagePaths):
+        
         image_size = self.image_sizes[self.model]
         LABELS = open(self.classesFile).read().strip().split("\n")
         classes = [label.split(',')[0] for label in LABELS]
         num_classes = len(classes)
-        weighted_bifpn = False
-        keras.backend.tensorflow_backend.set_session(get_session())
-        # adjust this to point to your downloaded/trained model
-        # models can be downloaded here: https://github.com/fizyr/keras-retinanet/releases
-        model_path = self.modelWeights
-        model = fcos.models.load_model(model_path, backbone_name='resnet50')
+        fsaf = resnet_fsaf(num_classes=len(LABELS), backbone=backbone)
+        model = fsaf_bbox(fsaf)
+        model.load_weights(weights, by_name=True)
 
         for (i, image_path) in enumerate(imagePaths):
             image = read_image_bgr(image_path)

@@ -17,7 +17,7 @@ limitations under the License.
 import configparser
 import numpy as np
 import keras
-from utils.anchors import AnchorParameters
+from .anchors import AnchorParameters
 
 
 def read_config_file(config_path):

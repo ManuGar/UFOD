@@ -16,7 +16,7 @@ limitations under the License.
 """
 
 from .generator import Generator
-from utils.image import read_image_bgr
+from ..utils.image import read_image_bgr
 
 import numpy as np
 from PIL import Image

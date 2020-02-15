@@ -22,19 +22,19 @@ import keras
 import keras.preprocessing.image
 import tensorflow as tf
 from datetime import date
-import losses
-import models
-from callbacks import RedirectModel
-from callbacks import Evaluate
-from models.retinanet import retinanet_bbox, fsaf_bbox
-from generators.csv_generator import CSVGenerator
-from generators.voc_generator import PascalVocGenerator
-from utils.anchors import make_shapes_callback
-from utils.config import read_config_file, parse_anchor_parameters
-from utils.keras_version import check_keras_version
-from utils.model import freeze as freeze_model
-from utils.transform import random_transform_generator
-from utils.image import random_visual_effect_generator
+from . import losses
+from . import models
+from .callbacks import RedirectModel
+from .callbacks import Evaluate
+from .models.retinanet import retinanet_bbox, fsaf_bbox
+from .generators.csv_generator import CSVGenerator
+from .generators.voc_generator import PascalVocGenerator
+from .utils.anchors import make_shapes_callback
+from .utils.config import read_config_file, parse_anchor_parameters
+from .utils.keras_version import check_keras_version
+from .utils.model import freeze as freeze_model
+from .utils.transform import random_transform_generator
+from .utils.image import random_visual_effect_generator
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
@@ -436,11 +436,8 @@ def parse_args(args):
     return check_args(parser.parse_args(args))
 
 
-def main(args=None):
+def trainModel(args=None):
     # parse arguments
-    if args is None:
-        args = sys.argv[1:]
-    args = parse_args(args)
 
     # create object that stores backbone information
     backbone = models.backbone(args.backbone)
@@ -521,9 +518,9 @@ def main(args=None):
     return training_model.fit_generator(
         generator=train_generator,
         steps_per_epoch=args.steps,
-        initial_epoch=9,
+        initial_epoch=0,
         epochs=args.epochs,
-        verbose=1,
+        verbose=0,
         callbacks=callbacks,
         workers=args.workers,
         use_multiprocessing=args.multiprocessing,

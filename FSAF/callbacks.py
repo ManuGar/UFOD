@@ -1,6 +1,6 @@
 import keras
-from utils.eval import evaluate
-from utils.coco_eval import evaluate_coco
+from .utils.eval import evaluate
+from .utils.coco_eval import evaluate_coco
 
 
 class Evaluate(keras.callbacks.Callback):

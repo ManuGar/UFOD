@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from utils.compute_overlap import compute_overlap
-from utils.visualization import draw_detections, draw_annotations
+from .compute_overlap import compute_overlap
+from .visualization import draw_detections, draw_annotations
 
 import keras
 import numpy as np

@@ -1,12 +1,12 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from imutils import paths
-from Predictors.FcosPredict import FcosPredict
+from Predictors.FSAFPredict import FSAFPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import shutil
-from kerasfcos.train import trainModel
+from FSAF.train import trainModel
 
-class FcosDetector(IObjectDetection):
+class FSAFDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name,model):
         IObjectDetection.__init__(self, dataset_path, dataset_name)
         self.model = model
@@ -77,7 +77,7 @@ class FcosDetector(IObjectDetection):
         args.weights=None
         args.num_gpus=1
         args.lr=1e-4
-        args.snapshot_path=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fcos_" + str(self.model) + '_' + self.DATASET_NAME)
+        args.snapshot_path=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fsaf_" + str(self.model) + '_' + self.DATASET_NAME)
         args.backbone = self.model
         args.gpu = 0
         args.random_transform=True
@@ -103,11 +103,11 @@ class FcosDetector(IObjectDetection):
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
 
     def evaluate(self):
-        fcosPredict = FcosPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fcos_" + str(self.model) + '_' + self.DATASET_NAME,str(model)+'_pascalCustom_25.h5'),
+        FSAFPredict = FSAFPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fsaf_" + str(self.model) + '_' + self.DATASET_NAME,str(model)+'_pascalCustom_25.h5'),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
-        map = Map(fcosPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map = Map(FSAFPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
         map.evaluate()
 
 def main():
