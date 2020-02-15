@@ -30,11 +30,11 @@ from tensorflow import keras
 import tensorflow.keras.backend as K
 from tensorflow.keras.optimizers import Adam, SGD
 
-from augmentor.color import VisualEffect
-from augmentor.misc import MiscEffect
-from model import efficientdet
-from losses import smooth_l1, focal
-from efficientnet import BASE_WEIGHTS_PATH, WEIGHTS_HASHES
+from .augmentor.color import VisualEffect
+from .augmentor.misc import MiscEffect
+from .model import efficientdet
+from .losses import smooth_l1, focal
+from .efficientnet import BASE_WEIGHTS_PATH, WEIGHTS_HASHES
 
 
 def makedirs(path):
@@ -89,7 +89,7 @@ def create_callbacks(training_model, prediction_model, validation_generator, arg
         callbacks.append(tensorboard_callback)
 
     if args.evaluation and validation_generator:
-        if args.dataset_type == 'coco':
+        if args. dataset_type == 'coco':
             from eval.coco import Evaluate
             # use prediction model for evaluation
             evaluation = Evaluate(validation_generator, prediction_model, tensorboard=tensorboard_callback)
@@ -147,7 +147,6 @@ def create_generators(args):
         'batch_size': args.batch_size,
         'phi': args.phi,
     }
-
     # create random transform generator for augmenting training data
     if args.random_transform:
         misc_effect = MiscEffect()
@@ -157,7 +156,7 @@ def create_generators(args):
         visual_effect = None
 
     if args.dataset_type == 'pascal':
-        from generators.pascal import PascalVocGenerator
+        from .generators.pascal import PascalVocGenerator
         train_generator = PascalVocGenerator(
             args.pascal_path,
             'trainval',
@@ -176,7 +175,7 @@ def create_generators(args):
         )
 
     elif args.dataset_type == 'pascalCustom':
-        from generators.pascal import PascalVocGenerator
+        from .generators.pascal import PascalVocGenerator
         train_generator = PascalVocGenerator(
             args.pascal_path,
             'train',
@@ -327,11 +326,15 @@ def parse_args(args):
     return check_args(parser.parse_args(args))
 
 
-def main(args=None):
+
+
+
+
+def trainModel(args=None):
     # parse arguments
-    if args is None:
-        args = sys.argv[1:]
-    args = parse_args(args)
+    #if args is None:
+    #    args = sys.argv[1:]
+    #args = parse_args(args)
 
     # optionally choose specific GPU
     if args.gpu:

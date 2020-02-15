@@ -4,6 +4,7 @@ from Predictors.EfficientdetPredict import EfficientdetPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import shutil
+from EfficientDet.train import trainModel
 
 class EfficientDetDetector(IObjectDetection):
     def __init__(self, dataset_path, dataset_name,model):
@@ -14,7 +15,7 @@ class EfficientDetDetector(IObjectDetection):
         listaFicheros_train = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train"), validExts=(".jpg")))
         listaFicheros_test = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"test"), validExts=(".jpg")))
 
-        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model)
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model))
         # outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME)
 
         shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), os.path.join(outputPath, "JPEGImages"))
@@ -23,6 +24,15 @@ class EfficientDetDetector(IObjectDetection):
             os.makedirs(os.path.join(outputPath, "ImageSets", "Main"))
 
         shutil.copy(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"), outputPath)
+
+        classescsv = open(os.path.join(outputPath,"classes.csv"), "w")
+        with open(os.path.join(outputPath,"classes.names")) as f:
+            classes = f.read()
+            classes = classes.split('\n')
+        rows = [",".join([c, str(i)]) for (i, c) in enumerate(classes)]
+        classescsv.write("\n".join(rows))
+        classescsv.close()
+
         traintxt = open(os.path.join(outputPath, "ImageSets", "Main", "train.txt"), "w")
         testtxt = open(os.path.join(outputPath, "ImageSets", "Main", "test.txt"), "w")
 
@@ -44,26 +54,51 @@ class EfficientDetDetector(IObjectDetection):
             shutil.copy(ficherolabel, os.path.join(outputPath, "Annotations"))
         # shutil.rmtree(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME))
 
+    
 
     def train(self, framework_path = None, n_gpus = 1):
-
         batch_size = 4
         epochs = 25
-        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model)
-        image_paths = list(paths.list_files(os.path.join(outputPath,self.DATASET_NAME,"train"), validExts=(".jpg")))
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model))
+        image_paths = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), validExts=(".jpg")))
 
-        n_steps = (len(image_paths)/batch_size)
+        n_steps = (len(image_paths)//batch_size)
 
 
         if (not (os.path.exists(os.path.join(outputPath,"models")))):
             os.makedirs(os.path.join(outputPath, "models"))
-        os.system("python3 "+ framework_path + "/train.py --snapshot imagenet --snapshot-path " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --phi " + self.model + " --gpu 0 --random-transform --compute-val-loss --freeze-backbone --batch-size " + batch_size + " --epochs " + epochs
-                  + " --steps " + n_steps + " pascalCustom " + outputPath )
 
-        os.system("python3 "+ framework_path + "/train.py --snapshot " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --snapshot-path " + os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5') +
-                  " --phi " + self.model + " --gpu 0 --random-transform --compute-val-loss --freeze-bn --batch-size 4 --epochs 25 --steps 177 pascalCustom datasets/VOCdataset/")
+        class Aux():
+            pass
+
+        args = Aux()
+        args.dataset_type='pascalCustom'
+        args.pascal_path= outputPath
+        args.snapshot='imagenet'
+        args.snapshot_path=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME)
+        args.phi = 0
+        args.gpu = 0
+        args.random_transform=True
+        args.compute_val_loss=True
+        args.freeze_backbone=True
+        args.batch_size = batch_size
+        args.epochs=epochs
+        args.steps=n_steps
+        args.weighted_bifpn=False
+        args.freeze_bn=False
+        args.tensorboard_dir=False
+        args.evaluation=False
+        args.snapshots=True
+        args.workers=1
+        args.multiprocessing=False
+        args.max_queue_size=10
+
+        trainModel(args)
+
+
+        args.freeze_bn=True
+        args.freeze_backbone=False
+        trainModel(args)
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from generators.common import Generator
+from .common import Generator
 import os
 import numpy as np
 from six import raise_from
