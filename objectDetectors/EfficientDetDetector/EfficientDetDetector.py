@@ -82,7 +82,7 @@ class EfficientDetDetector(IObjectDetection):
         args.compute_val_loss=True
         args.freeze_backbone=True
         args.batch_size = batch_size
-        args.epochs=epochs
+        args.epochs=1
         args.steps=n_steps
         args.weighted_bifpn=False
         args.freeze_bn=False
@@ -98,6 +98,8 @@ class EfficientDetDetector(IObjectDetection):
 
         args.freeze_bn=True
         args.freeze_backbone=False
+        args.epochs=1
+        args.snapshot=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_'+str(args.epochs)+'.h5')
         trainModel(args)
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
@@ -105,7 +107,7 @@ class EfficientDetDetector(IObjectDetection):
 
 
     def evaluate(self):
-        efficientdetPredict = EfficientdetPredict(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME,"models","efficientdet" + self.model + '_' + self.DATASET_NAME + '.h5'),
+        efficientdetPredict = EfficientdetPredict(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_01.h5'),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
