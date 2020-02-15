@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from .transform import translation_xy, change_transform_origin, scaling_xy
+from augmentor.transform import translation_xy, change_transform_origin, scaling_xy
 
 ROTATE_DEGREE = [90, 180, 270]
 

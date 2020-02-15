@@ -5,8 +5,6 @@ from functools import reduce
 # from keras import models
 # from keras_ import EfficientNetB0, EfficientNetB1, EfficientNetB2
 # from keras_ import EfficientNetB3, EfficientNetB4, EfficientNetB5, EfficientNetB6
-import sys
-sys.path.append(".")
 
 from tensorflow.keras import layers
 from tensorflow.keras import initializers
