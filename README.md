@@ -108,6 +108,21 @@ UFOD training process is configured by means of a json file, that must contain t
   - ["Tensorflow", "fasterRcnnResnet"]: Faster RCNN with the inception backbone using the Tensorflow framework.
   - ["Tensorflow", "rfcnResnet"]: RFCN with the inception backbone using the Tensorflow framework.
   - ["Tensorflow", "maskRcnnInception"]: Mask RCNN with the inception backbone using the Tensorflow framework.
+  - ["Efficientdet", "0"]: EfficientDet with EfficientNet 0 backbone.
+  - ["Efficientdet", "1"]: EfficientDet with EfficientNet 1 backbone.
+  - ["Efficientdet", "2"]: EfficientDet with EfficientNet 2 backbone.
+  - ["Efficientdet", "3"]: EfficientDet with EfficientNet 3 backbone.
+  - ["Efficientdet", "4"]: EfficientDet with EfficientNet 4 backbone.
+  - ["Efficientdet", "5"]: EfficientDet with EfficientNet 5 backbone.
+  - ["FCOS", "resnet50"]: FCOS with resnet50 backbone.
+  - ["FCOS", "resnet101"]: FCOS with Resnet101 backbone.
+  - ["FCOS", "vgg16"]: FCOS with vgg16 backbone.
+  - ["FCOS", "vgg19"]: FCOS with vgg19 backbone.
+  - ["FCOS", "densenet121"]: FCOS densenet121 resnet50 backbone.
+  - ["FCOS", "densenet169"]: FCOS with densenet169 backbone.
+  - ["FCOS", "densenet201"]: FCOS with densenet201 backbone.
+  - ["FSAF", "resnet50"]: FSAF with resnet50 backbone.
+  - ["FSAF", "resnet101"]: FSAF with Resnet101 backbone.
   
 Examples of this configurations files can be seen in the [Optic.json](Optic.json) (local execution) and the [prueba.json](prueba.json) (cluster execution) files.
 
