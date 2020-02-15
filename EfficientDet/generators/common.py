@@ -4,7 +4,7 @@ import warnings
 import cv2
 from tensorflow import keras
 
-from utils.anchors import anchors_for_shape, anchor_targets_bbox
+from ..utils.anchors import anchors_for_shape, anchor_targets_bbox
 
 
 class Generator(keras.utils.Sequence):

@@ -30,11 +30,11 @@ from tensorflow import keras
 import tensorflow.keras.backend as K
 from tensorflow.keras.optimizers import Adam, SGD
 
-from augmentor.color import VisualEffect
-from augmentor.misc import MiscEffect
-from model import efficientdet
-from losses import smooth_l1, focal
-from efficientnet import BASE_WEIGHTS_PATH, WEIGHTS_HASHES
+from .augmentor.color import VisualEffect
+from .augmentor.misc import MiscEffect
+from .model import efficientdet
+from .losses import smooth_l1, focal
+from .efficientnet import BASE_WEIGHTS_PATH, WEIGHTS_HASHES
 
 
 def makedirs(path):
@@ -176,7 +176,7 @@ def create_generators(args):
         )
 
     elif args.dataset_type == 'pascalCustom':
-        from generators.pascal import PascalVocGenerator
+        from .generators.pascal import PascalVocGenerator
         train_generator = PascalVocGenerator(
             args.pascal_path,
             'train',
@@ -327,11 +327,8 @@ def parse_args(args):
     return check_args(parser.parse_args(args))
 
 
-def main(args=None):
+def trainModel(args=None):
     # parse arguments
-    if args is None:
-        args = sys.argv[1:]
-    args = parse_args(args)
 
     # optionally choose specific GPU
     if args.gpu:
