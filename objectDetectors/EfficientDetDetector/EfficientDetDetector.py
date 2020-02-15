@@ -35,13 +35,14 @@ class EfficientDetDetector(IObjectDetection):
 
         traintxt = open(os.path.join(outputPath, "ImageSets", "Main", "train.txt"), "w")
         testtxt = open(os.path.join(outputPath, "ImageSets", "Main", "test.txt"), "w")
+        shutil.copy(os.path.join(outputPath,"classes.csv"), os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"))
 
-        classescsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"), "w")
+        """classescsv = open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"), "w")
         classes = [cl for cl in open(os.path.join(self.OUTPUT_PATH, self.DATASET_NAME, "classes.names"))]
-        rows = [c.replace('\n','')+","+ str(i)+"\n" for (i, c) in enumerate(classes)]
+        rows = [c.replace('\n','')+","+ str(i)+"\n" for (i, c) in enumerate(classes) if i!=len(classes)-1]
         for row in rows:
-            classescsv.write(row	)
-        classescsv.close()
+            classescsv.write(row)
+        classescsv.close()"""
         for f_train in listaFicheros_train:
             name = os.path.basename(f_train).split('.')[0]
             traintxt.write(name + "\n")
@@ -77,7 +78,7 @@ class EfficientDetDetector(IObjectDetection):
         args.pascal_path= outputPath
         args.snapshot='imagenet'
         args.snapshot_path=os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME)
-        args.phi = 0
+        args.phi = self.model
         args.gpu = 0
         args.random_transform=True
         args.compute_val_loss=True

@@ -33,13 +33,13 @@ class MapEvaluator(IEvaluator):
         os.system("python3 map/pascal2yolo_detection.py -d " + os.path.join(
             os.path.join(aux_path,"detection/") + " -f " + os.path.join(aux_path, "classes.names")))
         os.system("find `pwd`/map/" + self.dataset_name+"/labels -name '*.txt' > " + aux_path + "/test.txt")
-        os.system("./map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/" + self.model_name+ "results.txt")
+        os.system("./map/darknet detector compare " + os.path.join(aux_path,"test.txt") + " " + os.path.join(aux_path,"classes.names") + " > " + aux_path + "/" + str(self.model_name)+ "results.txt")
         # shutil.rmtree(os.path.join(aux_path,"detection"))
-        shutil.move(os.path.join(aux_path,"detection"),os.path.join(aux_path,"detection"+self.model_name))
+        shutil.move(os.path.join(aux_path,"detection"),os.path.join(aux_path,"detection"+str(self.model_name)))
         shutil.rmtree(os.path.join(aux_path,"labels"))
 
         # Esto es por si se quiere mover el archivo con lo resultados para que esten todos en la misma ubicacion
-        shutil.copy( aux_path + "/" + self.model_name+ "results.txt", os.path.join( aux_path, self.dataset_name))
+        shutil.copy( aux_path + "/" + str(self.model_name)+ "results.txt", os.path.join( aux_path, self.dataset_name))
         os.remove(os.path.join(aux_path,"classes.names"))
 
 
