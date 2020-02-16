@@ -103,7 +103,7 @@ class FSAFDetector(IObjectDetection):
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+self.model))
 
     def evaluate(self):
-        fsafPredict = FSAFPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fsaf_" + str(self.model) + '_' + self.DATASET_NAME,str(model)+'_pascalCustom_25.h5'),
+        fsafPredict = FSAFPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fsaf_" + str(self.model) + '_' + self.DATASET_NAME,str(self.model)+'_pascalCustom_25.h5'),
             os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
