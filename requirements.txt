@@ -16,3 +16,6 @@ opencv-python==3.4.2.16
 Pillow==6.2.1
 scikit-image==0.16.2
 scikit_learn==0.22
+gluoncv
+mxnet
+mxnet-cu100
