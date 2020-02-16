@@ -67,6 +67,11 @@ cd UFOD
 pip3 install -r requirements.txt
 cd map
 make
+cd ../keras-retinanet
+pip3 install . --user
+python3 setup.py build_ext --inplace
+cd ../Mask_RCNN
+pip install . --user
 ```
 
 ### Dataset
