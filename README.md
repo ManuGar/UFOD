@@ -141,6 +141,10 @@ Once the user has prepared the dataset and fixed the training options in the ```
 python3 taskLauncher.py -c config.json
 ```
 
+### Colab Example
+
+We provide a detailed example of how to use UFOD in [Google Collab](https://colab.research.google.com/drive/1m74_MZJ1-ed1ZQ9o5QUM0q7U2aY2fF0K).
+
 ## Extending UFOD
 
 UFOD has been designed to be easily extensible to incorporate new frameworks and algorithms. 
