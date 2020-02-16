@@ -13,6 +13,7 @@ frameworks have been included in UFOD, and new tools can be easily incorporated 
    * [Dataset](#dataset)
    * [Configuration](#configuration-file)
    * [How to launch the training process](#how-to-launch-the-training-process)
+   * [Colab example](#colab-example)
 4. [Extending UFOD](#adding-new-models)
    * [Adding new frameworks and algorithms](#adding-new-frameworks-and-algorithms)
    * [Adding new evaluation metrics](#adding-new-evaluation-metrics)
