@@ -33,7 +33,6 @@ def get_session():
     return tf.Session(config=config)
 
 class FcosPredict(IPredictor):
-    image_sizes = (512, 640, 768, 896, 1024, 1280, 1408)
     CONFIDENCE=0.5
     def __init__(self,modelWeights,classesFile, model):
         super().__init__(modelWeights,classesFile)
@@ -43,7 +42,6 @@ class FcosPredict(IPredictor):
 
 
     def predict(self, imagePaths):
-        image_size = self.image_sizes[self.model]
         LABELS = open(self.classesFile).read().strip().split("\n")
         classes = [label.split(',')[0] for label in LABELS]
         num_classes = len(classes)
