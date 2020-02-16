@@ -104,7 +104,7 @@ class FcosDetector(IObjectDetection):
 
     def evaluate(self):
         fcosPredict = FcosPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fcos_" + str(self.model) + '_' + self.DATASET_NAME,str(self.model)+'_pascalCustom_25.h5'),
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
+            os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
         map = Map(fcosPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)

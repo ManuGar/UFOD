@@ -104,7 +104,7 @@ class FSAFDetector(IObjectDetection):
 
     def evaluate(self):
         fsafPredict = FSAFPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","fsaf_" + str(self.model) + '_' + self.DATASET_NAME,str(self.model)+'_pascalCustom_25.h5'),
-            os.path.join(self.OUTPUT_PATH, self.DATASET_NAME + "_classes.csv"),
+            os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
             self.model)
 
         map = Map(fsafPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
