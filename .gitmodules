@@ -1,3 +1,6 @@
 [submodule "map"]
 	path = map
 	url = https://github.com/CoVUR/map.git
+[submodule "keras-retinanet"]
+	path = keras-retinanet
+	url = https://github.com/fizyr/keras-retinanet
