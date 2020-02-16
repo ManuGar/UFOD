@@ -50,7 +50,7 @@ class FcosPredict(IPredictor):
         # adjust this to point to your downloaded/trained model
         # models can be downloaded here: https://github.com/fizyr/keras-retinanet/releases
         model_path = self.modelWeights
-        model = fcos.models.load_model(model_path, backbone_name='resnet50')
+        model = fcos.models.load_model(model_path, backbone_name=self.model)
 
         for (i, image_path) in enumerate(imagePaths):
             image = read_image_bgr(image_path)

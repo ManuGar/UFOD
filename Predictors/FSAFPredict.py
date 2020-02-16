@@ -46,7 +46,7 @@ class FSAFPredict(IPredictor):
         LABELS = open(self.classesFile).read().strip().split("\n")
         classes = [label.split(',')[0] for label in LABELS]
         num_classes = len(classes)
-        fsaf = resnet_fsaf(num_classes=len(LABELS), backbone=backbone)
+        fsaf = resnet_fsaf(num_classes=len(LABELS), backbone=self.model)
         model = fsaf_bbox(fsaf)
         model.load_weights(weights, by_name=True)
 
