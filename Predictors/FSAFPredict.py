@@ -49,6 +49,7 @@ class FSAFPredict(IPredictor):
         fsaf = resnet_fsaf(num_classes=len(LABELS), backbone=self.model)
         model = fsaf_bbox(fsaf)
         model.load_weights(self.modelWeights, by_name=True)
+        imagePaths = list(paths.list_images(imagePaths))
 
         for (i, image_path) in enumerate(imagePaths):
             image = read_image_bgr(image_path)

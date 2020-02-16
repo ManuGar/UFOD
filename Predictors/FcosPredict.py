@@ -51,7 +51,7 @@ class FcosPredict(IPredictor):
         # models can be downloaded here: https://github.com/fizyr/keras-retinanet/releases
         model_path = self.modelWeights
         model = fcos.models.load_model(model_path, backbone_name=self.model)
-
+        imagePaths = list(paths.list_images(imagePaths))
         for (i, image_path) in enumerate(imagePaths):
             image = read_image_bgr(image_path)
             image = preprocess_image(image)
