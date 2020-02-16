@@ -1,11 +1,11 @@
 {
-  "Mxnet" : "../datasets/fruit",
-  "Rcnn": "fruit",
-  "Tensorflow" : "01:00:00",
-  "Darknet" :   "~/darknet/",
-  "Retinanet": "~/ws/holms/keras-retinanet/keras_retinanet",
-  "EfficientDet": "~/EfficientDet/",
-  "Fcos": "~/Fcos/"
+  "Mxnet" : "",
+  "Rcnn": "Mask_RCNN/",
+  "Tensorflow" : "",
+  "Darknet" :   "map/",
+  "Retinanet": "keras-retinanet/keras_retinanet",
+  "EfficientDet": "",
+  "Fcos": ""
 
 
 }
