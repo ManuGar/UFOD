@@ -179,7 +179,28 @@ This two-step process has been modelled in the UFOD API (see the figure below) u
 
 ### Perfomance of different algorithms
 
-We have tested UFOD with several detection algorithms and datasets. Here, we include the results for the [Optic Disc dataset]() and the [Reconyx dataset]().
+We have tested UFOD with several detection algorithms and datasets. Here, we include the results for the [Optic Disc dataset](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC505667/) and the [Reconyx dataset](https://arxiv.org/abs/1803.10842).
+
+
+| | |Optic|| |Reconyx||
+|---------|---------|---------|---------|---------|---------|---------|
+|| F1 | IoU | mAP | F1 | IoU | mAP |
+|Faster-RCNN | 99.49 | 90.09 | 90.91 | 71.94 | 58.37 | 70.23 |
+|MRCNN-50 |94.91|72.65 |90.91 |14.93|9.16 |10.58 |
+|MRCNN-101 | 87.87 | 71.07 | 90.84 | 33.43 | 60.62 | 7.16 |
+|Retinanet-50 | 99.49 | 90.40 | 90.91 | 51.17 | 60.25 | 37.92 |
+|Retinanet-101 | 99.49 | 89.42 | 100 | 72.00 | 7.36 | 4.44 |
+|Retinanet-152 | 99.49 | 89.66 | 100 | 0.00 | 0.00 | 0.00 |
+|RFCN |97.43 | 87.69 | 90.84 | 71.87 | 58.26 | 70.77 |
+|SSD VGG16-300 |98.99|84.66|90.91 |71.50|58.06 |60.96 |
+|SSD VGG16-512 |97.44|83.35 |90.91 |64.40|47.28 |65.28 |
+|SSD Mobilenet (MXNET) |99.63|80.60 |90.88 |54.55|50.33 |48.53 |
+|SSD Mobilenet (Tensorflow) | 97.95 | 87.22 | 90.84 |28.63|34.62 |18.72 |
+|SSD Resnet |99.00|86.77|90.91|68.41|54.12 |66.21 |
+|Tiny YOLO | 87.01|60.79|90.67 |72.66|58.23|69.78 |
+|YOLO |91.89|75.56 |90.91 |80.42|61.76|81.89|
+|Ensemble |99.63|80.60 |90.91 |79.55| 63.83 |84.70 |
+|Ensemble 3 best | 100 | 89.61 | 100 |82.92 | 68.98 | 78.10| 
 
 
 
