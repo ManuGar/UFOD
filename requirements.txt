@@ -4,7 +4,7 @@ object_detection==0.0.3
 contextlib2==0.5.5
 numpy==1.16.4
 wget==3.2
-Keras==2.2.4
+Keras==2.3.0
 tensorflow==1.15.0
 lxml==4.3.4
 mrcnn==0.2
