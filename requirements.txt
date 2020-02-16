@@ -1,13 +1,9 @@
 commentjson==0.7.1
 imutils==0.4.6
-keras_retinanet==0.5.1
 object_detection==0.0.3
 contextlib2==0.5.5
 numpy==1.16.4
-mask_rcnn_12rics==0.2.3
-gluoncv==0.6.0b20190930
 wget==3.2
-mxnet==1.5.0
 Keras==2.2.4
 tensorflow==1.15.0
 lxml==4.3.4
@@ -16,6 +12,4 @@ opencv-python==3.4.2.16
 Pillow==6.2.1
 scikit-image==0.16.2
 scikit_learn==0.22
-gluoncv
-mxnet
 mxnet-cu100
