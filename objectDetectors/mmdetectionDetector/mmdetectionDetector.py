@@ -93,7 +93,7 @@ class mmdetectionDetector(IObjectDetection):
         shutil.copy(config_fname, config_fname[0:config_fname.rfind(".")] +self.DATASET_NAME   +".py")
         self.config_fname = config_fname[0:config_fname.rfind(".")] +self.DATASET_NAME   +".py"
         #### Modificando el fichero de configuración
-        fname = config_fname
+        fname = self.config_fname
         with open(fname) as f:
             s = f.read()
             work_dir = re.findall(r"work_dir = \'(.*?)\'", s)[0]
@@ -108,7 +108,7 @@ class mmdetectionDetector(IObjectDetection):
                 s = re.sub("dataset_type = 'CocoDataset'",
                            "dataset_type = 'VOCDataset'", s)
                 s = re.sub("data_root = 'data/coco/'",
-                           "data_root = \'"+ outputPath +"\'", s)
+                           "data_root = \'"+ outputPath +"/\'", s)
                 s = re.sub("annotations/instances_train2017.json",
                            "ImageSets/Main/trainval.txt", s)
                 s = re.sub("annotations/instances_val2017.json",
