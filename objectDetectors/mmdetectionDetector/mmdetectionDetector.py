@@ -27,7 +27,7 @@ class mmdetectionDetector(IObjectDetection):
         listaFicheros_train = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train"), validExts=(".jpg")))
         listaFicheros_test = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"test"), validExts=(".jpg")))
 
-        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model))
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model),"VOC2007")
         # outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME)
 
         shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), os.path.join(outputPath, "JPEGImages"))
@@ -110,13 +110,13 @@ class mmdetectionDetector(IObjectDetection):
                 s = re.sub("data_root = 'data/coco/'",
                            "data_root = \'"+ outputPath +"/\'", s)
                 s = re.sub("annotations/instances_train2017.json",
-                           "ImageSets/Main/trainval.txt", s)
+                           "VOC2007/ImageSets/Main/trainval.txt", s)
                 s = re.sub("annotations/instances_val2017.json",
-                           "ImageSets/Main/test.txt", s)
+                           "VOC2007/ImageSets/Main/test.txt", s)
                 s = re.sub("annotations/instances_val2017.json",
-                           "ImageSets/Main/test.txt", s)
-                s = re.sub("train2017", "", s)
-                s = re.sub("val2017", "", s)
+                           "VOC2007/ImageSets/Main/test.txt", s)
+                s = re.sub("train2017", "VOC2007", s)
+                s = re.sub("val2017", "VOC2007", s)
             else:
                 s = re.sub('img_prefix=.*?\],',
                            "img_prefix=data_root + '',".format(total_epochs), s)
