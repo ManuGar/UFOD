@@ -125,7 +125,7 @@ class mmdetectionDetector(IObjectDetection):
     
 
     def train(self, framework_path = None, n_gpus = 1):
-        os.system("python mmdetection/tools/train.py " + self.config_fname+ " --validate True")
+        os.system("python mmdetection/tools/train.py " + self.config_fname+ " --validate ")
 
         shutil.rmtree(os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model)))
 
