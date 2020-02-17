@@ -1,6 +1,6 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from imutils import paths
-#from Predictors.mmdetectionPredict import mmdetectionPredict
+from Predictors.mmdetectionPredict import mmdetectionPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import shutil
@@ -132,13 +132,12 @@ class mmdetectionDetector(IObjectDetection):
 
 
     def evaluate(self):
-        pass
-        #efficientdetPredict = mmdetectionPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_30.h5'),
-        #    os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
-        #    self.model)
+        predictor = mmdetectionPredict(os.path.join('./work_dirs/'+self.model+'/latest.pth'),
+            os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
+            self.model,self.model+self.DATASET_NAME)
 
-        #map = Map(efficientdetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
-        #map.evaluate()
+        map = Map(predictor, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map.evaluate()
 
 def main():
     pass
