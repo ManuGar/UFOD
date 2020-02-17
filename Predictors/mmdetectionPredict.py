@@ -16,8 +16,8 @@ class mmdetectionPredict(IPredictor):
         super().__init__(modelWeights, classesFile)
         self.modelName=modelName
         self.model=model
-        with open(self.classesFile, 'rt') as f:
-            self.classes = f.read().rstrip('\n').split('\n')
+        LABELS = open(self.classesFile).read().strip().split("\n")
+        self.classes = [label.split(',')[0] for label in LABELS]
 
     def predict(self, imagePaths):
         model = init_detector('mmdetection/configs/'+self.modelName+".py",
