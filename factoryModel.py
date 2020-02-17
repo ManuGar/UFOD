@@ -16,6 +16,9 @@
 
 def createModel(framework, modelText, dataset, dataset_name):
     model = ""
+    if framework == "mmdetection":
+        from objectDetectors.mmdetectionDetector import mmdetectionDetector
+        model = mmdetectionDetector.mmdetectionDetector(dataset, dataset_name, modelText)
     if framework == "Efficientdet":
         from objectDetectors.EfficientDetDetector import EfficientDetDetector
         model = EfficientDetDetector.EfficientDetDetector(dataset, dataset_name, int(modelText))
