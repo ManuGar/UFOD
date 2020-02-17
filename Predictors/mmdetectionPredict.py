@@ -68,7 +68,7 @@ class mmdetectionPredict(IPredictor):
         childSegmented = ET.SubElement(top, 'segmented')
         childSegmented.text = str(0)
         for (category, box, score) in zip(labels, boxes, scores):
-            (x, y, xmax, ymax) = box
+            (x, y, xmax, ymax,_) = box
             childObject = ET.SubElement(top, 'object')
             childName = ET.SubElement(childObject, 'name')
             childName.text = classes[category]
