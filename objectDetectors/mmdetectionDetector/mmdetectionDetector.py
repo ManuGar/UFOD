@@ -107,8 +107,7 @@ class mmdetectionDetector(IObjectDetection):
             if "CocoDataset" in s:
                 s = re.sub("dataset_type = 'CocoDataset'",
                            "dataset_type = 'VOCDataset'", s)
-                s = re.sub("data_root = 'data/VOCdevkit/'",
-                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
+                
                 s = re.sub("data_root = 'data/coco/'",
                            "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
                 s = re.sub("annotations/instances_train2017.json",
@@ -120,6 +119,8 @@ class mmdetectionDetector(IObjectDetection):
                 s = re.sub("train2017", "VOC2007", s)
                 s = re.sub("val2017", "VOC2007", s)
             else:
+                s = re.sub("data_root = 'data/VOCdevkit/'",
+                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
                 s = re.sub('img_prefix=.*?\],',
                            "img_prefix=data_root + '',".format(total_epochs), s)
         with open(fname, 'w') as f:
