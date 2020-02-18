@@ -59,6 +59,7 @@ Currently, UFOD provides support for the following algorithms.
 | [mmdetection](https://github.com/open-mmlab/mmdetection) | Faster-RCNN | Resnet50 |
 |  | Retinanet | Resnet 50 |
 |  | Cascade | Resnet 50 |
+|  | RPN | Resnet 50 |
 
 ## Using UFOD
 
