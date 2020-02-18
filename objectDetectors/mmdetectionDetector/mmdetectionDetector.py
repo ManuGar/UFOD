@@ -107,6 +107,8 @@ class mmdetectionDetector(IObjectDetection):
             if "CocoDataset" in s:
                 s = re.sub("dataset_type = 'CocoDataset'",
                            "dataset_type = 'VOCDataset'", s)
+                s = re.sub("data_root = 'data/VOCdevkit/'",
+                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
                 s = re.sub("data_root = 'data/coco/'",
                            "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
                 s = re.sub("annotations/instances_train2017.json",
