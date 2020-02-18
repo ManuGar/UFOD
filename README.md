@@ -134,6 +134,16 @@ UFOD training process is configured by means of a json file, that must contain t
   - ["FCOS", "densenet201"]: FCOS with densenet201 backbone.
   - ["FSAF", "resnet50"]: FSAF with resnet50 backbone.
   - ["FSAF", "resnet101"]: FSAF with Resnet101 backbone.
+  - ["mmdetection", "faster_rcnn_r50_fpn_1x" ]: Faster RCNN with Resnet 50 backbone. 
+  - ["mmdetection", "faster_rcnn_r101_fpn_1x" ]: Faster RCNN with Resnet 101 backbone. 
+  - ["mmdetection", "cascade_rcnn_r50_fpn_1x" ]: Cascasde RCNN with Resnet 50 backbone. 
+  - ["mmdetection", "cascade_rcnn_r101_fpn_1x" ]: Cascasde RCNN with Resnet 101 backbone. 
+  - ["mmdetection", "cascade_rcnn_x101_32x4d_fpn_1x" ]: Cascasde RCNN with Resnext 101 backbone. 
+  - ["mmdetection", "retinanet_r50_fpn_1x" ]: Retinanet with Resnet 50 backbone. 
+  - ["mmdetection", "retinanet_r101_fpn_1x" ]:  Retinanet with Resnet 101 backbone. 
+  - ["mmdetection", "rpn_r50_fpn_1x" ]: RPN with Resnet 50 backbone. 
+  - ["mmdetection", "rpn_r101_fpn_1x" ]: RPN with Resnet 101 backbone. 
+  
   
 Examples of this configurations files can be seen in the [Optic.json](Optic.json) (local execution) and the [prueba.json](prueba.json) (cluster execution) files.
 
