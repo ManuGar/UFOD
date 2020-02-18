@@ -56,10 +56,10 @@ Currently, UFOD provides support for the following algorithms.
 | [EfficientDet for Keras](https://github.com/joheras/EfficientDet) | EfficientDet | Efficientnet B0, B1, B2, B3, B4, B5 |
 | [FCOS for Keras](https://github.com/joheras/keras-fcos) | FCOS | Resnet 50, Resnet 101, VGG16, VGG19, Densenet 121, 169, 201 |
 | [FSAF for Keras](https://github.com/joheras/FSAF) | FSAF | Resnet 50, Resnet 101 |
-| [mmdetection](https://github.com/open-mmlab/mmdetection) | Faster-RCNN | Resnet50 |
-|  | Retinanet | Resnet 50 |
-|  | Cascade | Resnet 50 |
-|  | RPN | Resnet 50 |
+| [mmdetection](https://github.com/open-mmlab/mmdetection) | Faster-RCNN | Resnet50, Resnet 101 |
+|  | Retinanet | Resnet 50, Resnet 101 |
+|  | Cascade | Resnet 50, Resnet 101, Resnext 101 |
+|  | RPN | Resnet 50, Resnet 101 |
 
 ## Using UFOD
 
