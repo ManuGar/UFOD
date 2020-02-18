@@ -120,7 +120,7 @@ class mmdetectionDetector(IObjectDetection):
                 s = re.sub("val2017", "VOC2007", s)
             else:
                 s = re.sub("data_root = 'data/VOCdevkit/'",
-                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
+                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/VOC2007/\'", s)
                 s = re.sub('img_prefix=.*?\],',
                            "img_prefix=data_root + '',".format(total_epochs), s)
         with open(fname, 'w') as f:
