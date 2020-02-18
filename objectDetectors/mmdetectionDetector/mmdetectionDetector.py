@@ -17,7 +17,7 @@ class mmdetectionDetector(IObjectDetection):
         self.model = model
 
     def transform(self):
-        MODELS_CONFIG = {'faster_rcnn_r50_fpn_1x': {'config_file': 'configs/pascal_voc/faster_rcnn_r50_fpn_1x_voc0712.py'},
+        MODELS_CONFIG = {'faster_rcnn_r50_fpn_1x': {'config_file': 'configs/faster_rcnn_r50_fpn_1x.py'},
                          'cascade_rcnn_r50_fpn_1x': {'config_file': 'configs/cascade_rcnn_r50_fpn_1x.py'},
                          'retinanet_r50_fpn_1x': {'config_file': 'configs/retinanet_r50_fpn_1x.py'}}
 
