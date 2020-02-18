@@ -18,9 +18,14 @@ class mmdetectionDetector(IObjectDetection):
 
     def transform(self):
         MODELS_CONFIG = {'faster_rcnn_r50_fpn_1x': {'config_file': 'configs/faster_rcnn_r50_fpn_1x.py'},
+                         'faster_rcnn_r101_fpn_1x': {'config_file': 'configs/faster_rcnn_r101_fpn_1x'},
                          'cascade_rcnn_r50_fpn_1x': {'config_file': 'configs/cascade_rcnn_r50_fpn_1x.py'},
+                         'cascade_rcnn_r101_fpn_1x': {'config_file': 'configs/cascade_rcnn_r101_fpn_1x.py'},
+                         'cascade_rcnn_x101_32x4d_fpn_1x': {'config_file': 'configs/cascade_rcnn_x101_32x4d_fpn_1x.py'},
                          'retinanet_r50_fpn_1x': {'config_file': 'configs/retinanet_r50_fpn_1x.py'},
-                        'rpn_r50_fpn_1x': {'config_file': 'configs/rpn_r50_fpn_1x'}}
+                         'retinanet_r101_fpn_1x': {'config_file': 'configs/retinanet_r101_fpn_1x.py'},
+                        'rpn_r50_fpn_1x': {'config_file': 'configs/rpn_r50_fpn_1x'},
+                        'rpn_r101_fpn_1x': {'config_file': 'configs/rpn_r101_fpn_1x'}}
 
         selected_model = self.model
         config_file = MODELS_CONFIG[selected_model]['config_file']
