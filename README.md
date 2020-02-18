@@ -64,7 +64,7 @@ Currently, UFOD provides support for the following algorithms.
 ## Using UFOD
 
 ### Dependencies and installation
-To install UFOD it is necessary to execute the following commands:
+To install UFOD it is necessary to execute the following commands, this will install not only UFOD but also all the underlying detection frameworks:
 
 ```bash
 git clone --recursive https://github.com/ManuGar/UFOD.git
@@ -78,6 +78,13 @@ python3 setup.py build_ext --inplace
 cd ../Mask_RCNN
 mv ../model.py mrcnn/
 pip install . --user
+cd ../mmdetection
+git checkout master && git pull
+pip install -q mmcv terminaltables
+python setup.py develop
+pip install -r requirements.txt
+pip uninstall -y terminaltables
+pip install terminaltables
 ```
 
 ### Dataset
