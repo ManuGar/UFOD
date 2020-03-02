@@ -45,37 +45,27 @@ class TensorflowDetector(IObjectDetection):
 
     def transform(self):
 
+        # Convert train folder annotation xml files to a single csv file,
+        # generate the `label_map.pbtxt` file to `data/` directory as well.
+        os.system("xml_to_csv.py -i " + os.path.join(self.DATASET,"train") + " -o " + os.path.join(self.DATASET,"annotations","train_labels.csv") + " -l " + os.path.join(self.DATASET,"annotations"))
+
+        # Convert test folder annotation xml files to a single csv.
+        os.system("xml_to_csv.py -i " + os.path.join(self.DATASET, "test") + " -o "
+                  + os.path.join(self.DATASET,"annotations", "test_labels.csv"))
 
 
-
-        # Este lo tenemos que cambiar por las funciones del cuaderno para pasar de un formato a otro.
-
-
-
-        # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-
-        class_path = os.path.join(self.OUTPUT_PATH, self.DATASET, "classes.names")
-        result_path = os.path.join(self.OUTPUT_PATH, self.DATASET_NAME)
-        file = open(class_path, "r")
-        cl_txt = ""
-        i = 1
-        for cl in file:
-            cl_txt += "item {\n\tid: " + str(i) + "\n\tname: '" + cl.split("\n")[0] + "'\n}\n"
-            i += 1
-        label_map = open(os.path.join(result_path, "label_map.pbtxt"), "w+")
-        label_map.write(cl_txt)
-        label_map.close()
-        print(cl_txt)
-
-        PascalVOC2TensorflowRecords(self.DATASET, self.OUTPUT_PATH)
-        # shutil.rmtree(dataset_path)
+        # Generate `train.record`
+        os.system("generate_tfrecord.py --csv_input ="+os.path.join(self.DATASET, "annotations", "train_labels.csv")
+                  + " --output_path =" + os.path.join(self.DATASET, "annotations", "train.record") +" --img_path ="
+                  + os.path.join(self.DATASET,"train")+ " --label_map " + os.path.join(self.DATASET,"annotations", "label_map.pbtxt"))
 
 
-    # En este caso tendremos que hacer primero la division del dataset para que luego la transformacion se haga
-    # desde el dataset de entrenamiento y de evaluacion
-    # def organize(self, train_percentage):
-    #     # dataset_name = dataset_path[dataset_path.rfind(os.sep) + 1:]
-    #     fn.datasetSplit(self.DATASET_NAME,self.DATASET,self.OUTPUT_PATH,train_percentage)
+        # Generate `test.record`
+
+        os.system("generate_tfrecord.py --csv_input =" + os.path.join(self.DATASET, "annotations", "test_labels.csv")
+                  + " --output_path =" + os.path.join(self.DATASET, "annotations", "test.record") + " --img_path ="
+                  + os.path.join(self.DATASET, "test") + " --label_map " + os.path.join(self.DATASET, "annotations",
+                                                                                         "label_map.pbtxt"))
 
     def createModel(self):
         pass
