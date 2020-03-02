@@ -1,6 +1,6 @@
 from objectDetectors.objectDetectionInterface import IObjectDetection
 from imutils import paths
-#from Predictors.mmdetectionPredict import mmdetectionPredict
+from Predictors.mmdetectionPredict import mmdetectionPredict
 from Evaluators.MapEvaluator import MapEvaluator as Map
 import os
 import shutil
@@ -17,9 +17,15 @@ class mmdetectionDetector(IObjectDetection):
         self.model = model
 
     def transform(self):
-        MODELS_CONFIG = {'faster_rcnn_r50_fpn_1x': {'config_file': 'configs/pascal_voc/faster_rcnn_r50_fpn_1x_voc0712.py'},
+        MODELS_CONFIG = {'faster_rcnn_r50_fpn_1x': {'config_file': 'configs/faster_rcnn_r50_fpn_1x.py'},
+                         'faster_rcnn_r101_fpn_1x': {'config_file': 'configs/faster_rcnn_r101_fpn_1x'},
                          'cascade_rcnn_r50_fpn_1x': {'config_file': 'configs/cascade_rcnn_r50_fpn_1x.py'},
-                         'retinanet_r50_fpn_1x': {'config_file': 'configs/retinanet_r50_fpn_1x.py'}}
+                         'cascade_rcnn_r101_fpn_1x': {'config_file': 'configs/cascade_rcnn_r101_fpn_1x.py'},
+                         'cascade_rcnn_x101_32x4d_fpn_1x': {'config_file': 'configs/cascade_rcnn_x101_32x4d_fpn_1x.py'},
+                         'retinanet_r50_fpn_1x': {'config_file': 'configs/retinanet_r50_fpn_1x.py'},
+                         'retinanet_r101_fpn_1x': {'config_file': 'configs/retinanet_r101_fpn_1x.py'},
+                        'rpn_r50_fpn_1x': {'config_file': 'configs/rpn_r50_fpn_1x'},
+                        'rpn_r101_fpn_1x': {'config_file': 'configs/rpn_r101_fpn_1x'}}
 
         selected_model = self.model
         config_file = MODELS_CONFIG[selected_model]['config_file']
@@ -27,7 +33,7 @@ class mmdetectionDetector(IObjectDetection):
         listaFicheros_train = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train"), validExts=(".jpg")))
         listaFicheros_test = list(paths.list_files(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"test"), validExts=(".jpg")))
 
-        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model))
+        outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME+"_"+str(self.model),"VOC2007")
         # outputPath = os.path.join(self.OUTPUT_PATH, "VOC" + self.DATASET_NAME)
 
         shutil.copytree(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"train","JPEGImages"), os.path.join(outputPath, "JPEGImages"))
@@ -93,7 +99,7 @@ class mmdetectionDetector(IObjectDetection):
         shutil.copy(config_fname, config_fname[0:config_fname.rfind(".")] +self.DATASET_NAME   +".py")
         self.config_fname = config_fname[0:config_fname.rfind(".")] +self.DATASET_NAME   +".py"
         #### Modificando el fichero de configuración
-        fname = config_fname
+        fname = self.config_fname
         with open(fname) as f:
             s = f.read()
             work_dir = re.findall(r"work_dir = \'(.*?)\'", s)[0]
@@ -107,17 +113,20 @@ class mmdetectionDetector(IObjectDetection):
             if "CocoDataset" in s:
                 s = re.sub("dataset_type = 'CocoDataset'",
                            "dataset_type = 'VOCDataset'", s)
+                
                 s = re.sub("data_root = 'data/coco/'",
-                           "data_root = \'"+ outputPath +"\'", s)
+                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/\'", s)
                 s = re.sub("annotations/instances_train2017.json",
-                           "ImageSets/Main/trainval.txt", s)
+                           "VOC2007/ImageSets/Main/trainval.txt", s)
                 s = re.sub("annotations/instances_val2017.json",
-                           "ImageSets/Main/test.txt", s)
+                           "VOC2007/ImageSets/Main/test.txt", s)
                 s = re.sub("annotations/instances_val2017.json",
-                           "ImageSets/Main/test.txt", s)
-                s = re.sub("train2017", "", s)
-                s = re.sub("val2017", "", s)
+                           "VOC2007/ImageSets/Main/test.txt", s)
+                s = re.sub("train2017", "VOC2007", s)
+                s = re.sub("val2017", "VOC2007", s)
             else:
+                s = re.sub("data_root = 'data/VOCdevkit/'",
+                           "data_root = \'"+ outputPath[0:outputPath.rfind("/")] +"/VOC2007/\'", s)
                 s = re.sub('img_prefix=.*?\],',
                            "img_prefix=data_root + '',".format(total_epochs), s)
         with open(fname, 'w') as f:
@@ -132,13 +141,12 @@ class mmdetectionDetector(IObjectDetection):
 
 
     def evaluate(self):
-        pass
-        #efficientdetPredict = mmdetectionPredict(os.path.join(self.OUTPUT_PATH,self.DATASET_NAME,"models","efficientdet" + str(self.model) + '_' + self.DATASET_NAME,'pascalCustom_30.h5'),
-        #    os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
-        #    self.model)
+        predictor = mmdetectionPredict(os.path.join('./work_dirs/'+self.model+'/latest.pth'),
+            os.path.join(self.OUTPUT_PATH,self.DATASET_NAME, self.DATASET_NAME + "_classes.csv"),
+            self.model,self.model+self.DATASET_NAME)
 
-        #map = Map(efficientdetPredict, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
-        #map.evaluate()
+        map = Map(predictor, self.DATASET_NAME, os.path.join(self.OUTPUT_PATH, self.DATASET_NAME), self.model)
+        map.evaluate()
 
 def main():
     pass
