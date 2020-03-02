@@ -1,7 +1,6 @@
 # USAGE
 # python predict_batch.py --input logos/images --output output
 from Predictors.IPredictor import IPredictor
-from xml.dom import minidom
 from imutils import paths
 from mxnet import autograd, gluon
 from mxnet import autograd, gluon

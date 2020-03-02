@@ -52,17 +52,14 @@ def createModel(framework, modelText, dataset, dataset_name):
             model = RetinaNetDetector.RetinaNetDetector(dataset, dataset_name)
     elif framework == "Tensorflow":
         from objectDetectors.TensorflowObjectDetector import tensorflowDetector
-        if modelText == "ssdInception":
-            aux = lambda d,n : tensorflowDetector.TensorflowDetector(d,n,"ssd_inception_v2_coco")
+        if modelText == "ssdMobilenet":
+            aux = lambda d,n : tensorflowDetector.TensorflowDetector(d,n,"ssd_mobilenet_v2")
             model = aux(dataset, dataset_name)
-        elif modelText == "fasterRcnnResnet":
-            aux = lambda d, n: tensorflowDetector.TensorflowDetector(d, n, "faster_rcnn_resnet50_coco")
+        elif modelText == "fasterRcnnInception":
+            aux = lambda d, n: tensorflowDetector.TensorflowDetector(d, n, "faster_rcnn_inception_v2")
             model = aux(dataset, dataset_name)
         elif modelText == "rfcnResnet":
-            aux = lambda d, n: tensorflowDetector.TensorflowDetector(d, n, "rfcn_resnet101_coco")
-            model = aux(dataset, dataset_name)
-        elif modelText == "maskRcnnInception":
-            aux = lambda d, n: tensorflowDetector.TensorflowDetector(d, n, "mask_rcnn_inception_v2_coco")
+            aux = lambda d, n: tensorflowDetector.TensorflowDetector(d, n, "rfcn_resnet101")
             model = aux(dataset, dataset_name)
     elif framework == "Darknet":
         from objectDetectors.YOLOObjectDetector import TinyYoloV3Detector, YoloV3Detector
