@@ -39,6 +39,7 @@ from .utils.model import freeze as freeze_model
 from .utils.transform import random_transform_generator
 from .utils.image import random_visual_effect_generator
 
+tf.compat.v1.disable_eager_execution()
 
 def makedirs(path):
     # Intended behavior: try to create the directory,
