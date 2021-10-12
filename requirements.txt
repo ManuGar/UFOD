@@ -7,7 +7,7 @@ Keras==2.3.0
 tensorflow==1.15.0
 lxml==4.3.4
 mrcnn==0.2
-opencv-python==3.4.2.16
+opencv-python==3.4.7.28
 Pillow==6.2.1
 scikit-image==0.16.2
 scikit_learn==0.22
