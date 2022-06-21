@@ -1,7 +1,7 @@
 commentjson==0.7.1
 imutils==0.4.6
 contextlib2==0.5.5
-numpy==1.16.4
+numpy==1.22.0
 wget==3.2
 Keras==2.3.0
 tensorflow==1.15.0
