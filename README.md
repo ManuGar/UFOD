@@ -64,7 +64,7 @@ Currently, UFOD provides support for the following algorithms.
 ## Using UFOD
 
 ### Dependencies and installation
-To install UFOD it is necessary to execute the following commands, this will install not only UFOD but also all the underlying detection frameworks:
+To install UFOD it is necessary to execute the following commands, this will install not only UFOD but also all the underlying detection frameworks (In order to use it, you must have python version 3.6 installed):
 
 ```bash
 git clone --recursive https://github.com/ManuGar/UFOD.git
